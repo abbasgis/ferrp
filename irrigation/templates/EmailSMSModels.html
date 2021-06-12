@@ -1,0 +1,59 @@
+{#email data link model#}
+<div class="modal fade" id="eMailModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">E-Mail Data Link</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="txtEmailId" name="txtEmailId" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="dataType" name="dataType"/>
+                            <input type="hidden" class="form-control" id="whereClause" name="whereClause"/>
+                            <input type="hidden" class="form-control" id="filtersArray" name="filtersArray"/>
+                        </div>
+                        <button id="btnSendEMail" name="btnSendEMail" class="btn btn-primary form-control">Send E-Mail</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{#sms data link model#}
+<div class="modal fade" id="smsModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">SMS Data Link</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtContactNo">Contact No:</label>
+                            <input type="text" onkeypress="return isNumberKey(event)" maxlength="12" class="form-control" id="txtContactNo" name="txtContactNo" placeholder="Enter contact no.">
+                            <small id="smsHelp" class="form-text text-muted">Number Format: 923xxxxxxxxx</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="dataTypeSMS" name="dataTypeSMS"/>
+                            <input type="hidden" class="form-control" id="whereClauseSMS" name="whereClauseSMS"/>
+                            <input type="hidden" class="form-control" id="filtersArraySMS" name="filtersArraySMS"/>
+                        </div>
+                        <button id="btnSendSMS" name="btnSendSMS" class="btn btn-primary form-control">Send SMS</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

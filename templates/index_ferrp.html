@@ -1,0 +1,346 @@
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>FERRP - Flood Emergency Reconstruction & Resilience Project</title>
+    <link rel="shortcut icon" href="{% static "ferrp/img/logo/gop.png" %}"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link href="{% static "ferrp/css/ferrp.css" %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+
+<body >
+{#id="page-top" data-spy="scroll" data-target=".navbar-fixed-top"#}
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top">
+{#    <div class="container-fluid">#}
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <i class="fa fa-bars fa-2x"></i>
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="#"><img src="{% static "ferrp/img/logo/FERRP-logo-long-white.png" %}" height="50px"></a>
+        <a href="http://www.pndpunjab.gov.pk/" target="_blank"><img src="{% static "ferrp/img/logo/gop.png" %}"
+                                                                    height="50px"></a>
+        <a href="http://www.adb.org/" target="_blank"> <img src="{% static "ferrp/img/logo/ADB_Logo.jpg" %}"
+                                                            height="50px"></a>
+    </div>
+
+{#        {{--<div class="collapse navbar-right navbar-collapse navbar-main-collapse">--}}#}
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+            <li class="hidden">
+                <a href="#page-top"></a>
+            </li>
+            <li>
+                <a class="page-scroll" href="#about">WHO WE ARE</a>
+            </li>
+            <li>
+                <a class="page-scroll" href="#departments">Departments</a>
+            </li>
+            <li>
+                <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">Services
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+{#                    <li><a href="http://45.79.6.169:88/ferrp/rsma"#}
+{#                           target="_blank">Road Scoring</a></li>#}
+{#                    </li>#}
+{#                        <li><a href="http://45.79.6.169:88/ferrp/adpdraft"#}
+{#                               target="_blank">ADP Draft 17-18</a></li>#}
+{#                        </li>#}
+{#                        <li><a href="http://45.79.6.169:88/ferrp/adp"#}
+{#                               target="_blank">ADP MPR 16-17</a></li>#}
+{#                        </li>#}
+{#                        <li><a href="http://45.79.6.169:88/ferrp/adpanalysis"#}
+{#                               target="_blank">ADP Yearly Analysis</a></li>#}
+{#                        </li>#}
+                    <li><a href="http://45.79.6.169:88/ferrp/ppms"
+                           target="_blank">PPMIS</a></li>
+{#                        <li><a href="http://45.79.6.169:88/ferrp/msfm"#}
+{#                               target="_blank">Finicial Management</a></li>#}
+                    <li><a href="{% url "home_dch" %}"
+                           target="_blank">Data Clearinghouse</a></li>
+{#                    <li><a href="http://176.58.124.95/ferrp/ict/public"#}
+{#                           target="_blank">ICT Conference 2016</a></li>#}
+{#                    <li><a href="http://45.79.6.169:88/ferrp/oa/public/"#}
+{#                           target="_blank">Office Automation</a></li>#}
+
+
+                </ul>
+
+            </li>
+            <li>
+                <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">Advertisment
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% static "ferrp/docs/Application_form.docx" %}"
+                           target="_blank">Application Form</a></li>
+                    <li><a href="{% static "ferrp/docs/FERRP_PnD_Add_Feb_2017.pdf" %}"
+                           target="_blank">Posts Advertisement</a></li>
+                    <li><a href="{% static "ferrp/docs/IFB - Invitation For Bids.pdf" %}"
+                           target="_blank">Hardware Procumrent Add</a></li>
+                    <li><a href="{% static "ferrp/docs/Bidding Doc Combine PDF.pdf" %}"
+                           target="_blank">Hardware Bidding Document</a></li>
+                    <li><a href="{% static "ferrp/docs/Hard Component - corrigendum.pdf" %}"
+                           target="_blank">Hardware Corrigendum</a></li>
+                    <li><a href="{% static "ferrp/docs/Section 4-Tables.docx" %}"
+                           target="_blank">Section 4 Table(Word Format)</a></li>
+                </ul>
+
+            </li>
+            <li>
+                <a class="page-scroll" href="#contact">Contact</a>
+            </li>
+
+        </ul>
+
+    </div>
+{#    </div>#}
+</nav>
+
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="col-md-7">
+                <h1 class="brand-heading"><span class="color">FERRP</span></h1>
+                <p class="intro-text1">Flood Emergency Reconstruction and resilience Project<br/>
+                    Mainstreaming Disaster Risk Reduction
+                </p>
+
+                <p class="intro-text" font-family="Metrophobic" , Arial, serif;>This project aims to enhance physical
+                    and fiscal resilience through structural and non-structural mitigation measures including climate
+                    change adaptations
+                    for flood resilient infrastructure and institutional capacity strengthening under portfolios of
+                    PDMA, C&W, Irrigation and P&D Departments.</p>
+            </div>
+            <div class="col-md-5">
+                <ul class="list-inline lead">
+                    <li>
+                        <a href="#about" class="btn btn-primary btn-lg page-scroll"><i class="fa fa-chevron-down"></i>
+                            WHO WE ARE</a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="btn btn-default btn-lg page-scroll"><i class="fa fa-chevron-down"></i>
+                            CONTACT US</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- News and Alerts -->
+<!--<section id="countdown" class="container-fluid text-center">-->
+<!--<h2 class="headerline">News and Alerts</h2>-->
+<!--<ul>-->
+<!--<li align="justify">Progress review meeting held on 19.07.2016 (Tuesday) at 02:00 PM. under the Chairmanship of Secretary, P&D Department in the Commitee Room # 1, regardding progress review / implementation status of subject projects.</li>-->
+<!--</ul>-->
+<!--&lt;!&ndash;<a href="https://wrapbootstrap.com/theme/lovehub-multipurpose-non-profit-theme-WB0T1J69J" class="btn btn-primary btn-lg">Love Hub Pro Version!</a>&ndash;&gt;-->
+<!--</section>-->
+
+<!-- About Section -->
+<section id="about" class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 split-padding3">
+            <h2 class="headerline">WHO WE ARE</h2>
+            <p>FERRP contribute to the economic and social recovery of flood-affected areas in Punjab Province through
+                the rehabilitation and reconstruction of infrastructure damaged and weakened during the floods in
+                September 2014.</p>
+
+            <p>The project will rehabilitate and reconstruct flood-damaged roads, bridges, irrigation and flood
+                protection infrastructure in Punjab, and support ex-ante disaster risk management activities. Damaged
+                and at-risk infrastructure in the flood-affected areas shall be upgraded to incorporate resilience
+                considerations to mitigate the potential impact of future flood events.</p>
+
+            <p>The impact of the project is the economic and social recovery from the 2014 floods. The project outcome
+                is the restoration and reconstruction of critical public and social infrastructure to safer standards to
+                protect against future flooding.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Departments Section -->
+<section id="departments" class="container-fluid text-center">
+
+    <div class="row">
+        <h2 class="headerline">Our Departments</h2><br>
+        <div class="panel panel-default col-lg-3 col-md-6">
+            <div class="panel-heading" style="min-height: 70px; max-height: 70px"><h4 class="headerline">Planning &
+                Development Department, Punjab</h4></div>
+            <div class="panel-body" style="min-height: 550px; max-height: 550px;overflow-y: auto;">
+                <p><a href="http://www.pndpunjab.gov.pk/" target="_blank">
+                    <img src="{% static "ferrp/img/logo/Pnd.jpg" %}" class="img-responsive center-block" alt=""></a></p>
+                <ul align="justify">P & D is an executing and implementation agency. The main objective include:
+                    <li> Program coordination.</li>
+                    <li> Project progress monitoring & evaluation.</li>
+                    <li> Data Clearing House.</li>
+                    <li> Mainstream DRR into Development Process.</li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <ul class="list-inline lead">
+                    <li><a href="#" target="_blank"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="https://www.facebook.com/ferrp.official" target="_blank"><span class="fa-stack"><i
+                            class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="https://plus.google.com/collection/YSQksB" target="_blank"><span class="fa-stack"><i
+                            class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="mailto:pcuferrp@gmail.com"><span class="fa-stack"><i
+                            class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-default col-lg-3 col-md-6">
+            <div class="panel-heading" style="min-height: 70px; max-height: 70px"><h4 class="headerline">Irrigation
+                Department, Government of Punjab</h4></div>
+            <div class="panel-body" style="min-height: 550px; max-height: 550px;overflow-y: auto;">
+                <p><a href="http://irrigation.punjab.gov.pk/" target="_blank">
+                    <img src="{% static "ferrp/img/logo/Irrigation.jpg" %}" class="img-responsive center-block" alt=""></a>
+                </p>
+                <ul align="justify">Irrigation Department is an implementation agency. Their tasks include:
+                    <li> Emergent restoration of flood affected embankment.</li>
+                    <li> Reconstruction / rehabilitation of vulnerable flood embankment.</li>
+                    <li> DRR and Safety Evaluation Cell for Irrigation Network & Structures.</li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <ul class="list-inline lead">
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="mailto:"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-default col-lg-3 col-md-6">
+            <div class="panel-heading" style="min-height: 70px; max-height: 70px"><h4 class="headerline">C&W Department,
+                Government of Punjab</h4></div>
+            <div class="panel-body" style="min-height: 550px; max-height: 550px;overflow-y: auto;">
+                <p><a href="https://www.punjab.gov.pk/communication_works" target="_blank">
+                    <img src="{% static "ferrp/img/logo/CnW.jpg" %}" class="img-responsive center-block" alt=""></a></p>
+                <ul align="justify">Communication and Works is an implementation agency. Their tasks include:
+                    <li> Emergent restoration of flood affected roads.</li>
+                    <li> Rehabilitation / Reconstruction of flood effected roads and bridges</li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <ul class="list-inline lead">
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="mailto:"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-default col-lg-3 col-md-6">
+            <div class="panel-heading" style="min-height: 70px; max-height: 70px"><h4 class="headerline">Punjab Disaster
+                Management Authority</h4></div>
+            <div class="panel-body" style="min-height: 550px; max-height: 550px;overflow-y: auto;">
+                <p><a href="http://pdma.gop.pk/" target="_blank">
+                    <img src="{% static "ferrp/img/logo/pdma.jpg" %}" class="img-responsive center-block" alt=""></a>
+                </p>
+                <ul align="justify">PDMA is an implementation agency. Their tasks include:
+                    <li> Multi—hazard Vulnerability and Risk Assessment (MHVRA).</li>
+                    <li> Socio economic data collection and survey.</li>
+                    <li> Pre and Post disaster simulation model and web application development.</li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <ul class="list-inline lead">
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li><a href="mailto:"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                            class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="container-fluid text-center">
+    <div class="overlay"></div>
+    <div class="col-lg-6 col-lg-offset-3">
+        <h2 class="headerline">Contact</h2>
+        <p>FERRP, Planning and Development Department, Lahore</p>
+        <h3><i class="fa fa-phone"></i> +92-42-99210480</h3>
+        <ul class="list-inline lead">
+            <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                    class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+            <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                    class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+            <li><a href="#"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                    class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+            <li><a href="mailto:"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i
+                    class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li>
+        </ul>
+        <p> FERRP, Planning and Development Department,5-A Zaman Park, Lahore</p><br/>
+        <i class="fa fa-map-marker"></i><a target="_blank"
+                                           href="https://www.google.com/maps/dir/31.5495077,74.3539137/31.5494521,74.3539115/@31.5496127,74.3512384,17z/am=t/data=!4m2!4m1!3e0">
+        Site Map</a>
+        <!--<p class="text-muted">Copyright &copy; Your Website 2015</p>-->
+    </div>
+</section>
+
+<!-- jQuery -->
+{#<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{#<!-- Plugin JavaScript -->#}
+<script src="{% static "ferrp/js/../static/vendor/jquery/jquery.easing.min.js" %}"></script>
+<script src="{% static "ferrp/js/../static/vendor/jquery/jquery.countdown.min.js" %}"></script>
+<script src="{% static "ferrp/js/smoothscroll.js" %}"></script>
+
+{#<!-- Header Background Slider -->#}
+<script src="{% static "ferrp/js/../static/vendor/jquery/jquery.backstretch.min.js" %}"></script>
+<script type="text/javascript">
+    $(".intro").backstretch([
+        "{% static "ferrp/img/1.jpg" %}"
+        , "{% static "ferrp/img/2.jpg" %}"
+        , "{% static "ferrp/img/3.jpg" %}"
+        , "{% static "ferrp/img/4.jpg" %}"
+
+    ], {duration: 4000, fade: 1000, centeredX: true, centeredY: true});
+</script>
+
+<!-- Custom Theme JavaScript -->
+<script src="{% static "ferrp/js/ferrp.js" %}"></script>
+
+
+</body>
+</html>

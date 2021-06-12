@@ -1,0 +1,77 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block title %}Connnection{% endblock %}
+{% block extra_style %}
+    <style>
+        {#        #mycontainer {#}
+        {#            padding: 0px!important;#}
+        {#            margin: 0px !important;#}
+        {#        }#}
+    </style>
+{% endblock %}
+{% block maincontent %}
+    <div id="mycontainer" class="container singleborder">
+        <form id="frmConnectionParameter" method="post" action="{% url "add_conn" %}" enctype="multipart/form-data">
+            <div id="pnlConnParams" class="panel panel-primary">
+                <div class="panel-heading">Connection Parameters</div>
+                <div id="pnlConnParamsBody" class="panel-body" style="overflow: auto">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                </div>
+                <div class="panel-footer  text-center">
+                    <button id="btnTestConnection" type="button" class="btn btn-primary"
+                            style="font-size: 1.2em">
+                        {% bootstrap_icon "database-upload" %}Test Connection
+                    </button>
+                    <button id="btnSubmit" type="submit"  class="btn btn-primary"
+                            style="font-size: 1.2em">
+                        {% bootstrap_icon "database-plus" %}Add Connection
+                    </button>
+                    <button id="btnReset" type="button"  class="btn btn-primary"
+                            style="font-size: 1.2em">
+                        {% bootstrap_icon "database-minus" %}Reset Connection
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $(document).ready(function () {
+            var remHeight = getRemainingBodyHeight(true, true, 100, 250);
+            var pnlBodyHeight = getPanelBodyHeight('pnlConnParams', remHeight);
+            {#            $('#pnlConnParams').height(remHeight);#}
+            $('#pnlConnParamsBody').height(pnlBodyHeight);
+
+        });
+        $('#btnTestConnection').on('click', function () {
+            var url = '{% url "test_conn" %}'
+            var form = $('#frmConnectionParameter');
+            var formData = new FormData(form[0]);
+            var params = {
+                url: url,
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                {#                headers: {'X-CSRFToken': token},#}
+            }
+            callAJAX(params, function (data) {
+                if (data == "200") {
+                    showAlertDialog("Test Successful", dialogTypes.success);
+                } else {
+                    showAlertDialog("Connection Failed", dialogTypes.error);
+                }
+            })
+        })
+        $('#btnReset').on('click',function(){
+            alert("reset...");
+            $('#frmConnectionParameter').trigger("reset");
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends "base/base_adp.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}ADP {% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/font-awesome-4.7.0/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" href=" {% static "vendor/lib/css/bootstrap-slider.css" %}" />
+    <link rel="stylesheet" href=" {% static "vendor/google-font/css/Lato.css" %}" />
+    <link rel="stylesheet" href=" {% static "vendor/orb/orb.min.css" %}" />
+    <link rel="stylesheet" href=" {% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.base.css" %}" />
+{#    <link rel="stylesheet" href=" {% static "vendor/pivottable-master/dist/pivot.css" %}" />#}
+    <link rel="stylesheet" href=" {% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/theme/teal/flexmonster.css" %}" />
+    <link rel="stylesheet" href=" {% static "vendor/bootstrap/css/sb-admin.css" %}" />
+    <link rel="stylesheet" href=" {% static "adp/css/adp.css" %}" />
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            height: 100%;
+            min-height: 100%;
+            max-height: 100%;
+            overflow: auto;
+        }
+    </style>
+{% endblock %}
+{% block extra_IEstyle %}
+    {#    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet"/>#}
+{% endblock %}
+{% block extra_tab %}
+
+{% endblock %}
+{% block extra_rightTab %}
+    <li><a href="#" id="btnFilter" class='btn' data-bind="click:openFilter">
+        <span class="glyphicon glyphicon-filter"></span> Filter Schemes</a></li>
+    <li><a href="#" id="btnClearFilter" class='btn' data-bind="click:clearFilter">
+        <span class="glyphicon glyphicon-remove"></span> Clear Filter</a></li>
+    {#                {{--data-toggle="modal" data-target="#myModal"--}}#}
+    <li><a href="#" class='btn' data-bind="click:setOverviewContents"><span class="glyphicon glyphicon-log-in"></span>
+        Schemes Overview</a></li>
+    <li><a href="#" class='btn' data-bind="click:setDimensionModelingContents"><span
+            class="glyphicon glyphicon-log-in"></span> Dimension Model</a></li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-tasks">
+            <li><a href="javascript:cacheData()"><i class="fa fa-cloud fa-fw"></i> Cache Data</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:clearchache()"><i class="fa fa-cloud fa-fw"></i> Clear Cache</a></li>
+            <li class="divider"></li>
+            {#            <li><a href="logout" id="aLogOut" ><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>#}
+        </ul>
+    </li>
+{% endblock %}
+{% block middle %}
+    {#    <iframe width="100%" height="700px" src="http://digitalarz.info/PDMAWeb"></iframe>#}
+    <!-- Filter Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Filter Schemes</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="sectorsList" class="textShadow">Select Sector:</label>
+                            <select id="sectorsList" name="sectorsList" class="form-control">
+                                <option value="-1">All Sectors</option>
+                            </select>
+                            <label for="districtsList" class="textShadow">Select District:</label>
+                            <select id="districtsList" name="districtsList" class="form-control">
+                                <option value="-1">All Districts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-sm-12 col-md-12"><label for="totalCostRange" class="textShadow">Total
+                            Cost:</label>
+                            <div class="well"><input id="totalCostRange" type="text" style="width: 100%"/></div>
+                        </div>
+                        <div class="col-sm-12 col-md-12"><label for="totalAllocationRange" class="textShadow">Allocation:</label>
+                            <div class="well"><input id="totalAllocationRange" type="text" style="width: 100%"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button data-bind="click:getFilterSchemes" id="btnGetSchemeInfo"
+                                        class="btn btn-primary col-lg-12 col-md-12 col-sm-12">Get Filter Schemes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 10px;">
+                            <div class="col-sm-12">
+                                <button data-bind="click:clearFilter" id="btnResetFilter"
+                                        class="btn btn-primary col-lg-12">Clear Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Waiting Box Modal Start here-->
+    <div class="modal fade bs-example-modal-sm" id="myPleaseWait" tabindex="-1"
+         role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span class="glyphicon glyphicon-time">
+                        </span>Please Wait
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info
+                        progress-bar-striped active"
+                             style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal ends Here -->
+
+    <div id="mainpanel" class="panel panel-primary">
+        <div id="mainpnlheader" class="panel-heading" data-bind="html:panelHeader"></div>
+        <div id="mainpnlbody" class="panel-body" data-bind="html:panelBody"></div>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+
+    <script src="{% static "vendor/jquery-ui-1.12.1/jquery-ui.min.js" %}"></script>
+    <script src="{% static "vendor/jquery-ui-1.12.1/jquery.ui.touch-punch.min.js" %}"></script>
+    <script src="{% static "vendor/jquery-ui-1.12.1/waitingfor.js" %}"></script>
+
+{#    <script src="{% static "vendor/d3_3.5.5/d3.min.js" %}"></script>#}
+{#    <script src="{% static "vendor/c3-0.4.11/c3.min.js" %}"></script>#}
+
+    <!-- PivotTable.js libs from ../dist -->
+{#    <script src="{% static "vendor/pivottable/jquery.ui.touch-punch.min.js" %}"></script>#}
+    <!-- PivotTable.js plugin with renderers -->
+{#    <script src="{% static "vendor/pivottable/pivot.min.js" %}" xmlns="http://www.w3.org/1999/html"></script>#}
+    <!-- note: renderers are OPTIONAL (useful are: google charts, c3 charts) -->
+{#    <script src="{% static "vendor/pivottable/export_renderers.min.js" %}"></script>#}
+    <!-- NReco extensions -->
+{#    <script src="{% static "vendor/pivottable/nrecopivottableext.js" %}"></script>#}
+{#    <script src="{% static "vendor/pivottable/c3_renderers.js" %}"></script>#}
+    <script src="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "vendor/lib/js/bootstrap-slider.js" %}"></script>
+    <script src="{% static "vendor/Knockout-3.4.2/Knockout.js" %}"></script>
+    <script src="{% static "vendor/underscore-1.8.3/underscore-min.js" %}"></script>
+    <script src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqx-all.js" %}"></script>
+    <script src="{% static "adp/js/ViewModel/OverviewModel.js" %}"></script>
+    <script src="{% static "adp/js/ViewModel/TreeGridModel.js" %}"></script>
+    <script src="{% static "adp/js/ViewModel/AdpDraftVM.js" %}"></script>
+    <script src="{% static "adp/js/adpdraft.js" %}"></script>
+    <script src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'base-home.html' %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" href="{% static "css/index.css" %}"/>
+{% endblock %}
+{% block main_content %}
+    <div class="container">
+        <form>
+            <div id="row_radio" class="row" style="display: none">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="radio">
+                            <h3>
+                                <label>
+                                    <input class="rButton" type="radio" name="scheme-preference"
+                                           id="rb_view" value="view" checked>. Select Scheme From ADP
+                                </label>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="radio">
+                            <h3>
+                                <label>
+                                    <input class="rButton" type="radio" name="scheme-preference"
+                                           id="rb_create" value="create">. Add New Scheme
+                                </label>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cmb_sectors">Sector</label>
+                        <select id="cmb_sectors" data-style="btn-primary" class="form-control show-tick selectpicker"
+                                data-live-search="true">
+                            <option value="">Choose Sector...</option>
+                        </select>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cmb_scheme">Scheme</label>
+                        <select id="cmb_scheme" data-style="btn-primary" class="show-tick form-control selectpicker"
+                                data-live-search="true">
+                            <option value="">Choose Scheme...</option>
+                        </select>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row" id="row_info_required" style="display:none">
+                <!--  col-md-6   -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="start_date">Scheme Start Date</label>
+                        <input type="date" name="start_date" class="form-control " placeholder="Scheme Start Date"
+                               id="start_date" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="end_date">Scheme End Date</label>
+                        <input type="date" name="end_date" class="form-control " placeholder="Scheme Start Date"
+                               id="end_date" required>
+                        {#                       <input type="number" value="6" min="1" class="form-control is-invalid" placeholder="Scheme Duration (Months)" id="nb_duration" required="true">#}
+                        {#                        <input  id="cc" value="01" class="col-md-12 form-control btn-primary">#}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cost_total">Total Cost (PKR Million)</label>
+                        <input type="number" step="any" class="form-control " id="cost_total">
+                        {#                        <input  id="cc" value="01" class="col-md-12 form-control btn-primary">#}
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <button id="btnWorkPlan" type="button" data-disable="false" style="display: none"
+                    class="btn btn-warning center-block">Submit
+            </button>
+        </form>
+
+
+    </div>
+    <div class="container container_detail">
+        {#        <div class="col-lg-12 ">#}
+        {#            <section class="">#}
+        {#                <h2 style="text-align: center">Scheme Detail</h2>#}
+        {#            </section>#}
+        {#        </div>#}
+        <form id="frmDetail">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="text" style="text-align: center;font-size: large;color: blue" disabled="true"
+                               class="form-control" placeholder="Scheme name" id="s_name">
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="gs_no">GS No.</label>
+                        <input type="text" disabled="false" class="form-control " placeholder="" id="gs_no">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="s_type">Scheme Type</label>
+                        <input type="text" class="form-control" placeholder="" id="s_type">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="district">District</label>
+                        <input type="text" class="form-control" placeholder="" id="district">
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!--  row   -->
+
+
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label for="tehsil">Tehsil</label>
+                        <input type="text" class="form-control" id="tehsil" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label for="main_sector">Main Sector</label>
+                        <input type="text" class="form-control" id="main_sector" placeholder="">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="sec_name">Sector
+                        </label>
+                        <input type="text" class="form-control" id="sec_name" placeholder="">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="approval_date">Proposed Approval Date</label>
+                        <input type="text" class="form-control" placeholder="" id="approval_date">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="local_capital">Local Cost (PKR in Million)</label>
+                        <input type="text" class="form-control" placeholder="" id="local_capital">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="revenue_total">Total Revenue (PKR in Million)</label>
+                        <input type="text" class="form-control" placeholder="" id="revenue_total">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+
+
+                <!--  col-md-4   -->
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="allocation">Allocation</label>
+                        <input type="text" class="form-control" placeholder="" id="allocation">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exp_upto_june"> Expense Up To June (PKR in Million)</label>
+                        <input type="text" class="form-control" placeholder="" id="exp_upto_june">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="foreign_aid">Foreign Cost (PKR in Million)</label>
+                        <input type="text" class="form-control" placeholder="" id="foreign_aid">
+                    </div>
+                </div>
+                <!--  col-md-4   -->
+            </div>
+
+        </form>
+
+        <div class="row" id="rowAddNewScheme" style="display: none">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button class="btn btn-primary form-control" id="btnAddNewScheme" value="Add Scheme to ADP">Add
+                        Scheme to ADP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    <script src="{% static "vendor/validator.min.js" %}"></script>
+    <script src="{% static "js/index.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            var token = '{{ csrf_token }}';
+            var sectors ={{ sectors|safe }};
+            var scheme_names ={{ scheme_names|safe }};
+            var user = null;
+            {% if user.is_authenticated %}
+                user = '{{ user.username }}';
+            {% endif %}
+            populateComboBox(sectors, scheme_names, token, user);
+            $('.selectpicker').selectpicker('refresh');
+
+        });
+    </script>
+{% endblock extra_scripts %}

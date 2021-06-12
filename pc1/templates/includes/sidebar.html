@@ -1,0 +1,37 @@
+{% if project_id|is_project_id_set:"1" %}
+    <li>
+        <a href="#" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i> PC1 Proforma
+            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-1" class="collapse in">
+            <li><a href="{% url 'pp_basic_info' %}?scheme={{ project_id }}"><i
+                    class="fa fa-angle-double-right"></i> Basic Info</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i> Specific Info</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i> Location</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-star"></i> Project Planning
+            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-2" class="collapse in">
+            <li><a href="{% url 'create_physical_plan' %}?scheme={{ project_id }}"><i
+                    class="fa fa-angle-double-right"></i>
+                Create Physical Plan</a></li>
+            <li><a href="/admin_pc1/project_planning/tblactivities/?project_id={{ project_id }}"><i
+                    class="fa fa-angle-double-right"></i> Project Plan</a></li>
+            <li><a href="{% url "create_gantchart" %}?scheme={{ project_id }}"><i class="fa fa-angle-double-right"></i>
+                Gannt Chart</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#" data-toggle="collapse" data-target="#submenu-3"><i class="fa fa-fw fa-star"></i> Financial Planning
+            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-3" class="collapse in">
+            <li><a href="{% url 'create_financial_plan' %}?scheme={{ project_id }}"><i
+                    class="fa fa-angle-double-right"></i>
+                Financial Plan</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="javascript:printPDF()"><i class="fa fa-fw fa-print"></i> Print PDF</a>
+    </li>
+{% endif %}

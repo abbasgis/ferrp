@@ -1,0 +1,97 @@
+{% extends "base/site_base_dch.html" %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% trans "Welcome" %}{% endblock %}
+{% block extra_style %}
+    {#    <link rel="stylesheet" href="{% static "ferrp/css/assets.min.css" %}"/>#}
+{% endblock %}
+{% block body_class %}home{% endblock %}
+{% block maincontent %}
+    <div class="container">
+        <div id="adbox">
+            <div class="row ">
+                <div class="col-md-8">
+                    <img src="{% static "ferrp/img/dch.jpg" %}" alt="Data clearinghouse" style="width:88%">
+                </div>
+                <div class="col-md-4">
+                    <br/><br/>
+                    <p>{% blocktrans %} A "one stop" access to all registered geographical
+                        information. {% endblocktrans %}
+                        {% blocktrans %} It will provide an online access service of spatial and socio economic data
+                            related to flood within the Punjab province.{% endblocktrans %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row highlight">
+        <div class="col-md-8">
+            <h1>GEOSPATIAL DATA & SERVICES</h1>
+            <p>
+                {% blocktrans %} Geo-Spatial Platform is an Planning and Development Department (P&DD) Govt. of
+                    Punjab initiative
+                    that provides and shared  geospatial data, services, and applications.
+                    Search our massive catalog of geospatial data and tools provided by a multitude of provincial
+                    agencies.
+                    Whether you are a Planner,  Geographic Professional, Student, Teacher or Citizen,
+                    you can find data that will help you with your project, assignment, presentation or concern.
+                {% endblocktrans %}
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>Goal</h2>
+            <p>
+                &ldquo; Goal of Clearinghouse is to provide access to digital spatial data and related online
+                services for data access, visualization, or order.&rdquo;
+            </p>
+            {#					<span>Chairman P&DD.</span>#}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row row-centered">
+            <span style="font-family: 'Adobe Hebrew'; color: #3c763d"> <h2>Information Sharing Plateform</h2> <h2>in the form of</h2></span>
+        </div>
+        <div class="row row-centered">
+            <div class="col-md-4">
+                <p><a href="{% url "layer_browse" %}"><i class="fa fa-square-o fa-5x rotate-45"></i></a></p>
+                <h2><a href="{% url "layer_browse" %}">Layers</a></h2>
+                <p>{% trans "Click to search for geospatial data published by other users, organizations and public sources. Download data in standard formats." %}</p>
+                {#                {% if user.is_authenticated %}#}
+                <p class="text-center"><a class="btn btn-default" href="{% url "shp_upload" %}"
+                                          role="button">{% trans "Add layers" %} &raquo;</a></p>
+                {#                {% else %}#}
+                {#                    <p class="text-center"><a class="btn btn-default" href="{% url "layer_browse" %}"#}
+                {#                                              role="button">{% trans "Explore layers" %} &raquo;</a></p>#}
+                {#                {% endif %}#}
+
+            </div>
+            <div class="col-md-4">
+                <p><a href="{% url "map_browser" %}"><i class="fa fa-map-marker fa-5x "></i></a></p>
+                <h2><a href="{% url "map_browser" %}">Maps</a></h2>
+                <p>{% trans "Data is available for browsing, aggregating and styling to generate maps which can be shared publicly or restricted to specific users only." %}</p>
+                {#                {% if user.is_authenticated %}#}
+                <p><a class="btn btn-default" href="{% url "create_map" %}"
+                      role="button">{% trans "Create maps" %} &raquo;</a></p>
+                {#                {% else %}#}
+                {#                    <p><a class="btn btn-default" href="{% url "map_browser" %}"#}
+                {#                          role="button">{% trans "Explore maps" %} &raquo;</a></p>#}
+                {#                {% endif %}#}
+            </div>
+            <div class="col-md-4">
+                <p><a href="{% url "document_browser" %}"><i class="fa fa-book fa-5x "></i></a></p>
+                <h2><a href="{% url "document_browser" %}">Documents</a></h2>
+                <p>{% trans "Click to search for documents published by other users, organizations and public sources. Download data in standard formats like pdf, words, and/or excel." %}</p>
+                {#                {% if user.is_authenticated %}#}
+                <p><a class="btn btn-default" href="{% url "upload_document" %}"
+                      role="button">{% trans "Upload Document" %} &raquo;</a></p>
+                {#                {% else %}#}
+                {#                    <p><a class="btn btn-default" href="{% url "document_browser" %}"#}
+                {#                          role="button">{% trans "Explore Document" %} &raquo;</a></p>#}
+                {#                {% endif %}#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,100 @@
+{% extends "base/site_base_dch.html" %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap_ui_tags %}
+{% block title %} {% trans "CC" %}{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet"
+          href="{% static "ferrp/climate_change/css/climate_change_legends.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.min.css" %}"/>
+{% endblock %}
+{% block maincontent %}
+    <div class="row">
+        {% column md="5" %}
+            <div id="pnlMap" class="panel panel-primary cc-panel">
+                {#                {% panelheading %}#}
+                {#                    Dimension Modeling#}
+                {#                {% endpanelheading %}#}
+                {% panelbody %}
+                    {% include "include/jqxToolbar.html" %}
+                    <div id="div_animation" style="background-color:green;display: none">
+                        <button class="col-md-2 btn" id="btn_start-animation">Start</button>
+                        <div class="col-md-6 slider">
+                            <input type="range" data-toggle="tooltip" data-placement="top" title=""
+                                   min="1" max="12" steps="1" value="1" class="slider form-control"
+                                   id="range"></div>
+                        <span class="col-md-3 btn disabled btn-success" id="range_value">January, 2010</span>
+                        <button id="btnCloseAnimation" class="col-md-1 btn btn-danger"><i class="fa fa-close"></i>
+                        </button>
+                    </div>
+                    {% include "include/map2d.html" %}
+                    {% include "include/waiting_dialog.html" %}
+                {% endpanelbody %}
+            </div>
+        {% endcolumn %}
+        {% column md="7" %}
+            <div id="pnlPivotTable" class="panel panel-primary cc-panel">
+                {#                {% panelheading %}#}
+                {#                    Dimension Modeling#}
+                {#                {% endpanelheading %}#}
+                {% panelbody %}
+                    <div id="pivotTable"></div>
+                {% endpanelbody %}
+            </div>
+        {% endcolumn %}
+
+    </div>
+    <div id="frmHeatMap" style="display: none">
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+    </div>
+    {% include "include/legends_climate_change.html" %}
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript"
+            src="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script type="text/javascript"
+            src="{% static "ferrp/climate_change/js/climate_change.js" %}"></script>
+    <script>
+        var minHeight = 400;
+        var mapInfo = {};
+        mapInfo.csrfToken = '{{ csrf_token }}';
+        mapInfo.groupLayers = [];
+        var groupLayers ={{ info.group_layers|safe }};
+        if (groupLayers && groupLayers !== '') {
+            mapInfo.groupLayers = groupLayers;
+        }
+        mapInfo.extent = [6734829.193000, 2692598.219300, 8849899.518100, 4509031.393100];
+        mapInfo.url_wms_map = '{% url "wms_get_map" %}';
+        $(document).ready(function () {
+            setViewportItemsHeight();
+            var climateChangeModel = new ClimateChangeModel(mapInfo);
+            climateChangeModel.initialize();
+            //$("#jqxWidget").jqxPanel({ width: '100%', height: '100%', 'theme':theme});
+        });
+        $(window).resize(function () {
+            setViewportItemsHeight();
+        });
+        var setViewportItemsHeight = function () {
+            rem_height = getViewportHeight();
+            $('.cc-panel').height(rem_height);
+            $('.panel-body').height(rem_height);
+        };
+        var getViewportHeight = function () {
+            var cushion = 11;
+            var width = $(window).width();
+            var height = $(window).height();
+            var navbar_height = $("#base_nav").height();
+            var header_height = $("#header").height();
+            var footer_heght = $("#footer").height();
+            var rem_height = height - (navbar_height + header_height + footer_heght + cushion);
+            rem_height = (rem_height > minHeight ? rem_height : minHeight);
+            return rem_height;
+        };
+    </script>
+{% endblock %}

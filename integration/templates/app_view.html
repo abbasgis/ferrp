@@ -1,0 +1,39 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block title %} Layers Viewer{% endblock %}
+{% block extra_style %}
+
+{% endblock %}
+{% block Ext_VeiwPort %}
+    <div id="viewport" class="row" style="height: 100px">
+        <iframe width="100%" height="100%" src="{{ app_url }}"></iframe>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        $(document).ready(function () {
+            setViewportHeight();
+        });
+        $(window).resize(function () {
+            setViewportHeight();
+        });
+        setViewportHeight = function () {
+            var viewPort = $('#viewport')
+            var rem_height = getAvailableHeight();
+            viewPort.height(rem_height);
+        }
+        getAvailableHeight = function () {
+            var width = $(document).width();
+            var height = $(document).height();
+            var navbar_height = $("#base_nav").height();
+            var header_height = $("#header").height();
+            var footer_heght = $("#footer").height();
+            var rem_height = height - (navbar_height + header_height + footer_heght);
+            var minHeight = 450
+            rem_height = (rem_height > minHeight ? rem_height : minHeight);
+            return rem_height;
+        }
+
+    </script>
+{% endblock %}

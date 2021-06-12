@@ -1,0 +1,76 @@
+{% extends "base/site_base_dch.html" %}
+{% load bootstrap_ui_tags %}
+{% block extra_style %}
+    <style>
+        .panel-row1 {
+            height: 400px
+        }
+    </style>
+{% endblock %}
+{% block maincontent %}
+    <div class="container singleborder" style="padding:15px;">
+        {% row %}
+            <div class="panel-group">
+                {% column md="8" %}
+                    {% panel add_css_classes="panel-row1 panel-collapse" %}
+                        {% panelheading %}
+                            {{ info.title }}
+                        {% endpanelheading %}
+                        {% panelbody %}
+                            <table class="table table-striped table-condensed"
+                                   style="table-layout:fixed">
+                                {% for key,value in info.items %}
+                                    <tr>
+                                        <th>{{ key }}</th>
+                                        <td style="word-wrap:break-word">{{ value }}</td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+
+                        {% endpanelbody %}
+                    {% endpanel %}
+                {% endcolumn %}
+                {% column md="4" %}
+                    {% panel add_css_classes="panel-row1" %}
+                        {% panelheading %}
+                            Settings
+                        {% endpanelheading %}
+                        {% panelbody %}
+                            <button id="download_doc" class="btn btn-primary btn-block">Open / Download</button>
+                            {#                            <button id="assign_permission" class="btn btn-primary btn-block">Add Permission</button>#}
+                            <button id="btnLayerPermission" class="btn btn-primary btn-block" data-toggle="modal"
+                                    data-target="#LayerPermissionModal">Add Permission
+                            </button>
+                            <button id="delete_document" class="btn btn-primary btn-block">Delete Document</button>
+                            <button id="assign_project" class="btn btn-primary btn-block">Assign Project</button>
+
+                            <button id="add_comments" class="btn btn-primary btn-block">Add Comment</button>
+                        {% endpanelbody %}
+                    {% endpanel %}
+                {% endcolumn %}
+            </div>
+        {% endrow %}
+    </div>
+    {% url "set_doc_permission" as lp_url %}
+    {% include "include/permission_form.html" with permission_url=lp_url option_type="save" item_name=doc_name %}
+{% endblock maincontent %}
+{% block extra_script %}
+    <script>
+        var doc_name = '{{ info.name }}';
+        var download_url = "{% url "download_document"%}" + "?doc_name=" + doc_name ;
+        $('#download_doc').on('click', function () {
+            callAJAX({url: download_url}, function (response) {
+                {#                showAlertDialog("Doeument successfully deleted", dialogTypes.success);#}
+                window.location.href = response;
+            })
+        })
+        $('#delete_document').click(function () {
+            var url = '{% url "delete_document"%}' + "?doc_name=" + doc_name;
+            callAJAX({url: url}, function (response) {
+                showAlertDialog("Doeument successfully deleted", dialogTypes.success);
+                window.location.href = "{% url "document_browser" %}"
+            })
+        })
+    </script>
+{% endblock %}

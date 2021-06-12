@@ -1,0 +1,33 @@
+#leftpane {
+    width: 25%;
+    min-width: 350px;
+    height: 700px;
+    min-height: 400px;
+    float: left;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    padding-right: 6px;
+
+}
+
+#rightpane {
+    width: 73%;
+    min-width: 800px;
+    height: 100%;
+    min-height: 800px;
+    float: right;
+    background-color: #e4dcdc;
+    border-collapse: collapse;
+
+}
+
+#toppane {
+    width: 25%;
+    min-width: 350px;
+    height: 100px;
+    border-collapse: collapse;
+    background-color: #9890ef;
+    padding-right: 7px;
+    font-size:12px;
+    font-weight: bold;
+}

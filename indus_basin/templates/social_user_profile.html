@@ -1,0 +1,79 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap_ui_tags %}
+{% load dch_tags %}
+{% block title %} Layers Catalogue{% endblock %}
+{% block extra_style %}
+{% endblock extra_style %}
+{% block extra_script %}
+    <script>
+        var code = '{{ code }}';
+        var state = '{{ state }}';
+        var redirect_uri = '{{ redirect_uri }}';
+        var client_id = '{{ client_id }}';
+        var client_secret = '{{ client_secret }}';
+        var grant_type = '{{ grant_type }}';
+        function function_calling() {
+            var formData = new FormData();
+            formData.append('code', code);
+            formData.append('state', state);
+            formData.append('redirect_uri', redirect_uri);
+            formData.append('client_id', client_id);
+            formData.append('client_secret', client_secret);
+            formData.append('grant_type', grant_type);
+
+
+            {#        var formData = {#}
+            {#            'code': code,#}
+            {#            'state': state,#}
+            {#            'redirect_uri': redirect_uri,#}
+            {#            'client_id': client_id,#}
+            {#            'client_secret': client_secret,#}
+            {#            'grant_type': grant_type#}
+            {#        };#}
+            var url = 'https://www.linkedin.com/uas/oauth2/accessToken';
+            var token = '{{ csrf_token }}';
+            var params = {
+                url: url,
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                {#            headers: {'X-CSRFToken': token},#}
+            };
+
+            callAJAX(params, get_response_token())
+        }
+        function get_response_token(response) {
+            alert(response)
+
+        }
+    </script>
+{% endblock extra_script %}
+{% block maincontent %}
+    <div class="container  singleborder" style="padding:15px;">
+        <button onclick="function_calling()">Call Function</button>
+        <div class="col-md-3 col-md-offset-4" style="background-color: #fffbdf">
+            <form method="post" action="https://www.linkedin.com/uas/oauth2/accessToken">
+                <input type="hidden" name="grant_type" value='authorization_code'/>
+                <input type="hidden" name="code" value={{ code }}/>
+                <input type="hidden" name="state" value={{ state }}/>
+                <input type="hidden" name="redirect_uri" value={{ redirect_uri }}/>
+                <input type="hidden" name="client_id" value={{ client_id }}/>
+                <input type="hidden" name="client_secret" value={{ client_secret }}/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary col-md-12 ">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+{% endblock maincontent %}

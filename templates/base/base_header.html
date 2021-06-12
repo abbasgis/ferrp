@@ -1,0 +1,19 @@
+<div id="header" class="row"></div>
+<div class="row">
+        <div id="msgContainer" style="padding-top:5px">
+            {% for message in messages %}
+                <div {% if message.tags %} class="alert {{ message.tags }}"{% endif %}>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ message.tags }}!</strong> {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+{#    <div id="msgContainer" class="container">#}
+    {#        {% for message in messages %}#}
+    {#            <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>#}
+    {#                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>#}
+    {#                <strong>{{ message.tags }}!</strong> {{ message }}#}
+    {#            </div>#}
+    {#        {% endfor %}#}
+    {#    </div>#}
+</div>

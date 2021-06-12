@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>
+        {% block title %}PC-1
+        {% endblock %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href={% static "css/base_pp.css" %} type="text/css"/>
+    {% block extra_styles %}
+    {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+
+    {% block extra_scripts %}
+    {% endblock %}
+
+</head>
+{% block body_class %}
+    <body>
+{% endblock %}
+
+<div id="throbber" style="display:none; min-height:120px;"></div>
+<div id="noty-holder"></div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url "home" %}"><img src= "{% static "img/logo.png" %}" alt="LOGO"
+                                                                 height="52" width="61"></a>
+            <a class="navbar-brand" href="{% url "home" %}"><img src= "{% static "img/piupnd.png" %}" alt="LOGO"
+                                                                 height="52" width="61"></a>
+            <a class="navbar-brand li_class" href="{% url "home" %}">Home</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-right top-nav">
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'account_login' %}?next={{ request.get_full_path|urlencode }}"><i
+                            class="fa fa-fw fa-sign-in"></i>Login</a></li>
+                {% else %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ request.user.first_name }} <b
+                                class="fa fa-angle-down"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url "account_logout" %}"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav side-nav">
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i> PC1
+                        Proforma
+                        <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                    <ul id="submenu-1" class="collapse in">
+                        <li id="side_basic_info"><a href="{% url 'basic_info' %}?scheme={{ project_id }}"><i
+                                class="fa fa-angle-double-right"></i> Basic Info</a></li>
+                        <li id="side_specific_info"><a href="{% url 'specific_info' %}?scheme={{ project_id }}"><i
+                                class="fa fa-angle-double-right"></i> Specific Info</a></li>
+                        <li id="side_location_info"><a href="{% url 'location_info' %}?scheme={{ project_id }}"><i
+                                class="fa fa-angle-double-right"></i> Location</a></li>
+                    </ul>
+                </li>
+{#                <li>#}
+{#                    <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-star"></i> Project#}
+{#                        Planning#}
+{#                        <i class="fa fa-fw fa-angle-down pull-right"></i></a>#}
+{#                    <ul id="submenu-2" class="collapse in">#}
+{#                        <li id="side_create_physical_plan"><a#}
+{#                                href="{% url 'create_physical_plan' %}?scheme={{ project_id }}"><i#}
+{#                                class="fa fa-angle-double-right"></i>#}
+{#                            Create Physical Plan</a></li>#}
+{#                        <li id="side_project_plan"><a#}
+{#                                href="/admin_pc1/project_planning/tblactivities/?project_id={{ project_id }}"><i#}
+{#                                class="fa fa-angle-double-right"></i> Project Plan</a></li>#}
+{#                        <li id="side_gantt_chart"><a href="{% url "create_gantchart" %}?scheme={{ project_id }}"><i#}
+{#                                class="fa fa-angle-double-right"></i>#}
+{#                            Gantt Chart</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a href="#" data-toggle="collapse" data-target="#submenu-3"><i class="fa fa-fw fa-star"></i>#}
+{#                        Financial Planning#}
+{#                        <i class="fa fa-fw fa-angle-down pull-right"></i></a>#}
+{#                    <ul id="submenu-3" class="collapse in">#}
+{#                        <li id="side_financial_plan"><a#}
+{#                                href="{% url 'create_financial_plan' %}?scheme={{ project_id }}"><i#}
+{#                                class="fa fa-angle-double-right"></i>#}
+{#                            Financial Plan</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+                    <a id="createPDF" href="#"><i class="fa fa-fw fa-print"></i> Print PDF</a>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row" id="main">
+                <div class="col-sm-12 col-md-12 well" id="content">
+                    {% block main_content %}
+                    {% endblock %}
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div><!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
+<footer style="position: fixed;padding: 2px;z-index:10000 !important; bottom: 0;width: 100%;height:40px;background-color:#000000;text-align: center">
+    <img style="max-width: 100%; max-height: 100%" src="{% static "img/logo.png" %}"/>
+    <img style="max-width: 100%; max-height: 100%" src="{% static "img/piupnd.png" %}"/>
+    <span style="color: white;margin-left: 50px; margin-right: 50px ;vertical-align: super;">
+            Copyright © 2018,&nbsp; All Rights Reserved,&nbsp; Powered by <a
+            style="color: #f5dd5d;"
+            href="http://ferrp.com"
+            target="_blank"> <u>PCU/PIU,
+            Planning and Development Department, Punjab</u> </a></span>
+    {#    <button class="btn btn-default align-right glyphicon glyphicon-open" id="btnOpenDb" name="btnOpenDb"></button>#}
+    {#    <button class="btn btn-default align-right glyphicon glyphicon-save" id="btnSaveDb" name="btnSaveDb"></button>#}
+    {#    <button class="btn btn-default align-right glyphicon glyphicon-upload" id="btnUploadDb" name="btnUploadDb"></button>#}
+</footer>
+
+<!-- Waiting Box Modal Start here-->
+<div class="modal fade bs-example-modal-sm" id="myPleaseWait" name="myPleaseWait" tabindex="-1"
+     role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                        <span class="glyphicon glyphicon-time">
+                        </span>Please Wait
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info
+                        progress-bar-striped active"
+                         style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal ends Here -->
+
+
+</body>
+</html>

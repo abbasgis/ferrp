@@ -1,0 +1,156 @@
+{% extends "base/base_irrigation.html" %}
+{% load static %}
+{% block title %} Irrigation{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+    <link rel="Stylesheet" href="http://www.jqwidgets.com/jquery-widgets-demo/jqwidgets/styles/jqx.base.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="{% static "irrigation/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "irrigation/css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="{% static "irrigation/css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href="{% static "ferrp/css/irrigation.css" %}">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/highmaps.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/modules/data.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/modules/exporting.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/modules/drilldown.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/underscore-1.8.3/underscore-min.js" %}"></script>
+    <script type="text/javascript" src="http://www.jqwidgets.com/jquery-widgets-demo/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="http://www.jqwidgets.com/jquery-widgets-demo/jqwidgets/jqxpopover.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/GridColumns.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/GlobalFunctions.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/CommandedAreaModels/ArzOverviewInfoModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/CommandedAreaModels/ArzDataModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/CommandedAreaModels/ArzMapModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/CommandAreaVM.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+        var imgPath = "{% static "ferrp/img/irrigation/" %}";
+    </script>
+{% endblock  %}
+
+{% block extra_tab %}
+    <li class="active"><a href="{% url "irrigation_home" %}">Commanded Area</a></li>
+    <li><a href="{% url "irrigation_canals" %}">Canal</a></li>
+    <li><a href="{% url "irrigation_dams" %}">Dam/Headwork</a></li>
+    <li><a href="{% url "irrigation_gw" %}">Ground Water</a></li>
+{% endblock %}
+
+{% block maincontent %}
+    {% include "EmailSMSModels.html" %}
+    <div class="container-fluid">
+        <div class="row " style="height: 10%;  margin-top: 20px;">
+            <div class="col-md-3 topTile">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3 id="canalsLength">0.0<sub style="font-size: 20px"> </sub></h3>
+                        <p>All Canals (km)</p>
+
+                    </div>
+                    <div class="icon">
+                        <i class="ionicons ion-ios-list-outline"></i>
+                    </div>
+                    <a id ="canal_properties" href="#" onmouseover="createPopup('canal', 'bg-aqua', this)" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-3 topTile">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3 id="grossCommandedArea">0.0<sub style="font-size: 20px"></sub></h3>
+                        <p> GCA (Million Acres)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ionicons ion-briefcase"></i>
+                    </div>
+                    <a id = "gca_properties" href="#" onmouseover="createPopup('gca', 'bg-yellow', this)" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class=" col-md-3 topTile">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3 id="cultivableCommandedArea">0.0<sub style="font-size: 20px"> </sub></h3>
+                        <p> CCA (Million Acres)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-balance-scale"></i>
+                    </div>
+                    <a id ="cca_properties" href="#" onmouseover="createPopup('cca', 'bg-red', this)" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class=" col-md-3 topTile">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                        <h3 id="revenueAmount">0.00<sub style="font-size: 20px"> Rs</sub></h3>
+                        <p>Revenue</p>
+                    </div>
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </div>
+                    <a id="revenue_properties"  class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <div id="commandedAreaDashboard" class="row" style="height: 90%;"></div>
+    </div>
+    <script>
+        var canalTypeDataArray = [];
+        var grossCommandedAreaArray = [];
+        var cultivableCommandedAreaArray = [];
+
+        function  createPopup(popovertype ,cssClass ,event){
+            var pop = document.getElementById("popover_id");
+            if (pop) {
+                pop.remove();
+            }
+            var popover = $('<div id="popover_id" class="' + cssClass + '"></div>');
+            popover.jqxPopover('close');
+            var table = $('<table style="width: 220px;" class="'+cssClass+'"></table>');
+            table.addClass('table col-md-2-4');
+            popover.append(table);
+            var tableRows = getTable(popovertype,cssClass);
+            table[0].innerHTML = tableRows;
+            popover.jqxPopover({offset: {left: 0, top:0},theme: 'bg-yellow', arrowOffsetValue: 0,
+                selector: $("#"+event.id) });
+        }
+        function getTable(popovertype, cssClass) {
+            var response = "";
+            if (popovertype == 'canal') {
+                response = canalTypeDataArray
+            } else if (popovertype == 'dab') {
+
+            } else if (popovertype == 'gca') {
+                response = grossCommandedAreaArray;
+            } else if (popovertype == 'cca') {
+                response = cultivableCommandedAreaArray;
+            } else if (popovertype == 'revenue') {
+
+            }
+            var trHTML = '';
+            $.each(response, function (i, item) {
+                trHTML += '<tr class="'+cssClass+'"><td >' + item.varables + '</td><td>' + item.content + '</td></tr>';
+            });
+            return trHTML;
+        };
+    </script>
+{% endblock  %}

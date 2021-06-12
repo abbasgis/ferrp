@@ -1,0 +1,608 @@
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
+    <title>MM-{% block title_text %}{% endblock %}</title>
+    {#{{ SITE_NAME }}#}
+    <link rel="shortcut icon" href="{% static "ferrp/img/favicon.png" %}">
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static "ferrp/css/dch.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/base_mm.css" %}"/>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:700' rel='stylesheet'>
+    <style>
+
+        body {
+            padding-top: 30px !important;
+        }
+
+        .panel {
+            margin-bottom: 7px !important;
+        }
+
+        .panel-body {
+            padding: 7px !important;
+        }
+
+        .panel-primary {
+            border-color: #4e594400 !important;
+        }
+
+        .alert {
+            padding: 10px !important;
+            margin-bottom: 10px !important;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .well {
+            padding: 6px !important;
+        }
+
+        .form-group {
+            margin-bottom: 5px !important;
+        }
+
+        h1 {
+            font-family: 'Droid Sans', sans-serif;
+        {#            font-size: 22px;#} color: darkgreen;
+        }
+
+        .myButton {
+            width: 200px;
+        }
+
+        .card-header {
+            background-color: #c1e2b3;
+            border: solid 1px #a2c094;
+        }
+
+        .card-body {
+            border-left: solid 1px #a2c094;
+            border-right: solid 1px #a2c094;
+        }
+
+        .dynamicTable {
+            font: .7em Arial;
+            border: 1px solid gray;
+        }
+
+        .dynamicTableTh {
+        {#            background-color: #584df0;#} color: White;
+            display: flex;
+            width: 100%;
+            background: #584df0;
+            text-transform: uppercase;
+
+        {#            padding:0;#}
+        }
+
+        .blue {
+            color: #00F;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #c1e2b3
+        }
+
+        .dynamicTableTd {
+        {#            padding: 3px;#}{#            width: 100px;#}{#            color: red#} border-width: 1px;
+            padding: 3px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+
+        .oddrowcolor {
+            background-color: #d4e3e5;
+        }
+
+        .evenrowcolor {
+            background-color: #c3dde0;
+        }
+
+        .headline2 {
+            border-bottom: 1px solid #aaa;
+            margin: 15px 0;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .headline2:before,
+        .headline2:after {
+            content: '';
+            border-right: 20px solid #fff;
+            border-top: 15px solid #aaa;
+            bottom: -15px;
+            position: absolute;
+            left: 25px;
+        }
+
+        .headline2:after {
+            border-top-color: #fff;
+            border-right-color: transparent;
+            bottom: -13px;
+            left: 26px;
+        }
+
+        .headline4 {
+            position: relative;
+            border-color: #eee;
+            border-style: solid;
+            border-width: 5px 5px 5px 5px;
+            text-align: center;
+            background: #fff;
+        {#            margin: 0 0 15px -15px;#} padding: 5px 15px;
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+        }
+
+        .headline4:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            bottom: 15px;
+            right: 15px;
+            width: 70%;
+            height: 10px;
+            background: rgba(0, 0, 0, .7);
+            box-shadow: 0 15px 10px rgba(0, 0, 0, .7);
+            transform: rotate(2deg);
+        }
+
+        .panel-primary {
+            border-color: #4e5944;
+        }
+
+        .panel-primary .panel-heading {
+        {#            color: darkgreen;#} background-color: #b8c6ac;
+            border-color: darkolivegreen;
+        {#            border-style: outset;#}
+        }
+
+        .green {
+            color: black \9;
+            background-color: #96ff96 \9;
+        }
+
+        .yellow {
+            color: black \9;
+            background-color: #ffff64 \9;
+        }
+
+        .red {
+            color: black \9;
+            background-color: #ff7878 \9;
+        }
+
+        .green:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .green:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #96ff96;
+        }
+
+        .yellow:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .yellow:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: ffff64;
+        }
+
+        .red:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .red:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #ff7878;
+        }
+
+
+    </style>
+    {% block extra_style %}
+
+    {% endblock extra_style %}
+
+    <script src="{% static "vendor/jquery/jquery-3.3.1.min.js" %}"></script>
+    <!-- Modal must stay outside the navbar -->
+    {% bootstrap_javascript %}
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+<div id="throbber" style="display:none; min-height:100px;"></div>
+<div id="noty-holder"></div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="logo">
+                    <a href="#"><img src="{% static "ferrp/img/gop_logo.png" %}" alt="logo"
+                                     height="50"></a>
+                </div>
+            </div>
+
+            <ul class="nav navbar-nav">
+                {% block tabs %}
+                    {#                        <li id="nav_Home">#}
+                    {#                            <a href="{% url "home_dch" %}">Home</a>#}
+                    {#                        </li>#}
+
+                    <li id="nav_mm">
+                        <a href="{% url "mm" %}">{% trans "Meetings" %}</a>
+                    </li>
+
+                {% endblock %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% block extra_rightTab %}
+                {% endblock %}
+
+                {% if not user.is_authenticated and REGISTRATION_OPEN %}
+                    <li><a href="{% url "account_signup" %}">Register</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="navbar-brand" id="dropdown"></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">{{ user.username }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url "account_logout" %}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
+                            </li>
+                            <li><a href="{% url 'admin:index' %}"><i
+                                    class="fa fa-btn fa-sign-out"></i>Manage</a>
+                            </li>
+                            <li><a href="/admin_meetings"><i
+                                    class="fa fa-btn fa-sign-out"></i>Meeting Admin</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">
+                            Sign in
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            {#            {% include "include/main_navbar.html" %}#}
+
+            {#            <div id="navbar" class="navbar-collapse collapse">#}
+            {#                <ul class="nav navbar-nav">#}
+            {#                    {% block tabs %}#}
+            {#                        <li id="nav_Home">#}
+            {#                            <a href="{% url "home_dch" %}">Home</a>#}
+            {#                        </li>#}
+            {##}
+            {#                        <li id="nav_mm">#}
+            {#                            <a href="{% url "mm" %}">{% trans "Meeting Manage" %}</a>#}
+            {#                        </li>#}
+            {##}
+            {#                    {% endblock %}#}
+            {#                </ul>#}
+            {#                <ul class="nav navbar-nav navbar-right">#}
+            {#                    {% block extra_rightTab %}#}
+            {#                    {% endblock %}#}
+            {##}
+            {#                    {% if not user.is_authenticated and REGISTRATION_OPEN %}#}
+            {#                        <li><a href="{% url "account_signup" %}">Register</a></li>#}
+            {#                    {% endif %}#}
+            {#                    {% if user.is_authenticated %}#}
+            {#                        <li class="navbar-brand" id="dropdown"></li>#}
+            {#                        <li class="dropdown">#}
+            {#                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"#}
+            {#                               aria-expanded="false">{{ user.username }}#}
+            {#                                <span class="caret"></span>#}
+            {#                            </a>#}
+            {#                            <ul class="dropdown-menu" role="menu">#}
+            {#                                <li><a href="{% url "account_logout" %}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>#}
+            {#                                </li>#}
+            {#                                <li><a href="{% url 'admin:index' %}"><i#}
+            {#                                        class="fa fa-btn fa-sign-out"></i>Manage</a>#}
+            {#                                </li>#}
+            {#                                <li><a href="/admin_meetings"><i#}
+            {#                                        class="fa fa-btn fa-sign-out"></i>Meeting Admin</a>#}
+            {#                                </li>#}
+            {#                            </ul>#}
+            {#                        </li>#}
+            {#                    {% else %}#}
+            {#                        <li>#}
+            {#                            <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">#}
+            {#                                Sign in#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                    {% endif %}#}
+            {#                </ul>#}
+            {#            </div><!--/.nav-collapse -->#}
+
+
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            {% if user.is_staff %}
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#submenu-1"><i
+                                class="fa fa-fw fa-search"></i> Meetings / Initiatives
+                            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul id="submenu-1" class="collapse in">
+                            <li id="quickTasks"><a href="{% url 'mm' %}?type=quick">
+                                <i class="fa fa-angle-double-right"></i> Quick Tasks</a></li>
+                            <li id="meetings"><a href="{% url 'mm' %}?type=meetings">
+                                <i class="fa fa-angle-double-right"></i> Meetings</a></li>
+                            <li id="meetings_initiatives"><a
+                                    href="{% url 'mm' %}?type=meeting_initiatives_search&meeting=0">
+                                <i class="fa fa-angle-double-right"></i> Meeting Initiatives</a></li>
+                            <li id="importantInitiatives"><a href="{% url 'mm' %}?type=important"><i
+                                    class="fa fa-angle-double-right"></i> Important Initiatives</a></li>
+                            <li id="shortTermInitiatives"><a href="{% url 'mm' %}?type=short"><i
+                                    class="fa fa-angle-double-right"></i> Short Term Initiatives</a></li>
+                            <li id="longTermInitiatives"><a href="{% url 'mm' %}?type=long"><i
+                                    class="fa fa-angle-double-right"></i> Long Term Initiatives</a></li>
+                            <li id="allInitiatives"><a href="{% url 'mm' %}?type=all">
+                                <i class="fa fa-angle-double-right"></i> All Initiatives</a>
+                            </li>
+                            <li id="completedInitiatives"><a href="{% url 'mm' %}?type=completed">
+                                <i class="fa fa-angle-double-right"></i> Competed Tasks</a>
+                            </li>
+                            <li id="calenderSync"><a href="{% url 'mm' %}?type=calender">
+                                <i class="fa fa-angle-double-right"></i> Calender</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#submenu-2"><i
+                                class="fa fa-fw fa-search"></i> Briefs
+                            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul id="submenu-2" class="collapse out">
+                            <li id="foreignBriefs"><a href="{% url 'mm' %}?type=foreign"><i
+                                    class="fa fa-angle-double-right"></i> Foreign</a></li>
+                            <li id="localBriefs"><a href="{% url 'mm' %}?type=local"><i
+                                    class="fa fa-angle-double-right"></i> Local</a></li>
+                            <li id="localBriefs"><a href="#"><i
+                                    class="fa fa-angle-double-right"></i> PPP</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" data-toggle="collapse" data-target="#submenu-3"><i
+                            class="fa fa-fw fa-search"></i> Social Call List
+                        <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul id="submenu-3" class="collapse out">
+                            <li id="socialCallList"><a href="{% url 'mm' %}?type=contacts"><i
+                                    class="fa fa-angle-double-right"></i> P&DD</a></li>
+                            <li id="nonPnDCallList"><a href="{% url 'mm' %}?type=non_pnd"><i
+                                    class="fa fa-angle-double-right"></i> Other than P&DD</a></li>
+                            <li id="foreignCallList"><a href="{% url 'mm' %}?type=foreigners"><i
+                                    class="fa fa-angle-double-right"></i> Foreign</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#submenu-4"><i
+                                class="fa fa-fw fa-search"></i> Quick Links
+                            <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul id="submenu-4" class="collapse out">
+
+                            <li id="linksADPAnalysis"><a href="http://pnddch.info/adp/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i> ADP Analysis</a></li>
+                            <li id="linksSMDP"><a href="https://smdp.punjab.gov.pk/" target="_blank"><i
+                                    class="fa fa-angle-double-right"></i> SMDP</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endif %}
+
+        </div><!-- /.navbar-collapse -->
+
+    </nav>
+
+    {% if not user.is_authenticated %}
+        <div class="modal fade" id="SigninModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Sign in" %}</h4>
+                    </div>
+                    {% include "login/login_form.html" %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Menu" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% include "menu_list.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        {% include "login/logout_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div id="page-wrapper">
+        {% block main_content %}
+        {% endblock %}
+    </div><!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
+
+<div class="modal fade bs-example-modal-sm" id="myPleaseWait" name="myPleaseWait"
+     role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                        <span class="glyphicon glyphicon-time">
+                        </span>Please Wait
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info
+                        progress-bar-striped active"
+                         style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="recordHistoryModal" name="recordHistoryModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <legend>Remarks History:</legend>
+                {#                <div id="tblHistory" name="tblHistory"></div>#}
+                <div id="dynamicTable" style="max-height: 500px; overflow: auto;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="recordFormModal" name="recordFormModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+{#            <div class="modal-header"><h3>Meeting</h3></div>#}
+            <div class="modal-body" id="tblMeetingDetail" >
+{#                style="height: 500px; overflow: auto;"#}
+{#                <legend id="lblFormTitle" name="lblFormTitle" style="text-align: center;">Meeting Detail:</legend>#}
+                {#                <div id="tblHistory" name="tblHistory"></div>#}
+{#                <div id="tblMeetingDetail" style="max-height: 500px;"></div>#}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success fa fa-print" id="btnPrintReport"> Print</button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="documentsModal" name="documentsModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <legend style="text-align: center;">Documents</legend>
+                {#                <div id="tblHistory" name="tblHistory"></div>#}
+                <div id="tblDocuments" style="max-height: 500px; overflow: auto;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="smsModal" name="smsModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="frmSendSMS" name="frmSendSMS">
+                    <legend style="text-align: center;">SMS Form</legend>
+                    {#                    {% csrf_token %}#}
+                    <div class="col-sm-12">
+                        <label for="txtSMSContactNo">Contact No.(923001234567):</label>
+                        <input type="text" id="txtSMSContactNo" required name="txtSMSContactNo" class="form-control"
+                               oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="txtSMSBody">Message Body:</label>
+                        <textarea type="text" id="txtSMSBody" name="txtSMSBody" class="form-control"
+                                  style="height: 180px;"
+                                  required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12">
+                    <button class="btn btn-success" id="btnSendSMS" name="btnSendSMS">Send SMS</button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="emailModal" name="emailModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="frmSendEmail" name="frmSendEmail">
+                    <legend style="text-align: center;">EMail Form</legend>
+                    {#                    {% csrf_token %}#}
+                    <div class="col-sm-12">
+                        <label for="txtEmailAddress">E-Mail Address:</label>
+                        <input type="text" id="txtEmailAddress" required name="txtEmailAddress" class="form-control">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="txtEmailBody">Message Body:</label>
+                        <div type="text" id="txtEmailBody" name="txtEmailBody" style="height: 200px;" required></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12">
+                    <button class="btn btn-success" id="btnSendEMail" name="btnSendEMail">Send E-Mail</button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ptModal" name="ptModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="divPTModal" name="divPTModal" style="width: 100%; height: 500px; overflow: auto;"></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+{% block extra_script %}{% endblock extra_script %}
+</html>

@@ -1,0 +1,194 @@
+{% extends "base_pc1.html" %}
+{% load static %}
+
+{% block extra_scripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbhUm6A1DNAGqeUv_uUmGnFq5LSgfg9jc&libraries=places&callback=initMap"
+            async defer></script>
+    <script type="text/javascript">
+
+        var map = null;
+        var scheme_data = {{ scheme_data|safe }};
+        var txtAddress = null, txtLocation = null, btnSaveLocation = null;
+        var locationData = {gs_no: null, address: null, location: null};
+        try {
+            var gs_no = {{ project_id }};
+            var detail = {{ scheme_detail|safe }};
+        } catch (err) {
+            console.log(err.message);
+        }
+        $(document).ready(function () {
+
+            $("#side_location_info").addClass("w3-red");
+
+            try {
+                txtAddress = $('input[name="txtAddress"]');
+                txtLocation = $('input[name="txtAddressLocation"]');
+                btnSaveLocation = $("#btnSaveLocation");
+                var locationLocalData = JSON.parse(localStorage.getItem("location_info" + "_" + gs_no));
+                if (locationLocalData) {
+                    locationData = locationLocalData;
+                    txtAddress.val(locationData.address);
+                    txtLocation.val(locationData.location);
+                    if (locationData.location) {
+                        var centerLocation = locationData.location.split(',');
+                        map.setCenter({lat: parseFloat(centerLocation[1]), lng: parseFloat(centerLocation[0])});
+                        map.setZoom(15);
+                        btnSaveLocation.removeClass("btn-primary").addClass("btn-success glyphicon-ok").html('Location Saved');
+                    }
+                } else {
+                    var address = detail.district + ", pakistan";
+{#                    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyDBKox6Urc8SUwws9mXT9zJFaDbQlN0FL8';#}
+{#                    $.getJSON(url, function (obj) {#}
+{#                        var geometry = obj.geometry;#}
+{#                        alert(geometry);#}
+{#                    });#}
+                    txtAddress.val(address);
+                }
+                btnSaveLocation.click(function () {
+
+                    locationData.address = txtAddress.val();
+                    locationData.location = txtLocation.val();
+                    locationData.gs_no = gs_no;
+
+                    localStorage.removeItem("location_info" + "_" + gs_no);
+                    localStorage.setItem("location_info" + "_" + gs_no, JSON.stringify(locationData));
+                    btnSaveLocation.removeClass("btn-primary").addClass("btn-success glyphicon-ok").html('Location Saved');
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            $("#btnSaveLocation").click(function () {
+
+            });
+            $("#btnGotoSpecificInfo").click(function () {
+                window.location.href = 'specific_info/?scheme='+gs_no;
+            });
+            $("#btnGotoProjectPlan").click(function () {
+{#                window.location.href = '/admin_pc1/project_planning/tblactivities/?project_id='+gs_no;#}
+            });
+
+        });
+
+        function initMap() {
+            // Create a map object and specify the DOM element for display.
+            map = new google.maps.Map(document.getElementById('map_id'), {
+                center: {lat: 31.520929854843235, lng: 74.34989547729492},
+                zoom: 10
+            });
+
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('txtPlaceSearch');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function () {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function () {
+                btnSaveLocation.removeClass("btn-success  glyphicon-ok").addClass("btn-primary").html('Save Location');
+                var places = searchBox.getPlaces();
+                if (places.length == 0) {
+                    return;
+                }
+                // Clear out the old markers.
+                markers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+
+                    var formatted_address = place.formatted_address;
+                    $("#txtAddress").val(formatted_address);
+
+                    var location_string = place.geometry.location.lng() + "," + place.geometry.location.lat();
+                    $("#txtAddressLocation").val(location_string);
+
+                });
+                map.fitBounds(bounds);
+
+                map.addListener('click', function (e) {
+                    var locationLatlng = e.latLng.lat() + ',' + e.latLng.lng();
+                    $("#txtAddressLocation").val(locationLatlng);
+                });
+            });
+        }
+
+    </script>
+
+{% endblock %}
+
+{% block main_content %}
+    <div id="location">
+        <input id="txtPlaceSearch" class="form-control" style="width:50%; align-content: center" type="text"
+               placeholder="Search Box">
+        <div id="map_id" align="center" style="width:100%;height:500px;margin: 0px; padding: 0px"></div>
+        <input type="hidden" class="form-control" placeholder="latitude, longitude" id="txtLocation" name="txtLocation"
+               disabled>
+    </div>
+    <div class="form-group row" style="margin-top:5px;">
+        <div class="col-sm-8">
+            <input type="text" class=" form-control" id="txtAddress" name="txtAddress"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="txtAddressLocation" name="txtAddressLocation" disabled/>
+        </div>
+        <div class="form-group row" style="margin-top: 5px;" >
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4" style="min-width: 300px;">
+            <div class=" col-sm-4">
+                <button id="btnSaveLocation" name="btnSaveLocation" class="btn btn-primary col-sm-12"
+                        style="min-width: 100px;">
+                    Save Location <span class="glyphicon glyphicon-save"></span>
+                </button>
+            </div>
+            <div class=" col-sm-4">
+                <button id="btnGotoSpecificInfo" name="btnGotoSpecificInfo" type="button"
+                        class="btn btn-primary col-sm-12" style="min-width: 80px;">
+                    <span class="fa fa-arrow-left"> Previous</span>
+                </button>
+            </div>
+{#            <div class=" col-sm-4">#}
+{#                <button id="btnGotoProjectPlan" name="btnGotoProjectPlan" type="button"#}
+{#                        class="btn btn-primary col-sm-12" style="min-width: 70px;">#}
+{#                    Next <span class="fa fa-arrow-right"></span>#}
+{#                </button>#}
+{#            </div>#}
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

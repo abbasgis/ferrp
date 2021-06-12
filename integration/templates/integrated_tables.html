@@ -1,0 +1,111 @@
+{% extends "base/base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block title %}TL{% endblock %}
+{% block extra_style %}
+    {#    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>#}
+{% endblock %}
+{% block maincontent %}
+    <div class="container singleborder">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group pull-right">
+
+                    <button class="btn btn-primary addDatasets" style="width:250px"
+                            info="{{ ds_name }}">Add Datasets
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div id="row">
+            <div id="pnlIntegratedList" class="panel panel-primary">
+                <div class="panel-heading">Integration Info</div>
+                <div id="pnlIntegratedListBody" class="panel-body" style="overflow: scroll;">
+                    <table class="table">
+                        <tr>
+                            <th>Table Name</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for key,val in info_list.items %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>
+                                    {% for key1, val1 in val.items %}
+                                        {% if key1 == "layer_name" %}
+                                            <button class="btn btn-primary layerbutton" style="width:150px"
+                                                    info="{{ val1 }}">View Layer
+                                            </button>
+                                        {% elif key1 == "table_name" %}
+                                            <button class="btn btn-primary tablebutton" style="width:150px"
+                                                    info="{{ val1 }}">View Table
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-danger errorbutton" style="width:150px"
+                                                    info="{{ val1 }}">Error
+                                            </button>
+                                        {% endif %}
+                                        <button class="btn btn-primary deletebutton" style="width: 150px"
+                                                key="{{ key }}" innerKey="{{ key1 }}">Delete Layer
+                                        </button>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $(document).ready(function () {
+            var remHeight = getRemainingBodyHeight(true, true, 120, 200);
+            var pnlBodyHeight = getPanelBodyHeight('pnlTableList', remHeight);
+            {#            $('#pnlConnParams').height(remHeight);#}
+            $('#pnlTableListBody').height(pnlBodyHeight);
+        });
+
+        $('.layerbutton').on('click', function () {
+            var info = $(this).attr("info");
+            var ds_name = '{{ ds_name }}';
+            url = "{% url "view_layer" %}" + "?layer_name=" + info + "&ds_name=" + ds_name;
+            var newwindow = window.open(url, '_blank');
+            newwindow.focus();
+        });
+        $('.errorbutton').on('click', function () {
+            var info = $(this).attr("info");
+            showAlertDialog(info, dialogTypes.error);
+        })
+        $('.tablebutton').on('click', function () {
+            var info = $(this).attr("info");
+            var ds_name = '{{ ds_name }}';
+            var url = "{% url "view_table"  %}" + "?table_name=" + info + "&conn_name=" + ds_name
+            var win = window.open(url, "_blank");
+            win.focus();
+            showAlertDialog(info, dialogTypes.success);
+            {#            callAJAX({url: url}, function (res) {#}
+            {#                showAlertDialog(res.msg, dialogTypes.success);#}
+            {#                alert(res);#}
+            {#                location.reload();#}
+            {#            })#}
+        });
+        $('.deletebutton').on('click', function () {
+            var key = $(this).attr("key");
+            var innerKey = $(this).attr("innerKey");
+            var ds_name = '{{ ds_name }}';
+            url = "{% url "del_tables" %}" + "?ds_name=" + ds_name + "&key=" + key + "&inner_key=" + innerKey;
+            callAJAX({url: url}, function (res) {
+                showAlertDialog(res.msg, dialogTypes.success);
+                location.reload();
+            })
+            {#            url = "{% url "lyr_delete" %}" +"?layer_name=" +info#}
+        })
+        $('.addDatasets').on('click', function () {
+            var info = $(this).attr("info")
+            var url = "{% url "add_conn" %}" + "?conn_name=" + info;
+            window.location.href = url;
+        })
+    </script>
+{% endblock %}

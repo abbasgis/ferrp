@@ -1,0 +1,307 @@
+{% extends "base/site_base_dch.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% block title %} {% trans "Disaster Impact Assessment" %}
+{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "css/breadcrumbs.css" %}" type="text/css"/>
+{% endblock extra_style %}
+{% block maincontent %}
+    {% include "includes/bread_crumbs.html" %}
+    <div class="row">
+        <div class="col-md-2" style="padding-left: 5px; padding-right: 5px;">
+            {% include "includes/side_nav.html" %}
+        </div>
+        <div class="col-md-10" style="padding-left: 5px; padding-right: 5px;">
+
+            <div id="section-one" class="panel panel-primary cc-panel">
+                <div class="panel-heading" style="background-color: #4e5944"><h4 class="text-center"
+                                                                                 style="color: #FFFFff">Disaster Impact
+                    Assessment of {{ project_name }}</h4>
+                    <h5 class="text-center" style="color: #FFFFff">Section 1:Project Description</h5>
+                </div>
+                {% panelbody %}
+
+                    {#                    {% include "includes/section1.html" %}#}
+                    <form method="post" action="/dia/view_dia_add_data/?project_id={{ project_id }}" name="section_one">
+                        {% csrf_token %}
+
+                        {{ form.non_field_errors }}
+                         <fieldset id="section_one_fieldset">
+
+
+                        <div class="row form-check">
+                            {% column md="3" %}{{ form.project_name.label_tag }}
+                                <span style="color: #6E0000">&#10033;</span>{% endcolumn %}
+                            {% column md="8" %}{{ form.project_name }}{% endcolumn %}
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            {% column md="3" %}{{ form.project_type.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form.project_type }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="3" %}{{ form.project_extend.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form.project_extend }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="12" %}
+                                <h4 class="text-center" style="">Natural and other Geophysical
+                                    Conditions</h4> {% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="3" %}{{ form.project_climate_condition.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form.project_climate_condition }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="3" %}{{ form.rainfall_value.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form.rainfall_value }}{% endcolumn %}
+                        </div>
+                        <div class="row">
+                            {% column md="3" %}{{ form.return_period.label_tag }}{% endcolumn %}
+                            {% column md="4" %}  {{ form.return_period }}
+
+                            {% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="3" %}{{ form.project_location_features.label_tag }}
+                                <span style="color: #6E0000">&#10033;</span>{% endcolumn %}
+                            {% column md="8" %}{{ form.project_location_features }}
+                            {% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row" style="float: left;">
+                            <div class="col-md-4" style="width: 298px">{{ form.public_places_nearby.label_tag }}<span
+                                    style="color: #6E0000;">&#10033;</span></div>
+                            <div class="col-md-6" style="margin-left: -28px">{{ form.public_places_nearby }} </div>
+                        </div>
+
+
+                        <br>
+                        <br>
+                        <div class="row" style="text-align: center">{% column md="12" %}
+                            <button type="submit" class="btn btn-success"> Submit</button>{% endcolumn %}</div>
+                     </fieldset>
+                    </form>
+
+                {% endpanelbody %}
+            </div>
+
+            <!-- --------------------------------Section 2 --------------------------------------  -->
+            <div id="section-two" class="panel panel-primary cc-panel" style="display: none">
+                <div class="panel-heading" style="background-color: #4e5944"><h4 class="text-center"
+                                                                                 style="color: #FFFFff">Disaster Impact
+                    Assessment of {{ project_name }}</h4>
+                    <h5 class="text-center" style="color: #FFFFff">Section 2: Hazard Identification</h5>
+                    <h5 class="text-center" style="color: #FFFFff">Geological Phenomena</h5>
+                </div>
+                {% panelbody %}
+                    <form method="post" action="/dia/view_dia_add_data/?project_id={{ project_id }}" name="section_two">
+                        {% csrf_token %}
+                         <fieldset id="section_two_fieldset">
+                        <div class="row ">
+                            {% column md="3" %}{{ form_section_two.recongized_hazard.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.recongized_hazard }}{% endcolumn %}
+
+                        </div>
+
+                        <br>
+                        <div class="row" style="display: none" id="landslide">
+                            {% column md="3" %}{{ form_section_two.landslide.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.landslide }}{% endcolumn %}
+                        </div>
+                          <br>
+                        <div class="row mt-4" style="display: none" id="slope_failure">
+                            {% column md="3" %}{{ form_section_two.slope_failure.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.slope_failure }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row" style="display: none" id="flood">
+                            {% column md="3" %}{{ form_section_two.flood.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.flood }}{% endcolumn %}
+                        </div>
+                        <br>
+
+                        <div class="row mt-4" style="display: none" id="GLOF">
+                            {% column md="3" %}{{ form_section_two.glof.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.glof }}{% endcolumn %}
+                        </div>
+
+                        <br>
+                        <div class="row mt-4" style="display: none" id="heavy_rain">
+                            {% column md="3" %}{{ form_section_two.heavy_rain.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.heavy_rain }}{% endcolumn %}
+
+                        </div>
+                         <br>
+                        <div class="row" style="display: none" id="earthquake">
+                            {% column md="3" %}{{ form_section_two.earthquake.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.earthquake }}{% endcolumn %}
+                        </div>
+                        <br>
+                         <div class="row" style="display: none" id="slope_failure">
+                            {% column md="3" %}{{ form_section_two.slope_failure.label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.slope_failure }}{% endcolumn %}
+                        </div>
+                        <br>
+                         <div class="row" style="display: none" id="strong_wind">
+                            {% column md="3" %}{{ form_section_two..label_tag }}{% endcolumn %}
+                            {% column md="8" %}{{ form_section_two.slope_failure }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row mt-4" style="display: none">
+                            {% column md="3" %}{{ form_section_two.other.label_tag }}
+                                {{ form_section_two.other_name }}{% endcolumn %}
+                            {% column md="6" %}{{ form_section_two.other }}{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="12" %}
+                                <div>
+                                    <h4 class="text-center"
+                                        style="border:  1px solid;border-radius: 5px;padding:5px 5px 5px 5px;">Hazard Conservation along the project</h4>
+                                </div>{% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row ">
+                            {% column md="4" %}
+                                <h5 style="font-weight: bold;">Conditions relevant to the project</h5>{% endcolumn %}
+                            {% column md="4" %}<h5 style="font-weight: bold">Hazard Data Available?</h5>{% endcolumn %}
+                            {% column md="4" %}<h5 style="font-weight: bold">Return Period</h5>{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.landslide_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.landslide_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.landslide_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.flood_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.flood_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.flood_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.forest_reserves_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.forest_reserves_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.forest_reserves_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.nature_reserves_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.nature_reserves_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.nature_reserves_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}
+                                {{ form_section_two.riverine_conservation_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.riverine_conservation_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.riverine_conservation_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.wetlands_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.wetlands_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.wetlands_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.archeological_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.archeological_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.archeological_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="4" %}{{ form_section_two.culture_data.label_tag }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.culture_data }}{% endcolumn %}
+                            {% column md="4" %}{{ form_section_two.culture_data_return_period }}{% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row" style="text-align: center">{% column md="12" %}
+                            <button type="submit" class="btn btn-success">Submit</button>{% endcolumn %}</div>
+                        <br>
+                         </fieldset>
+                    </form>
+
+                {% endpanelbody %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>#}
+    <script type="text/javascript" src="{% static "ferrp/dia/js/dia.js" %}"></script>
+    <script type="text/javascript" src="{% static "ferrp/dia/js/checkbox_options.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/includes/sideNavManager.js" %}"></script>
+    {#    <link rel="stylesheet" href="{% static "css/jqx.base.css" %}"/>#}
+    <script>
+        var padding = 6;
+        $(document).ready(function () {
+            {#            $("#sectionOne").css('height', $("#section-one").height());#}
+            var section = '{{ section }}';
+            var sideNavManager = new SideNavManager();
+            sideNavManager.manageSections(section);
+
+            var user = null;
+            {% if user.is_authenticated %}
+                user = '{{ user.username }}';
+            {% endif %}
+              if(user == null)
+              {
+               console.log(user);
+               $("#section_one_fieldset").attr("disabled", "disabled");
+               $("#section_two_fieldset").attr("disabled", "disabled");
+              }
+            checkboxOption();
+
+
+        });
+
+    </script>
+    <style>
+
+        ul#id_project_type li, ul#id_project_climate_condition li, ul#id_project_location_features li, ul#id_recongized_hazard li, ul#id_earthquake li, ul#id_flood li, ul#id_landslide li, ul#id_glof li, ul#id_slope_failure li, ul#id_heavy_rain li, ul#id_other li {
+            display: inline-block;
+            width: 180px;
+            height: 10px;
+            padding: 5px;
+            margin-left: -40px;
+        }
+
+        ul#id_culture_data li, ul#id_landslide_data li, ul#id_flood_data li, ul#id_forest_reserves_data li, ul#id_nature_reserves_data li, ul#id_riverine_conservation_data li, ul#id_wetlands_data li, ul#id_archeological_data li {
+            display: inline-block;
+            width: 100px;
+            height: 10px;
+            float: left;
+            margin-left: -30px;
+        }
+
+
+    </style>
+
+{% endblock %}

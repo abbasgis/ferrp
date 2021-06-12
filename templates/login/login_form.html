@@ -1,0 +1,37 @@
+{% load i18n %}
+{% if next_page is None %}
+    <form class="form-signin" role="form" action="{% url "login" %}?next={{ request.path }}" method="post">
+{% else %}
+    <form class="form-signin" role="form" action="{% url "login" %}?next={{ next_page }}" method="post">
+{% endif %}
+
+<div class="modal-body">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_username" class="sr-only">{% trans "Username" %}:</label>
+        <input id="id_username" class="form-control" name="username"
+               placeholder="{% trans "Username" %}" type="text"/>
+    </div>
+    <div class="form-group">
+        <label for="id_password" class="sr-only">{% trans "Password" %}:</label>
+        <input id="id_password" class="form-control" name="password" placeholder="Password"
+               type="password"/>
+    </div>
+    <div class="form-group">
+        {#            <label class="checkbox">#}
+        <input type="checkbox"/> {% trans "Remember Me" %}
+        {#            </label>#}
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-block">{% trans "Sign in" %}</button>
+    <button style="margin-top: 10px !important;" type="button" class="btn  col-md-12"><a
+            href="/accounts/linkedin/login/?process=login"><i style="font-size:25px" class="fa fa-linkedin-square"></i>
+        Login
+        with LinkedIn</a></button>
+    <button style="margin-top: 10px !important;" type="button" class="btn col-md-12"><a
+            href="/accounts/google/login/?process=login"><i style="font-size:25px" class="fa fa-google-plus-square"></i>
+        Login
+        with Google</a></button>
+</div>
+</form>

@@ -1,0 +1,87 @@
+{% extends "base/site_base_dch.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% block title %} {% trans "Disaster Impact Assessment" %}
+{% endblock %}
+{% block maincontent %}
+{% include "includes/bread_crumbs.html" %}
+    <div class="row">
+        <div class="col-md-2" style="padding-left: 5px; padding-right: 5px;">
+            {% include "includes/side_nav.html" %}
+        </div>
+        <div class="col-md-10" style="padding-left: 5px; padding-right: 5px;">
+
+
+            <div id="section-one" class="panel panel-primary cc-panel">
+                <div class="panel-heading" style="background-color: #4e5944"><h4 class="text-center"
+                                                                                 style="color: #FFFFff">Disaster Impact
+                    Assessment of {{ project_name }}</h4>
+                    <h5 class="text-center" style="color: #FFFFff">Section 5: Conclusion
+
+                    </h5>
+                </div>
+                {% panelbody %}
+                    <form method="post" enctype="multipart/form-data" action="/dia/view_section_five/?project_id={{ project_id }}" name="section_five">
+                      {% csrf_token %}
+                       <fieldset id="section_five_fieldset">
+                        <div class="row">
+                            {% column md="8" %}
+                                <input type="hidden" value="{{ project_id }}" ID="project_id" name="project_id">
+                                  <textarea name="editor" id="editor"></textarea>
+                            {% endcolumn %}
+                        </div>
+                        <div class="row" style="text-align: center">{% column md="12" %}
+                            <button type="submit" class="btn btn-success"> Submit</button>{% endcolumn %}</div>
+                       </fieldset>
+                    </form>
+                {% endpanelbody %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>#}
+    <script type="text/javascript" src="{% static "ferrp/dia/js/dia.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/includes/sideNavManager.js" %}"></script>
+    {#    <link rel="stylesheet" href="{% static "css/jqx.base.css" %}"/>#}
+    <script>
+        var padding = 6;
+        $(document).ready(function () {
+{#            $("#sectionOne").css('height', $("#section-one").height());#}
+            var section = '{{ section }}';
+            var sideNavManager = new SideNavManager();
+            sideNavManager.manageSections(section);
+            $('#editor').jqxEditor({
+            height: "150%",
+            width: "150%"
+            });
+             var user = null;
+            {% if user.is_authenticated %}
+                user = '{{ user.username }}';
+            {% endif %}
+              if(user != null)
+              {
+                  console.log(user);
+
+              }
+              else
+              {
+               console.log(user);
+
+               $("#section_five_fieldset").attr("disabled", "disabled");
+
+              }
+
+        });
+
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,208 @@
+{% load static %}
+<div id="LayerStylingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header dch-modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="lblGeomType"></span> Layer Styling </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-group" id="accordion">
+
+                    <!-- Default Color--->
+                    <div id="vector_style" style="display: block" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#assignColor">
+                                    Assign Symbology</a>
+                            </h4>
+                        </div>
+                        <div id="assignColor" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <fieldset>
+                                    {#                                    <legend>Column Name & Value</legend>#}
+                                    <select class="selectpicker selectColumnName" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    <select class="selectpicker selectColumnValue" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                </fieldset>
+                                <br/>
+                                <button id="btnAddStyle" class="btn btn-primary">Add Style</button>
+                                <button id="btnRemoveStyle" class="btn btn-primary">Remove Style</button>
+                                </button>
+                                <table id="styleTable" class="table table-condensed table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Style</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="styletbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- graduated color -->
+                    <div id="vector_style_gdc" style="display: block" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#graducatedColor">
+                                    Graduated Color</a>
+                            </h4>
+                        </div>
+                        <div id="graducatedColor" class="panel-collapse collapse"> <!--in-->
+                            <div class="panel-body">
+                                <fieldset>
+                                    {#                                    <legend>Column Name & Value</legend>#}
+                                    <select class="selectpicker selectColumnName" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    {#                                    <select class="selectpicker selectColumnValue" data-width="100%"#}
+                                    {#                                            data-live-search="true">#}
+                                    {#                                    </select>#}
+                                    <select class="selectpicker selectColorRamp" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    <br/>
+                                    <div id="colorRamp"
+                                         style="width: 100%; height:30px; background: linear-gradient(to right, red , yellow, green) "></div>
+                                    <br/>
+                                    <button id="btnApplyColorRamp" class="btn btn-primary">Apply Color Ramp</button>
+                                    {#                                    <button id="btnRemoveStyle" class="btn btn-primary">Remove Style</button>#}
+                                    </button>
+                                    <table id="rampStyleTable" class="table table-condensed table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Value</th>
+                                            <th>Style</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="ramptbody">
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Raster Symbology -->
+                    <div id="raster_style" style="display: none" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#rasterSymbology">
+                                    Symbology</a>
+                            </h4>
+                        </div>
+                        <div id="rasterSymbology" class="panel-collapse collapse"> <!--in-->
+                            <div class="panel-body">
+                                <fieldset>
+                                    <select class="selectpicker selectColorRamp" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    <select id="rasterClasses" class="selectpicker" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    <br/>
+                                    <div id="colorRamp"
+                                         style="width: 100%; height:30px; background: linear-gradient(to right, red , yellow, green) "></div>
+                                    <br/>
+                                    <button id="btnApplyRasterColorRamp" class="btn btn-primary">Apply Color Ramp
+                                    </button>
+                                    </button>
+                                    <table id="rasRampStyleTable" class="table table-condensed table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Value</th>
+                                            <th>Style</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="rasRamptbody">
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scale Setting SLD -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#pnlScale">
+                                    Set Scale for Layer</a>
+                            </h4>
+                        </div>
+                        <div id="pnlScale" class="panel-collapse collapse"> <!--in-->
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="sel1">Min Scale:</label>
+                                    <input id="min_scale_id" type="number" list="min_scale_list"/>
+                                    <datalist id="min_scale_list">
+                                        <option>100</option>
+                                        <option>1000</option>
+                                        <option>10000</option>
+                                        <option>100000</option>
+                                        <option>1000000</option>
+                                    </datalist>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sel1">Max Scale:</label>
+                                    <input id="max_scale_id" type="number" list="max_scale_list"/>
+                                    <datalist id="max_scale_list">
+                                        <option>1000</option>
+                                        <option>10000</option>
+                                        <option>100000</option>
+                                        <option>1000000</option>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Upload SLD -->
+                    {#                    <div class="panel panel-default">#}
+                    {#                        <div class="panel-heading">#}
+                    {#                            <h4 class="panel-title">#}
+                    {#                                <a data-toggle="collapse" data-parent="#accordion" href="#uploadSLD">#}
+                    {#                                    Upload SLD</a>#}
+                    {#                            </h4>#}
+                    {#                        </div>#}
+                    {#                        <div id="uploadSLD" class="panel-collapse collapse"> <!--in-->#}
+                    {#                            <div class="panel-body">#}
+                    {#                                <input id="file" type="file" accept=".sld"/>#}
+                    {##}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                {#                <button id="btnChoroplethMapping" class="btn btn-primary">Set Choropleth Mapping</button>#}
+                {#                <button id="btnUploadSLD" class="btn btn-primary">Upload Style</button>#}
+                <button type="button" class="btn btn-primary" id="btnSetLayerStyle">Set Layer Style</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript" src="{% static "vendor/jscolor-2.0.5/jscolor.js" %}"></script>
+<script type="text/javascript" src="{% static "ferrp/js/stylingFormModel.js" %}"></script>
+{#<script>#}
+{#    $(function(){#}
+{#        stylingFromModel = newStyleFormModel(olMapModel);    #}
+{#    })#}
+{#    #}
+{##}
+{#</script>#}

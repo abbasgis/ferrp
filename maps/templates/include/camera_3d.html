@@ -1,0 +1,239 @@
+{% load static %}
+<link rel="stylesheet" href="{% static "vendor/jqwidgets-ver6.2.0/styles/jqx.material-green.css" %}"/>
+<style>
+    #headingLevel {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .jqx-slider-slider-horizontal-material-green {
+        background: #b8c6ac;
+    }
+
+    .jqx-slider-rangebar-material-green {
+        border-color: #b8c6ac;
+        background: #b8c6ac;
+    }
+</style>
+<div id="cameraContent" class="panelContents" style="visibility: hidden">
+    <button id="resetOrientation" class="btn btn-primary btn-block">Reset Orientation</button>
+    <br/>
+    <span style="font-style: italic;">Pitch</span>
+    <div id='pitchLevel'></div>
+    <span style="font-style: italic;">Roll</span>
+    <div id='rollLevel'></div>
+    <span style="font-style: italic;">Heading</span>
+    <div id='headingLevel'></div>
+
+</div>
+<script>
+
+    var CameraSettingVM = function () {
+        var me = this;
+        me.threeDEnableFlag = false;
+        me.initCameraOrient = {"heading": 0.0, "pitch": -Cesium.Math.PI_OVER_TWO, "roll": 0.0, "range": 6000}
+        me.camera = null;
+        me.map2dModel = null;
+        me.map4dModel = null;
+        me.setCamera = function (camera) {
+            me.camera = camera;
+            {#            me.setSliderValues()#}
+        }
+        me.is3dEnabled = function (flagVal) {
+            me.threeDEnableFlag = flagVal;
+            me.enableDisableSliders();
+        }
+        me.setMap2DModel = function (map2dM) {
+            me.map2dModel = map2dM;
+        }
+        me.setMap3DModel = function (map3dM) {
+            me.map3dModel = map3dM;
+        }
+        me.setSliderValues = function () {
+            if (me.camera) {
+                $('#headingLevel').jqxKnob('val', me.camera.heading);
+                $('#pitchLevel').jqxSlider('setValue', me.camera.pitch);
+                $('#rollLevel').jqxSlider('setValue', me.camera.roll);
+            }
+        }
+        me.enableDisableSliders = function () {
+{#            if (me.threeDEnableFlag) {#}
+                $('#pitchLevel').jqxSlider('enable');
+                $('#rollLevel').jqxSlider('enable');
+{#            }#}
+{#            else {#}
+{#                $('#pitchLevel').jqxSlider('disable');#}
+{#                $('#rollLevel').jqxSlider('disable');#}
+{#            }#}
+        }
+        me.initCameraSettingPanel = function (map2dModel, map3dModel) {
+            me.map2dModel = map2dModel;
+            me.map3dModel = map3dModel;
+            $('#cameraContent').css('visibility', 'visible');
+            width = 250;//$('#headingLevel').width();
+            $('#headingLevel').jqxKnob({
+                width: '100%',
+                height: width,
+                value: 0,
+                min: 0,
+                max: 360,
+                startAngle: 270,
+                endAngle: 630,
+                dragStartAngle: 270,
+                dragEndAngle: 630,
+                step: 1,
+                snapToStep: true,
+                rotation: 'clockwise',
+                labels: {
+                    offset: '88%',
+                    step: 30,
+                    visible: true,
+                    formatFunction: function (label) {
+                        if (label == 0) return "N";
+                        if (label == 90) return "E";
+                        if (label == 180) return "S";
+                        if (label == 270) return "W";
+                        return label;
+                    }
+                },
+                marks: {
+                    colorRemaining: "#333",
+                    colorProgress: "#4e5944",
+                    offset: '75%',
+                    thickness: 2,
+                    size: '1%',
+                    majorSize: '1%',
+                    majorInterval: 10,
+                    minorInterval: 5
+                },
+                progressBar: {
+                    size: '70%',
+                    offset: '0%'
+                },
+                spinner: {
+                    style: {fill: '#b8c6ac', stroke: '#17a25d'},
+                    innerRadius: '65%', // specifies the inner Radius of the dial
+                    outerRadius: '70%' // specifies the outer Radius of the dial
+                    , marks: {
+                        colorRemaining: "#fff",
+                        colorProgress: "#fff",
+                        offset: '68%',
+                        thickness: 4,
+                        type: 'circle',
+                        size: '5%',
+                        majorSize: '5%',
+                        majorInterval: 30,
+                        minorInterval: 15,
+                    }
+                },
+                dial: {
+                    style: {fill: '#b8c6ac', stroke: '#17a25d'},
+                    innerRadius: '0%', // specifies the inner Radius of the dial
+                    outerRadius: '50%' // specifies the outer Radius of the dial
+                },
+                pointer: {
+                    type: 'arrow', thickness: 25, style: {fill: "#ff6126", stroke: "#333"},
+                    size: '60%', offset: '50%'
+                }
+            });
+
+
+            $('#pitchLevel').jqxSlider({
+                showTickLabels: true,
+                tooltip: true,
+                mode: "default",
+                height: 60,
+                width: '100%',
+                min: -90,
+                max: 0,
+                disabled: false,
+                theme: 'material-green',
+                // ticksFrequency: 25.5,
+                value: Cesium.Math.toDegrees(me.initCameraOrient["pitch"]),
+                // step: 5,
+                tickLabelFormatFunction: function (value) {
+                    if (value == -90) return value;
+                    if (value == 0) return value;
+                    return "";
+                }
+            });
+
+            $('#rollLevel').jqxSlider({
+                showTickLabels: true,
+                tooltip: true,
+                mode: "default",
+                height: 60,
+                width: '100%',
+                min: -90,
+                max: 90,
+                disabled: false,
+                theme: 'material-green',
+                // ticksFrequency: 10,
+                value: me.initCameraOrient["roll"],
+                // step: 5,
+                tickLabelFormatFunction: function (value) {
+                    if (value == -90) return value;
+                    if (value == 90) return value;
+                    return "";
+                }
+            });
+
+            $('#headingLevel').on('change', function (event) {
+                me.setCameraOrientation();
+            });
+            $('#pitchLevel').on('change', function (event) {
+                me.setCameraOrientation();
+            });
+            $('#rollLevel').on('change', function (event) {
+                me.setCameraOrientation();
+            });
+            $('#resetOrientation').on('click', function () {
+                me.resetCameraOrientation();
+            });
+        }
+
+        me.resetCameraOrientation = function () {
+            $('#headingLevel').jqxKnob('val', 0);
+            $('#rollLevel').jqxSlider('setValue', 0);
+            me.camera.setView({
+                orientation: {
+                    heading: heading, // east, default value is 0.0 (north)
+                    pitch: pitch,    // default value (looking down)
+                    roll: roll                             // default value
+                }
+            });
+        }
+        me.setCameraOrientation = function () {
+            var headingVal = $('#headingLevel').val();//$('#headingLevel').jqxKnob('val');
+
+            if (me.threeDEnableFlag == true) {
+                if (me.camera) {
+                    if (!headingVal) {
+                        val = me.camera.heading;
+                    }
+                    var heading = Cesium.Math.toRadians(parseFloat(headingVal));
+                    var pitch = Cesium.Math.toRadians(parseFloat($('#pitchLevel').jqxSlider('value')));
+                    var roll = Cesium.Math.toRadians(parseFloat($('#rollLevel').jqxSlider('value')));
+                    {#            me.olCesiumModel.setCamera(heading, pitch, roll);#}
+                    me.camera.setView({
+                        orientation: {
+                            heading: heading, // east, default value is 0.0 (north)
+                            pitch: pitch,    // default value (looking down)
+                            roll: roll                             // default value
+                        }
+                    });
+                } else {
+                    showAlertDialog("Please set camera before using it...", dialogTypes.error);
+                }
+            } else {
+                if (!headingVal) {
+                    val = 0;
+                }
+                var heading = Cesium.Math.toRadians(parseFloat(headingVal));
+                me.map2dModel.setMapViewRotation(heading)
+            }
+        }
+    }
+</script>

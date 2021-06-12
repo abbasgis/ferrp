@@ -1,0 +1,60 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block maincontent %}
+    {% load i18n %}
+    {% if messages %}
+        <div>
+            <strong>Messages:</strong>
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="col-md-3 col-md-offset-4" style="background-color: #fffbdf">
+        <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your
+            {{ provider_name }} account to login to
+            {{ site_name }}. As a final step, please complete the following form:{% endblocktrans %}</p>
+
+        <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+            {% csrf_token %}
+            <div class="row" align="center">
+                <div class="col-md-12">
+                    {#                     <img src={% static "assets/img/FERRP-logo-footer.png" %} height="35px"/>#}
+                    <img class="img-circle" id="img_logo" src={% static "assets/img/piupnd.png" %} height="200px"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="id_username">Username:</label>
+                        <input type="text" class="form-control" name="username" placeholder="Username"
+                               autofocus="autofocus" minlength="1" maxlength="150" required id="id_username"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="id_email">E-mail:</label>
+                        <input type="email" class="form-control" name="email" value=""
+                               placeholder="E-mail address" id="id_email" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary col-md-12 ">{% trans "Sign Up" %} &raquo;</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

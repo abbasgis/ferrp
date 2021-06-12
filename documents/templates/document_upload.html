@@ -1,0 +1,49 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>
+{% endblock %}
+{% block maincontent %}
+    <br/>
+    <div id=" row">
+        <div id="uploadFileFormDiv" class="container singleborder">
+            <div id="row">
+                {% include "include/progressbar.html" %}
+                <form id="uploadFileForm" method="post" action="." enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <input name ="project_id" type="hidden" value="{{ project_id }}"/>
+                    <input name ="dir_id" type="hidden" value="{{ dir_id }}"/>
+                    <button id="btnSubmit" type="submit" class="btn btn-primary btn-block btn-lg"
+                            style="font-size: 1.2em">
+                        {% bootstrap_icon "cloud-upload" %}
+                        Upload
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock maincontent %}
+{% block extra_script %}
+    <script>
+        process_raster_url = "{% url "process_raster" %}";
+        check_layer_name_url = "{% url "check_layer_name" %}";
+        view_layer_url = "{% url "view_layer" %}"
+        token = '{{ csrf_token }}'
+        progressbarModel = new ProgressBarModel();
+        $('#uploadFileForm').on('submit', function (e) {
+            fileElem = $('#mulFileField')[0]
+            if (fileElem.files.length > 0){
+                var fileSize = fileElem.files[0].size;
+{#                alert(fileSize);#}
+                progressbarModel.initializeProgressBar(fileSize);
+{#               $(this).submit();#}
+            }
+
+        })
+            
+{#        progressbarModel = new ProgressBarModel();#}
+    </script>
+{#    <script src="{% static "ferrp/layers/js/rst_upload.js" %}"></script>#}
+{% endblock %}

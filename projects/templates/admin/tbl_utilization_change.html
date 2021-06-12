@@ -1,0 +1,108 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% load static %}
+
+{% block extrastyle %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css"/>
+    {{ block.super }}
+{% endblock %}
+
+{% block extrahead %}
+    {#    {{ block.super }}#}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    {{ media }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+    <style>
+        .submit-row a.deletelink {
+            height: 40px !important;
+        }
+    </style>
+
+
+    {% if request.get_full_path|chk_admin:"admin_ppms" == False %}
+        <script>
+            $(document).ready(function () {
+                $("#header").empty();
+            });
+        </script>
+        {% include "includes/navbar.html" %}
+
+    {% endif %}
+
+
+{% endblock %}
+
+{% block field_sets %}
+    {% for fieldset in adminform %}
+        <fieldset class="module aligned {{ fieldset.classes }}">
+            {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+            {% if fieldset.description %}
+                <div class="description">{{ fieldset.description|safe }}</div>
+            {% endif %}
+            {% for line in fieldset %}
+                <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                    {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+                    {% for field in line %}
+                        <div{% if not line.fields|length_is:'1' %}
+                            class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %}
+                            class="checkbox-row"{% endif %}>
+                            {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                                {{ field.errors }}{% endif %}
+                            {% if field.is_checkbox %}
+                                {{ field.field }}{{ field.label_tag }}
+                            {% else %}
+                                {{ field.label_tag }}
+                                {% if field.is_readonly %}
+                                    <div class="readonly">{{ field.contents }}</div>
+                                {% else %}
+                                    {% if field|field_type == "ModelChoiceField" %}
+                                        {{ field.field|addcss:"selectpicker" }}
+                                    {% else %}
+                                        {{ field.field }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% if field.field.help_text %}
+                                <div class="help">{{ field.field.help_text|safe }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </fieldset>
+    {% endfor %}
+    <script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        $('#id_fin_main_cat').on('change', function (e) {
+            var main_cat = e.target.value;
+            $.get('/ppms/get_fin_sub_cat?main_cat=' + main_cat, function (data) {
+                data = JSON.parse(data);
+                $('#id_fin_sub_cat').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#id_fin_sub_cat').append('<option value=' + data[i].id + ' >'
+                        + data[i].items + '</option>');
+                }
+                $('.selectpicker').selectpicker('refresh');
+            });
+        });
+
+        $('#id_audit_main_code').on('change', function (e) {
+            var cat_code = e.target.value;
+            $.get('/ppms/get_audit_sub_cat?cat_code=' + cat_code, function (data) {
+                data = JSON.parse(data);
+                $('#id_audit_sub_code').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#id_audit_sub_code').append('<option value=' + data[i].item_code + ' >'
+                        + data[i].item_name + '</option>');
+                }
+                $('.selectpicker').selectpicker('refresh');
+            });
+        });
+    </script>
+{% endblock %}

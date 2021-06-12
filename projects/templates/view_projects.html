@@ -1,0 +1,43 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap_ui_tags %}
+{% load dch_tags %}
+{% block title %} Layers Catalogue{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "assets/css/view_projects.css" %}"
+          type="text/css"/>
+{% endblock extra_style %}
+{% block extra_script %}
+    <script>
+        var project_id = '{{ project_id }}';
+        var projects ={{ projects|safe }};
+    </script>
+{#    <script src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>#}
+    <script src="{% static "assets/js/view_projects.js" %}"></script>
+{% endblock extra_script %}
+{% block maincontent %}
+    <div class="container  singleborder" style="padding:15px;">
+        <div class="row" id="toolbar_treegrid">
+            <form class="form-inline">
+                <div class="col-md-3">
+                    <label class="col-md-12" for="cmb_projects">Select Project From:</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="">
+                        <select id="cmb_projects" name="cmb_sectors"
+                                class="form-control show-tick selectpicker"
+                                data-live-search="true">
+                            <!--<option data-subtext="Rep California">Tom Foolery</option>-->
+                            <option value="">Choose Project...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </form>
+        </div>
+    </div>
+    <div class="container singleborder" style="padding:15px;">
+        <div id="treeGrid"></div>
+    </div>
+
+{% endblock maincontent %}

@@ -1,0 +1,17 @@
+{% load static %}
+<div id="jqxGridToolBar"></div>
+<script>
+    var grid_toolbar_icons = {
+        "analysis": '<img src="{% static "ferrp/icons/mapicons/icon_zoomrect.gif" %}" width=100% height=100%></img>',
+        "zoom": '<img src="{% static 'ferrp/icons/mapicons/icon_zoomin.gif' %}" width=100% height=100%></img>',
+        "geoStatistics": '<img src="{% static "ferrp/icons/mapicons/gstats.png" %}" width=100% height=100%></img>',
+        "geoStatsSummary": '<img src="{% static "ferrp/icons/mapicons/stats_summary.png" %}" width=100% height=100%></img>',
+        "location": '<img src="{% static "ferrp/icons/mapicons/location.png" %}" width=100% height=100%></img>',
+        "deleteLocation": '<img src="{% static "ferrp/icons/mapicons/delete.png" %}" width=100% height=100%></img>',
+        "sms": '<img src="{% static "ferrp/icons/mapicons/sms.png" %}" width=100% height=100%></img>',
+        "saveLocation": '<img src="{% static "ferrp/icons/mapicons/save.png" %}" width=100% height=100%></img>',
+        "approve": '<img src="{% static "ferrp/icons/mapicons/ok.png" %}" width=100% height=100%></img>',
+        "disApprove": '<img src="{% static "ferrp/icons/mapicons/close.png" %}" width=100% height=100%></img>',
+    }
+</script>
+<script src="{% static "ferrp/js/JqxGridToolbarModel.js" %}"></script>

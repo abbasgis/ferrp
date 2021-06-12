@@ -1,0 +1,88 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>
+{% endblock %}
+
+{% block maincontent %}
+    <br/>
+    <div id="uploadFileFormDiv" class="container singleborder">
+        {% include "include/progressbar.html" %}
+
+        <form id="uploadFileForm" method="post" action="." enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <input name="project_id" type="hidden" value="{{ project_id }}"/>
+            <input name="dir_id" type="hidden" value="{{ dir_id }}"/>
+            {% bootstrap_form form %}
+            {% if  action  == 'new' %}
+                <button id="btnSubmit" type="submit" disabled="true" class="btn btn-primary btn-block btn-lg"
+                        style="font-size: 1.2em">
+                    {% bootstrap_icon "cloud-upload" %}
+                    Upload
+                </button>
+            {% else %}
+                <button id="btnExistingModel" type="button" disabled="true"
+                        class="btn btn-primary btn-block btn-lg" style="font-size: 1.2em">
+                    {% bootstrap_icon "cloud-upload" %}
+                    Add to Existing Model
+                </button>
+            {% endif %}
+            <br/>
+            <table id="tblFiles" class="table table-striped">
+                <thead>
+                <tr>
+                    <th rowspan="2"></th>
+                    <th rowspan="2" name="fName" style="text-align: center">File Name</th>
+                    <th colspan="4" style="text-align: center">Extention</th>
+                </tr>
+                <tr>
+                    <th name="shp">shp</th>
+                    <th name="shx">shx</th>
+                    <th name="dbf">dbf</th>
+                    <th name="prj">prj</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </form>
+        {#        <a href="{% url "geoserver_test" %}" class="btn btn-info" role="button">Geoserver Test</a>#}
+    </div>
+{% endblock %}
+{% block extra_script %}
+
+    <script type="text/javascript" src="{% static "ferrp/layers/js/shp_upload.js" %}"></script>
+    <script type="text/javascript">
+        csrftoken = '{{ csrf_token }}';
+        layer_type = '{{ layer_type }}';
+
+        {#        showAlert("Please select a " + layer_type + " to upload", alert_info.info);#}
+        progressbarModel = new ProgressBarModel();
+        uploadFileModel = new UploadFileModel(progressbarModel, this.action);
+
+        $(":file").filestyle({buttonBefore: true, buttonName: "btn-primary"});
+
+        $('#mulFileField').on('change', function () {
+            uploadFileModel.mulFileFieldChange($(this));
+        });
+        $("form#uploadFileForm").submit(function (event) {
+            event.preventDefault();
+            url = '{% url "shp_info" %}'
+            var project_id = '{{ project_id }}'
+            var dir_id = '{{ dir_id }}'
+            uploadFileModel.uploadShapefile(csrftoken, url, project_id, dir_id)
+        });
+        $('#btnExistingModel').click(function (event) {
+            url = '{% url "shp_add2existing" %}';
+            var project_id = '{{ project_id }}'
+            var dir_id = '{{ dir_id }}'
+            uploadFileModel.uploadShapefile(csrftoken, url, project_id, dir_id)
+        })
+        var handleRadioChange = function (rdo) {
+            uploadFileModel.handleRadioChange(rdo);
+        }
+
+
+    </script>
+{% endblock %}

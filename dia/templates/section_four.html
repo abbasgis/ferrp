@@ -1,0 +1,157 @@
+{% extends "base/site_base_dch.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% block title %} {% trans "Disaster Impact Assessment" %}
+{% endblock %}
+{% block maincontent %}
+{% include "includes/bread_crumbs.html" %}
+    <div class="row">
+        <div class="col-md-2" style="padding-left: 5px; padding-right: 5px;">
+            {% include "includes/side_nav.html" %}
+        </div>
+        <div class="col-md-10" style="padding-left: 5px; padding-right: 5px;">
+
+            <div id="section-one" class="panel panel-primary cc-panel">
+                <div class="panel-heading" style="background-color: #4e5944"><h4 class="text-center"
+                                                                                 style="color: #FFFFff">Disaster Impact
+                    Assessment of {{ project_name }}</h4>
+                    <h5 class="text-center" style="color: #FFFFff">Section 4: Mitigation Design and Plans
+                    </h5>
+                </div>
+                {% panelbody %}
+                    <form method="post" enctype="multipart/form-data" action="/dia/view_mitigation_design_plan/?project_id={{ project_id }}"
+                          name="section_four">
+                        {% csrf_token %}
+                        <fieldset id="section_four_fieldset">
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul id="one">
+                                    <li><h4>Is the project prepared keeping in view the Building Codes of Pakistan
+                                        2007? </h4>
+                                        <p>{{ form_section_four.building_codes }}</p></li>
+                                </ul>
+                            {% endcolumn %}
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul id="two">
+                                    <li><h4>Is the project prepared keeping in view the principal Building
+                                        bye-laws? </h4>
+                                        <p>{{ form_section_four.building_bye_laws }}</p></li>
+                                </ul>
+                            {% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul id="three">
+                                    <li><h4>Is the Project prepared keeping in view the checklist for Disaster Risk
+                                        Reduction (Infrastructure Sector), circulated by Planning Commission of
+                                        Pakistan? </h4>
+                                        <p>{{ form_section_four.disaster_risk_reduction }}</p></li>
+                                </ul>
+                            {% endcolumn %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul id="four">
+                                    <li>
+                                        <h4>
+                                            In case of flood hazard, is the project prepared keeping in view the
+                                            guidelines of Federal
+                                            Flood Commission of Pakistan?
+                                        </h4>
+                                        <p>{{ form_section_four.flood_hazard_guideline }}</p></li>
+                                </ul>
+                            {% endcolumn %}
+
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul id="five">
+                                    <li><h4>Is the project incorporate the prevailing Environmental Impact Assessment
+                                        (EIA)?
+                                    </h4>
+                                        <p>{{ form_section_four.environmental_impact_assessment_field }}</p></li>
+                                </ul>
+                            {% endcolumn %}
+                        </div>
+                        <div class="row">
+                            {% column md="8" %}
+                                <ul>
+                                    <li><h4>Attach File/s
+                                    </h4>
+                                        <p>{{ form_file_field.filedoc }}
+                                        </p></li>
+                                </ul>
+                            {% endcolumn %}
+                        </div>
+                        <br>
+                        <br>
+                        <div class="row" style="text-align: center">{% column md="12" %}
+                            <button type="submit" class="btn btn-success"> Submit</button>{% endcolumn %}</div>
+                        </fieldset>
+                    </form>
+
+                {% endpanelbody %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>#}
+    <script type="text/javascript" src="{% static "ferrp/dia/js/dia.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/includes/sideNavManager.js" %}"></script>
+    {#    <link rel="stylesheet" href="{% static "css/jqx.base.css" %}"/>#}
+    <script>
+        var padding = 6;
+        $(document).ready(function () {
+{#            $("#sectionOne").css('height', $("#section-one").height());#}
+            var section = '{{ section }}';
+            var sideNavManager = new SideNavManager();
+            sideNavManager.manageSections(section);
+            var user = null;
+            {% if user.is_authenticated %}
+                user = '{{ user.username }}';
+            {% endif %}
+              if(user != null)
+              {
+                  console.log(user);
+
+              }
+              else
+              {
+               console.log(user);
+
+               $("#section_four_fieldset").attr("disabled", "disabled");
+
+              }
+        });
+
+    </script>
+    <style>
+
+        ul#id_building_codes li, ul#id_building_bye_laws li, ul#id_disaster_risk_reduction li, ul#id_flood_hazard_guideline li, ul#id_environmental_impact_assessment_field li {
+            display: inline-block;
+            width: 180px;
+            height: 10px;
+            padding: 5px;
+            margin-left: -40px;
+        }
+
+
+    </style>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base/base_irrigation.html" %}
+{% load static %}
+{% block title %} Irrigation{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+{#        var str_mail_data = '{{ mail_data|safe }}';#}
+{#        var mail_data = JSON.parse(str_mail_data);#}
+{#        var str_data_type ='{{ data_type|safe }}';#}
+{#        var data_type = JSON.parse(str_data_type);#}
+{#        alert(mail_data.tableData);#}
+    </script>
+    <script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/GridColumns.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/GlobalFunctions.js" %}"></script>
+    <script type="text/javascript" src="{% static "irrigation/js/Arz/MailModels/MailDataModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+        var imgPath = "{% static "ferrp/img/irrigation/" %}";
+    </script>
+{% endblock %}
+
+{% block extra_tab %}
+    <li><a href="{% url "irrigation_home" %}">Commanded Area</a></li>
+    <li><a href="{% url "irrigation_canals" %}">Canal</a></li>
+    <li><a href="{% url "irrigation_dams" %}">Dam/Headwork</a></li>
+    <li><a href="{% url "irrigation_gw" %}">Ground Water</a></li>
+{% endblock %}
+
+{% block maincontent %}
+    <div class="row">
+        <div id="irrigationDashboard" class="col-sm-12" style="height: 90%; margin-top: 20px;"></div>
+    </div>
+{% endblock  %}
+

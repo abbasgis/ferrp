@@ -1,0 +1,151 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block title %} Layers Viewer{% endblock %}
+{% block extra_style %}
+    <style>
+        .jqx-layout-group-auto-hide-content-vertical {
+            width: 300px;
+        }
+
+        .jqx-widget-content {
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 90%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+    </style>
+{% endblock %}
+{% block maincontent %}
+
+    <div id="viewport" class="container">
+
+        <div id="jqxLayout" class="row" style="background: lightgrey">
+            <div data-container="MapPanel">
+                {% include "include/jqxToolbar.html" %}
+                {% include "include/ol_properties_popup.html" %}
+                {% include "include/map2d.html" %}
+                {#                <div id="map"></div>#}
+            </div>
+            <div id="outputpanel" data-container="OutputPanel" style="overflow: hidden">
+                <div id="output" style="height: 100%; width: 100%;"></div>
+
+            </div>
+
+            <!--right tabbedGroup-->
+            {#            <div data-container="SolutionExplorerPanel">#}
+            {#                <div id="solutionExplorerTree" style="border: none;">#}
+            {#                </div>#}
+            {#            </div>#}
+            <div id="SettingPanel" data-container="SettingPanel">
+                <div id="settings" style="padding:7px; display: none;">
+                    <div class="dropdown" style="width: 100%">
+                        <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+                            Set Layer Label
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button id="btnShowLabel" class="btn btn-primary btn-block">Show/Hide Label</button>
+                            </li>
+                            <li>
+                                <button id="btnLabelStyling" class="btn btn-primary btn-block">Label Styling</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {% if is_owner == True %}
+                        <button id="btnSetIcon" class="btn btn-primary btn-block">Set Layer Icon</button>
+
+                        {#                        <button id="btnLayerStyling" class="btn btn-primary btn-block" data-toggle="modal"#}
+                        {#                                 data-target="#LayerStylingModal">Set Layer Style#}
+                        {#                        </button>#}
+                        <button id="btnLayerStyling" class="btn btn-primary btn-block">Set Layer Style</button>
+                        <button id="btnLayerPermission" class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#LayerPermissionModal">Set Layer Permission
+                        </button>
+                        <button id="btnDeleteLayer" class="btn btn-primary btn-block">Delete Layer</button>
+                        <button id="btnCreateSubLayer" class="btn btn-primary btn-block">Create Sub Layer</button>
+                    {% endif %}
+
+                    <button id="btnShowAttribTable" class="btn btn-primary btn-block">Show Attribute Table
+                    </button>
+                    {% if can_download == True %}
+                        <button id="btnDownloadLayer" class="btn btn-primary btn-block">Download Layer</button>
+                    {% endif %}
+
+
+
+
+                    {#                    <button id="btnShowLabel" class="btn btn-primary btn-block">Show Label#}
+                    {#                    </button>#}
+                    <button id="btnShowLegendGraphics" class="btn btn-primary btn-block">Show Legend Graphics
+                    </button>
+                    {% if info.geom_type == "LineString" %}
+                        <button id="btnCreateRoadNetwork" class="btn btn-primary btn-block">Create Network</button>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="OrientationPanel" data-container="OrientationPanel">
+                {% include "include/camera_3d.html" %}
+            </div>
+        </div>
+
+    </div>
+
+
+    {% url "set_layer_permission" as lp_url %}
+    {% include "include/permission_form.html" with permission_url=lp_url option_type="download" item_name=info.layer_name %}
+    {% url "set_layer_style_view" as ls_url %}
+    {% include "include/styling_form.html" with layer_style_url=ls_url %}
+    {#    {% url "attribute_list" as al_url %}#}
+    {#    {% include "include/choropleth_styling.html" with layer_style_url=ls_url attribute_list_url=al_url%}#}
+    {#    {% include "include/styling_form.html" %}#}
+    {% include "include/waiting_dialog.html" %}
+    {% include "include/jqx_grid_and_chart.html" %}
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        layerInfo = {}
+        layerInfo.csrfToken = '{{ csrf_token }}';
+        layerInfo.extent = {{ info.extent }};
+        layerInfo.title = '{{ info.name }}';
+        layerInfo.layerName = '{{ info.layer_name }}';
+        layerInfo.layerType = '{{ info.layer_type }}';
+        layerInfo.geomType = '{{ info.geom_type }}';
+        layerInfo.canDownload = '{{ can_download }}';
+        layerInfo.isTempStyle = false;
+        layerInfo.url = '{% url "wms_get_map" %}';
+        layerInfo.urlDownloadLayer = "{% url "lyr_download" %}";
+        layerInfo.urlDeleteLayer = "{% url "lyr_delete" %}";
+        layerInfo.urlSetLayerIcon = '{% url "set_layer_icon" %}';
+        layerInfo.urlLayerBrowser = '{% url "layer_browse" %}';
+        layerInfo.urlGetFeature = '{% url "get_feature" %}';
+    </script>
+
+    <script src="{% static "vendor/Hermite-resize-master/dist/hermite.js" %}"></script>
+    <script src="{% static "ferrp/layers/js/Layer_Jqx_VM.js" %}"></script>
+
+    <script>
+        var cameraSettingVM = new CameraSettingVM();
+        var layerJqxVM = new LayerJqxVM('viewport', layerInfo);
+        $(document).ready(function () {
+            var olMapModel = new OLMapModel(layerInfo.extent, "map", "layerSwitcher", layerJqxVM, layerInfo.csrfToken, cameraSettingVM)
+            layerJqxVM.setLayout(olMapModel);
+        });
+        $(window).resize(function () {
+            layerJqxVM.setViewportLayoutHeight();
+        });
+
+
+        $("#msgContainer").fadeTo(2000, 500).slideUp(500, function () {
+            $("#msgContainer").slideUp(500);
+        });
+
+    </script>
+
+{% endblock %}

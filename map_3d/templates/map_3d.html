@@ -1,0 +1,38 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block extra_style %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static "vendor/ext-6.2.0-gpl/ext-6.2.0/build/classic/theme-crisp/resources/theme-crisp-all.css" %}"/>
+    {#     <link rel="stylesheet" type="text/css"#}
+    {#          href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.2.0/packages/ux/classic/crisp/resources/ux-all.css"/>#}
+
+    <style>
+{#        @import url({% static "vendor/Cesium-1.41/Build/Cesium/Widgets/widgets.css" %});#}
+        @import url({% static "vendor/Cesium-1.48/Build/Cesium/Widgets/widgets.css" %});
+        #extviewport {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+        {#                    background-color: black;#}
+        }
+    </style>
+{% endblock %}
+{% block Ext_VeiwPort %}
+    <div id="extviewport"></div>
+{% endblock %}
+{% block extra_script %}
+    <script src="{% static "vendor/ext-6.2.0-gpl/ext-6.2.0/build/ext-all.js" %}"></script>
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.2.0/packages/ux/classic/ux.js"></script>#}
+    <script src="{% static "vendor/Cesium-1.48/Build/Cesium/Cesium.js" %}"></script>
+    <script>
+        var url_wms_map = '{% url "wms_get_map" %}';
+        var url_add_layer_data = "{% url 'add_layer_data' %}";
+    </script>
+    <script src="{% static "map_3d/js/map_3d_Ext_VM.js" %}"></script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+
+.level0 {
+    background-color: white !important;
+    color: #4469f5 !important;
+    text-align: center;
+}
+
+.level1 {
+    background-color: #e8e4ac;
+    color: #e80b16;
+    text-align: center;
+}
+
+.level2 {
+    background-color: #f4eff5;
+    color: #18ab06;
+    text-align: center;
+}
+
+.level3 {
+    background-color: #ffcfe3;
+    color: #ab0481;
+    text-align: center;
+}
+
+.same {
+    background-color: #fcffdc;
+    color: #190e1d;
+    text-align: center;
+}

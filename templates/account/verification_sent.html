@@ -1,0 +1,13 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+{% block maincontent %}
+
+    <div class="container" style="background-color: #fffbdf">
+        <h1 style="margin-top: 10px; text-align: center">{% trans "Verify Your E-mail Address" %}</h1>
+        <p style="text-align: center">{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the
+            signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+
+    </div>
+{% endblock %}

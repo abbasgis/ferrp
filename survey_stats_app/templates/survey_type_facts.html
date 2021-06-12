@@ -1,0 +1,125 @@
+{% extends "base/base_pdma.html" %}
+{% load static %}
+{% block title %} Socio-Economic Data{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet"
+          href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+    <link rel="stylesheet" href=" {% static "vendor/openlayer/ol.css" %}"/>
+    <link rel="stylesheet" href=" {% static "vendor/openlayer/style.css" %}"/>
+    <link rel="stylesheet" href=" {% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/theme/teal/flexmonster.css" %}" />
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+{% endblock %}
+
+{% block extra_script %}
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>#}
+{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/openlayer/ol.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/openlayer/ol-ext.js" %}"></script>
+    {#    <script type="text/javascript" src="{% static "vendor/openlayer/FontMakiDef.js" %}"></script>#}
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/highcharts.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/modules/data.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/highmaps/modules/exporting.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/underscore-1.8.3/underscore-min.js" %}"></script>
+    <script src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script src="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/FactsModels/AdminHierarchyToolbar.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/FactsModels/AdminLevelComboesModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/FactsModels/FactsModel.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/SuveryTypeFactsVM.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+        var imgPath = "{% static "ferrp/img/" %}";
+
+    </script>
+{% endblock %}
+
+{% block extra_tab %}
+
+{% endblock %}
+
+{% block maincontent %}
+
+    <div class="container-fluid">
+        <div id="factsDashboard" class="row" style="height: 90%; margin-top: 20px;"></div>
+    </div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+
+    <div class="modal fade" id="uploadPolygonModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload Polygon</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="filePolygon">Supported file types(.shp, .dbf, .prj, .shx)</label>
+                                <input type="file" class="form-control" id="filePolygon" name="filePolygon" aria-describedby="emailHelp" placeholder="Enter email" multiple />
+                            </div>
+                            <button id="btnUploadPolygon" name="btnUploadPolygon" class="btn btn-primary form-control">Get Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base/site_base_dch.html" %}
+{% load bootstrap_ui_tags %}
+{% block title %} Layers Catalogue{% endblock %}
+{% block extra_style %}
+    <style>
+        .imgdiv {
+            color: lightgrey;
+        }
+
+        #alternateIcon.glyphicon {
+            font-size: 100px;
+        }
+
+        .col-center {
+            align: center;
+        }
+    </style>
+{% endblock extra_style %}
+
+{% block maincontent %}
+    <div class="container singleborder" style="padding:15px;">
+        {% panel %}
+            {% panelheading %}
+                {% row %}
+                    {% column %}
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#itemFilterModal">
+                                <span class="glyphicon glyphicon-filter"></span></button>
+
+                            {% url "view_map" as view_map_url %}
+                            {% include "include/items_filter.html" with list=list headingKey="title" iconKey="icon" itemNameKey="name" itemurl=view_map_url urlParams="item_name"  %}
+
+                        </div>
+
+                        {#                        {% if perms.ferrp.fileupload %}#}
+                        <div class="btn-group pull-right">
+                            <a href="{% url 'create_map' %}">
+                                <button class="btn btn-primary">
+                                    Create New Map
+                                </button>
+                            </a>
+
+                        </div>
+                        {#                        {% endif %}#}
+                    {% endcolumn %}
+
+                {% endrow %}
+            {% endpanelheading %}
+            <div id="itemListBody" class="panel-body">
+                {% url "view_map" as view_map %}
+                {% url "delete_map" as delete_map %}
+                {% include "include/item_info_list.html" with list=list type="Map" view_url=view_map delete_url=delete_map %}
+            </div>
+
+        {% endpanel %}
+    </div>
+{% endblock maincontent %}
+{% block extra_script %}
+    <script>
+        {#        var layer_list ={{ list }};#}
+        {#        var url = {% url "view_layer" %};#}
+        {#        $('#btnViewLayer').click(function(){#}
+        {#            wi#}
+        {#        })#}
+    </script>
+{% endblock %}

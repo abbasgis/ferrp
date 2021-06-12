@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Welcome to Flexmonster Pivot Table and Charts Component</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<!-- HEADER -->
+	<div class="container">
+		<div class="header">
+			<div class="headerLogo">
+                <a href="http://www.flexmonster.com/" target="_blank"><img src="http://www.flexmonster.com/images/email/logo.svg" height="40" border="0" /></a>
+            </div>
+	    </div>
+		<div class="ContentArea">
+			<div class="MainWideArea"></div>
+			<div class="MainArea">
+				<div>
+					<h1>How to connect to relational database</h1>
+		<p>Everyone who has ever made reports or pivot tables with relational databases has most probably faced the problem with finding a suitable component that not only performs all required functions but also executes them fast. Flexmonster solved this problem and created <b>Flexmonster Data Compressor – a special server-side compression tool that helps you to increase data loading speed from server to customer’s browser</b>.</p>
+<p>Advantages of Flexmonster Compressor:</p>
+<ul>
+<li>Easy convert response from database with few lines of code</li>
+<li>Stream large datasets with minimum delay to the user</li>
+<li>Lightweight and simple format which does not require significant amount of RAM and CPU power</li>
+<li>Available for various platforms and databases</li>
+</ul></p>
+				<h3>Step 1: Embed the component into your web page</h3>
+					<p>Embedding Flexmonster Pivot is a simple copy-paste procedure that takes just minutes!</p>
+					<ul>
+						<li>Copy contents of <code>client/</code> folder into the web project root to your server.</li>
+						<li>Create <code>&lt;div&gt;</code> container for the component:
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+</pre>
+	</li>
+						<li>Include <code>flexmonster.js</code> into your HTML page. Please note, that your page should be in the same folder as <code>flexmonster/</code>:
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/flexmonster.js"</span>&gt;&lt;/script&gt;</span>
+</pre>
+	</li>
+						<li>Add simple script to embed the component:
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/flexmonster.js"</span>&gt;&lt;/script&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+   var pivot = new Flexmonster({
+      container: <span class="value">"pivotContainer"</span>,
+      toolbar: <span class="value">true</span>,
+      licenseKey: <span class="value">"Z7CJ-XF9J50-5J4J6X-2H136N-2L036W-1A0O01-6S5S6R-0W0T20-3C"</span>
+   });
+<span class="tag">&lt;/script&gt;</span>
+</pre>
+	</li>
+</ul>
+<p>Run your web page and see the empty table. The next step is to see your own data on the grid.</p>
+
+<h3>Step 2: Setup Data Compressor on the server</h3>
+<p>The package has compressor tools and samples for three server-side technologies:</p>
+	<ul>
+		<li>.NET - <code>server/.net/</code> folder contains ASP.NET Web API 2 sample project </li>
+		<li>Java - <code>server/java/</code> folder contains sample for Java compression tool</li>
+		<li>PHP - <code>server/php/</code> folder contains PHP library and samples for static files and MySQL database</li>
+	</ul>
+<p>Please visit our documentation for step-by-step tutorials:</p><ul>
+	<li><a target="_blank" href="http://www.flexmonster.com/doc/connecting-to-relational-database-with-net/">Connecting to relational database with .NET</a></li>
+	<li><a target="_blank" href="http://www.flexmonster.com/doc/connecting-to-relational-database-with-java/">Connecting to relational database with Java</a></li>
+	<li><a target="_blank" href="http://www.flexmonster.com/doc/connecting-to-relational-database-with-php/">Connecting to relational database with PHP</a></li>
+</ul><h3>Step 3: Enable cross-origin resource sharing (CORS).</h3>
+	<p> By default, browser prevents JavaScript from making requests across domain boundaries. CORS allows web applications to make cross-domain requests.
+		Here are some useful links explain how to setup CORS on your server: 
+		<ul>
+			<li>IIS - <a href="http://enable-cors.org/server_iis7.html" target="blank">CORS on IIS</a></li>
+			<li>Apache - <a href="http://enable-cors.org/server_apache.html" target="blank">CORS on Apache</a></li>
+			<li>Tomcat - <a href="http://tomcat.apache.org/tomcat-8.0-doc/config/filter.html#CORS_Filter" target="blank">Configuration Reference (CORS Filter)</a></li>
+			<li>Jetty - <a href="http://wiki.eclipse.org/Jetty/Feature/Cross_Origin_Filter" target="blank">Jetty/Feature/Cross Origin Filter</a></li>
+			<li>JBOSS - <a href="http://software.dzhuvinov.com/cors-filter-installation.html" target="blank">CORS Filter Installation</a></li>
+		</ul>
+	</p>
+
+	<h3>Step 4: Configure report with your own data</h3>
+<p>Now it’s time to configure Flexmonster Pivot Component on the web page. Let’s create a minimal report for this (replace <code>filename</code> and other parameters with your specific values):</p>
+<pre>var pivot = new Flexmonster({
+   container: <span class="value">"pivotContainer"</span>,
+   toolbar: <span class="value">true</span>,
+   report: {
+      dataSource: {
+         dataSourceType: <span class="value">"ocsv"</span>,
+
+         <span class="comment">/* URL to the Data Compressor .NET */</span>  
+         filename: <span class="value">"http://localhost:55772/api/flexmonster/get"</span>,
+
+         <span class="comment">/* OR URL to the Data Compressor Java */</span>
+         <span class="comment">/* filename: "http://localhost:8400/FlexmonsterCompressor/get", */</span>
+
+         <span class="comment">/* OR URL to the Data Compressor PHP */</span>
+         <span class="comment">/* filename: "http://localhost/demo-compress-mysql.php", */</span>
+      }
+   },
+   licenseKey: <span class="value">"Z7CJ-XF9J50-5J4J6X-2H136N-2L036W-1A0O01-6S5S6R-0W0T20-3C"</span>
+);
+</pre>
+<p>Launch the web page from browser — here you go! A pivot table is embedded into your project.</p>
+					<h3>See live demo</h3>
+					<p>See how Data Compressor is used in <a href="client/index.html" target="_blank">client/index.html</a> and connect to your own database.</p>
+
+					</br>
+				</div>
+
+				<table class="BottomLinks">
+					<tr>
+						<td>
+							<a href="http://www.flexmonster.com/pricing/" target="_blank">Check pricing</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/contact/" target="_blank">Give a feedback</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/doc/" target="_blank">Documentation</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/forum/" target="_blank">Technical support</a>
+						</td>
+					<tr>
+				</table>
+				<br/>
+			</div>
+		</div>
+    </div>
+</body>
+</html>

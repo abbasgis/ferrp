@@ -1,0 +1,163 @@
+<div id="LayerPermissionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Set Layer Permission</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Who can view it</h3>
+
+                <input id="chkViewPublic" type="checkbox"/>Anyone <br/>
+                <span>User</span>
+                <select id="viewUser" class="selectpicker selectusercls" data-width="100%" data-live-search="true"
+                        multiple>
+                </select>
+                <span>Department</span>
+                <select id="viewDepartment" class="selectpicker selectdeptcls" data-width="100%" data-live-search="true"
+                        multiple>
+                </select>
+                <h3>Who can {{ option_type }} it</h3>
+                <input id="chkDownPublic" type="checkbox"/>Anyone <br/>
+
+                <span>User</span>
+                <select id="downloadUser" class="selectpicker selectusercls" data-width="100%" data-live-search="true"
+                        multiple>
+                </select>
+                <span>Department</span>
+                <select id="downloadDepartment" class="selectpicker selectdeptcls" data-width="100%"
+                        data-live-search="true" multiple>
+
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSetPermission" class="btn btn-primary">Set Permission</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        var url = "/get_user_department_list";
+        var item_name = '{{ item_name }}'
+        var entities = null;
+        callAJAX({url: url, dataType: "json"}, function (data) {
+            var depts = data.depts;
+            var users = data.users;
+            var depthtml = "";
+            {#            var depthtml = "<option value='Public'>Any One</option>";#}
+            for (var i = 0; i < depts.length; i++) {
+                depthtml += "<option value='" + depts[i][1] + "'>" + depts[i][1] + "</option>";
+            }
+            $("select.selectdeptcls").html(depthtml).selectpicker('refresh');
+            var userhtml = "";
+            {#            var userhtml = "<option value='Public'>Any One</option>";#}
+            for (var i = 0; i < users.length; i++) {
+                userhtml += "<option value='" + users[i][1] + "'>" + users[i][1] + "</option>";
+            }
+            $("select.selectusercls").html(userhtml).selectpicker('refresh');
+            var url = '/layers/get_layer_permission/?layer_name=' + item_name;
+            callAJAX({url: url, dataType: "json"}, function (data) {
+                entities = data;
+                _.each(entities.viewUser, function (val) {
+                    if (val == "Public") {
+                        $('#chkViewPublic').prop('checked', true);
+                        $('#viewUser').attr('disabled', true);
+                        $('#viewDepartment').attr('disabled', true);
+                    } else {
+                        $('#viewUser option[value="' + val + '"]').attr('selected', true);
+                    }
+                });
+                _.each(entities.viewDept, function (val) {
+                    $('#viewDepartment option[value="' + val + '"]').attr('selected', true);
+                });
+                _.each(entities.downloadUser, function (val) {
+                    if (val == "Public") {
+                        $('#chkDownPublic').prop('checked', true);
+                        $('#downloadUser').attr('disabled', true);
+                        $('#downloadDepartment').attr('disabled', true);
+                    } else {
+                        $('#downloadUser option[value="' + val + '"]').attr('selected', true)
+                    }
+                });
+                _.each(entities.downloadDept, function (val) {
+                    $('#downloadDepartment option[value="' + val + '"]').attr('selected', true);
+                });
+                $("select.selectdeptcls").selectpicker('refresh');
+                $("select.selectusercls").selectpicker('refresh');
+            });
+        });
+
+        $("#chkViewPublic").change(function () {
+            $('#viewUser').attr('disabled', this.checked);
+            $('#viewDepartment').attr('disabled', this.checked);
+            $("select#viewUser").selectpicker('refresh');
+            $("select#viewDepartment").selectpicker('refresh');
+        });
+
+        $("#chkDownPublic").change(function () {
+            $('#downloadUser').attr('disabled', this.checked);
+            $('#downloadDepartment').attr('disabled', this.checked);
+            $("select#downloadUser").selectpicker('refresh');
+            $("select#downloadDepartment").selectpicker('refresh');
+        });
+        $('#btnSetPermission').click(function () {
+            var viewUserVal_add = "-1", viewUserVal_remove = "-1";
+            var viewDeptVal_add = "-1", viewDeptVal_remove = "-1";
+            var downloadUserVal_add = "-1", downloadUserVal_remove = "-1";
+            var downloadDeptVal_add = "-1", downloadDeptVal_remove = "-1";
+            if ($('#chkViewPublic')[0].checked) {
+                var viewUserVal_add = "Public";
+            } else {
+                if ($('#viewUser').val() != null) {
+                    var vals = $('#viewUser').val();
+                    viewUserVal_remove = _.difference(entities.viewUser, vals);
+                    viewUserVal_add = _.difference(vals, entities.viewUser);
+{#                    alert("remove:" + viewUserVal_remove + ", add:" + viewUserVal_add);#}
+                }
+                if ($('#viewDepartment').val() != null) {
+                    var vals = $('#viewDepartment').val();
+                    viewUserVal_remove = _.difference(entities.viewDept, vals);
+                    viewUserVal_add = _.difference(vals, entities.viewDept);
+{#                    alert("remove:" + viewDeptVal_remove + ", add:" + viewDeptVal_add);#}
+                }
+            }
+            if ($('#chkDownPublic')[0].checked) {
+                var downloadUserVal_add = "Public";
+            } else {
+                if ($('#downloadUser').val() != null) {
+                    var vals = $('#downloadUser').val();
+                    downloadUserVal_remove = _.difference(entities.downloadUser, vals);
+                    downloadUserVal_add = _.difference(vals, entities.downloadUser);
+{#                    alert("remove:" + downloadUserVal_remove + ", add:" + downloadUserVal_add);#}
+                }
+                if ($('#downloadDepartment').val() != null) {
+                    var vals = $('#downloadDepartment').val();
+                    downloadUserVal_remove = _.difference(entities.downloadDept, vals);
+                    downloadUserVal_add = _.difference(vals, entities.downloadDept);
+{#                    alert("remove:" + downloadDeptVal_remove + ", add:" + downloadDeptVal_add);#}
+                }
+            }
+
+            var url = "{{ permission_url }}" + "?view_users_add=" + viewUserVal_add + "&view_users_remove=" + viewUserVal_remove +
+                "&view_depts_add=" + viewDeptVal_add +"&view_depts_remove=" + viewDeptVal_remove +
+                "&download_users_add=" + downloadUserVal_add +"&download_users_remove=" + downloadUserVal_remove +
+                "&download_depts_add=" + downloadDeptVal_add + "&download_depts_remove=" + downloadDeptVal_remove + "&item_name=" + item_name;
+
+            callAJAX({url: url}, function (data) {
+                obj = JSON.parse(data)
+                if (obj.res_no == 200) {
+                    alert_type = dialogTypes.success;
+                } else {
+                    alert_type = dialogTypes.error;
+                }
+                showAlertDialog(obj.res_text, alert_type);
+            });
+
+        });
+    })
+</script>

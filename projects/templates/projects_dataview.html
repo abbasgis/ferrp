@@ -1,0 +1,100 @@
+{% extends "base/site_base_dch.html" %}
+{% load bootstrap_ui_tags %}
+{% load dch_tags %}
+{% block title %} Layers Catalogue{% endblock %}
+{% block extra_style %}
+    <style>
+        .imgdiv {
+            color: lightgrey;
+        }
+
+        #alternateIcon.glyphicon {
+            font-size: 100px;
+        }
+
+        .col-center {
+            align: center;
+        }
+    </style>
+{% endblock extra_style %}
+
+{% block maincontent %}
+    <div class="container singleborder" style="padding:15px;">
+        {% panel %}
+            {% panelheading %}
+                {% row %}
+                    {% column %}
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#itemFilterModal">
+                                <span class="glyphicon glyphicon-filter"></span></button>
+                            {% url "view_document" as view_url %}
+                            {% include "include/items_filter.html" with list=list headingKey="title" iconKey="icon" itemNameKey="name" itemurl=view_url urlParams="doc_name" %}
+                        </div>
+                        {#                        {% if perms.ferrp.fileupload %}#}
+                        <div class="btn-group pull-right">
+                            <a href="{% url 'upload_document' %}">
+                                <button class="btn btn-primary">
+                                    Upload Document
+                                </button>
+                            </a>
+
+                        </div>
+                        {#                        {% endif %}#}
+                    {% endcolumn %}
+
+                {% endrow %}
+            {% endpanelheading %}
+            <div id="itemListBody" class="panel-body">
+                {% for item in list %}
+                    {% row %}
+                        {% column md="10" md_offset="1" %}
+                            {% panel %}
+                                {% panelheading %}<h2>{{ item.title }}</h2>{% endpanelheading %}
+                                {% panelbody %}
+                                    {% row %}
+                                        {% column md="4" %}
+                                            <div class="imgdiv center-block" align="center"
+                                                 style="height:120px; padding:5px">
+                                                {% if item.icon == None %}
+                                                    <i id="alternateIcon" class="glyphicon glyphicon-file"></i>
+                                                {% else %}
+                                                    <img class="img-responsive center-block" width="200" height="120"
+                                                         src="{{ item.icon }}"/>
+                                                {% endif %}
+                                            </div>
+                                        {% endcolumn %}
+                                        {% column md="8" %}
+                                            <table class="table table-striped table-condensed"
+                                                   style="table-layout:fixed">
+                                                {% for key,value in item.items %}
+                                                    <tr>
+                                                        {% if key != "icon" %}
+                                                            <th>{{ key|to_heading }}</th>
+                                                            <td style="word-wrap:break-word">{{ value }}</td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+
+                                            </table>
+
+                                        {% endcolumn %}
+                                    {% endrow %}
+                                {% endpanelbody %}
+                                <div class="panel-footer" align="center">
+                                    {#                                {% panelfooter add_css_classes="align:'center'" %}#}
+                                    <a href="{% url "view_document" %}?doc_name={{ item.name }}"
+                                       id="btnViewLayer"
+                                       class="btn btn-primary btn-block">View Layer</a>
+                                    {#                                {% endpanelfooter %}#}
+                                </div>
+                            {% endpanel %}
+                        {% endcolumn %}
+                    {% endrow %}
+
+                {% endfor %}
+            </div>
+
+        {% endpanel %}
+    </div>
+{% endblock maincontent %}

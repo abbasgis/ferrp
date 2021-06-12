@@ -1,0 +1,151 @@
+{% extends "base/base_db_conn.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}External Databases{% endblock %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/font-awesome-4.7.0/css/font-awesome.min.css" %}"/>
+{% endblock %}
+
+{% block extra_script %}
+    <script src="{% static "js/models/DBConnectionsModel.js" %}"></script>
+    <script src="{% static "js/DBConnectionsVM.js" %}"></script>
+    <script>
+        var csrf_token = {% csrf_token %};
+        function showAddConnModal() {
+            $("#addConnectionModal").modal("show");
+        }
+    </script>
+{% endblock %}
+
+{% block middle %}
+
+    <!-- Modal starts Here -->
+    <div class="modal fade bs-example-modal-sm" id="myPleaseWait" name="myPleaseWait" tabindex="-1"
+         role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span class="glyphicon glyphicon-time">
+                        </span>Please Wait
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info
+                        progress-bar-striped active"
+                             style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal ends Here -->
+
+    {##}
+    <div class="modal fade" id="addConnectionModal" name="addConnectionModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <legend>New Database Connection:</legend>
+                    <!-- panel preview -->
+                    {#                    <h4>Add Connection:</h4>#}
+                    <form id="frmAddConnection" action="{% url "insert_connection_in_db" %}" method="post">
+                        {% csrf_token %}
+                        <div class="panel panel-default">
+                            <div class="panel-body form-horizontal payment-form">
+                                <div class="form-group">
+                                    <label for="concept" class="col-sm-4 control-label">Database Provider:</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="cmbDbProviders" name="cmbDbProviders">
+                                            <option>Select DB Provider</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount" class="col-sm-4 control-label">Host IP Address:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="txtHost" value="localhost"
+                                               name="txtHost">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount" class="col-sm-4 control-label">Database Port:</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" id="txtPort" value="5432"
+                                               name="txtPort">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-4 control-label">Database Name:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="txtDBName" value="irrigation"
+                                               name="txtDBName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-4 control-label">Database User:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="txtUserName" value="postgres"
+                                               name="txtUserName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-4 control-label">Database Password:</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" id="txtPassword" value="idreesgis"
+                                               name="txtPassword">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 text-right">
+                                    <button type="button" class="btn btn-default preview-add-button"
+                                            id="btnTestConnection"
+                                            name="btnTestConnection">
+                                        <span class="glyphicon glyphicon-cog"></span> Test Connection
+                                    </button>
+                                    <button type="submit" class="btn btn-default preview-add-button">
+                                        <span class="glyphicon glyphicon-plus"></span> Add Connection
+                                    </button>
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- / panel preview -->
+                </div>
+                {#                <div class="modal-footer">#}
+                {##}
+                {#                </div>#}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block maincontent %}
+
+    <div class="container" style="padding-top: 5px">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="btn btn-primary" id="btnAddNewConnection" name="btnAddNewConnection">Add
+                            Connection
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="text-align: center !important;">Connected Databases</div>
+                            <div class="panel-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "admin/app_index.html" %}
+{% load i18n admin_urls %}
+{% load static %}
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">
+        <a href="{% url 'admin:index' %}"><img src={% static "assets/img/logo.png" %}  height="45" width="55"></a>
+        <a href="{% url 'admin:index' %}"><img src={% static "assets/img/piupnd.png" %}  height="45" width="55"></a>
+        <SPAN STYLE="margin-left: 5px">Test Title</SPAN></a></h1>
+    {#        <a href="/"><img src={% static "assets/img/piupnd.png" %}  height="45" width="55"></a></a></h1>#}
+{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+{% endblock %}
+

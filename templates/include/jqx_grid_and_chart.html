@@ -1,0 +1,22 @@
+{% load static %}
+{#<div id="grid" style="height: 100%; width: 100%;"></div>#}
+<style>
+    .bootstrap-dialog .modal-header.bootstrap-dialog-draggable {
+        cursor: move;
+    }
+</style>
+
+
+<link rel="stylesheet" href="{% static "vendor/jq-querybuilder/dist/css/query-builder.dark.css" %}"/>
+<script type="text/javascript"
+        src="{% static "vendor/jq-querybuilder/dist/js/query-builder.standalone.min.js" %}"></script>
+
+<script type="text/javascript" src="{% static "ferrp/js/jqxGridnQuerynToplogyModel.js" %}"></script>
+<script type="text/javascript" src="{% static "ferrp/js/JqxChartsModel.js" %}"></script>
+
+<script>
+    var gridInfo = {}
+    gridInfo.attribute_url = "{% url 'get_attribute_data' %}"
+
+    var gridVM = new GridVM(gridInfo);
+</script>

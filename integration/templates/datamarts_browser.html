@@ -1,0 +1,95 @@
+{% extends "base/base_dch.html" %}
+
+{% load static %}
+{% load bootstrap3 %}
+{% block title %}TL{% endblock %}
+{% block extra_style %}
+    {#    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>#}
+{% endblock %}
+{% block maincontent %}
+    <div class="container singleborder">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group pull-right">
+                    <a href="{% url 'conn_params' %}">
+                        <button type="button" class="btn btn-primary" style="width:250px">
+                            <span class="glyphicon glyphicon-plus"></span> Add Datamart</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div id="row">
+            <div id="pnlIntegratedList" class="panel panel-primary">
+                <div class="panel-heading">Integration Info</div>
+                <div id="pnlIntegratedListBody" class="panel-body" style="overflow: scroll;">
+                    {% for datamart in datamarts %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel panel-heading">{{ datamart.title }}</div>
+                                    <div class="panel panel-body text-center">
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+
+                                                {#                                                <div class="imgdiv center-block" align="center"#}
+                                                {#                                                     style="height:120px; padding:5px">#}
+                                                <i class="glyphicon glyphicon-globe"
+                                                   style="font-size: 100px; color:lightgrey"></i>
+                                                {#                                                </div>#}
+                                            </div>
+                                            <div class="col-md-8">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <td>{{ datamart.name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Created by</th>
+                                                        <td>{{ datamart.created_by }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Created at</th>
+                                                        <td>{{ datamart.created_at }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="panel panel-footer text-center">
+                                        <button class="btn btn-primary viewDatasets" style="width:250px"
+                                                info="{{ datamart.name }}">View Datasets
+                                        </button>
+                                        <button class="btn btn-primary addDatasets" style="width:250px"
+                                                info="{{ datamart.name }}">Add Datasets
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $('.viewDatasets').on('click', function () {
+            var info = $(this).attr("info");
+            var url = "{% url "view_datasets" %}" + "?ds_name=" + info;
+            window.location.href = url;
+        })
+        $('.addDatasets').on('click', function () {
+            var info = $(this).attr("info")
+            var url = "{% url "add_conn" %}" + "?conn_name=" + info;
+            window.location.href = url;
+
+        })
+    </script>
+{% endblock %}

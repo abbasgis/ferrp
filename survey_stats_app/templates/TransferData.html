@@ -1,0 +1,59 @@
+{% extends "base/base_pdma.html" %}
+{% load static %}
+{% block title %} Records Count{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet"
+          href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/TransferVM.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+    </script>
+{% endblock %}
+
+{% block extra_tab %}
+
+{% endblock %}
+
+{% block maincontent %}
+
+    <div class="container">
+        <div id="recordsTransferDashboard" class="row" style="height: 90%; margin-top: 20px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">Transfer Data</div>
+                <div class="panel-body">
+                    <label for="typeList" class="textShadow">Select Type:</label>
+                    <select id="typeList" name="typeList" class="form-control">
+                        <option value="1">Residential</option>
+                        <option value="2">Public Building</option>
+                        <option value="3">Education</option>
+                        <option value="4">Health Facility</option>
+                        <option value="5">Commercial</option>
+                        <option value="6">Religious Building</option>
+                        <option value="7">Infrastructure</option>
+                        <option value="8">Terminal</option>
+                        <option value="9">Mauza General Survey</option>
+                        <option value="10">Graveyard</option>
+                        <option value="11">Parks</option>
+                        <option value="12">Bridges</option>
+                        <option value="13">Industry</option>
+                        <option value="14">COLLAPSE BUILDING</option>
+                        <option value="15">DERA JAAT</option>
+                    </select>
+                    <input type='date' id="fromDate" value="2017-01-01" class="form-control"/>
+                    <input type='date' id="toDate" value="2017-01-31" class="form-control"/>
+                    <input type='button' value="Transfer Data" id="btnTransfer" class="form-control btn btn-primary"/>
+                    <input type="text" id="txtResult" disabled class="form-control"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

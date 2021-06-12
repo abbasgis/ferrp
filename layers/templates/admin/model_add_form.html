@@ -1,0 +1,74 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+{% block content %}
+    <form id="modelParametersform" method="post" action="{% url "admin:add_existing_models_info" %}">
+        {% csrf_token %}
+        <fieldset>
+            <table>
+                <tr>
+                    <td>App Label</td>
+                    <td><select id="selApp" name="app_label" style="width: 200px;" class="form-control">
+                        <option value="-1">Select App</option>
+                        {% for key in app_info %}
+                            <option value="{{ key }}"> {{ key }}</option>
+                        {% endfor %}
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>Model Name</td>
+                    <td><select id="selModel" name="model_name" style="width: 200px;" class="form-control">
+                        <option value="-1">Select Model</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>Main Categorey</td>
+                    <td>
+                        <select name="main_category" style="width: 200px;">
+                            {% for key in cat_list %}
+                                <option value="{{ key }}"> {{ key }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit"/></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var appList = "{{ app_info|safe }}".replace(/'/g, '"');
+        appList = JSON.parse(appList)
+        $("#selApp").on('change', function (e) {
+            var app_key = $(this).find("option:selected").val();
+            var models = appList[app_key];
+            $('#selModel').find('option').remove().end().append('<option value="-1">Select Model</option>');
+            if (models) {
+                for (var i = 0; i < models.length; i++) {
+                    $('#selModel').append('<option value="' + models[i] + '">' + models[i] + '</option>');
+
+                }
+            }
+        })
+        $("form#modelParametersform").submit(function (event) {
+
+            var appLabel = $('#selApp').find("option:selected").val();
+            var modelName = $('#selModel').find("option:selected").val();
+            if(appLabel == "-1"){
+                event.preventDefault();
+                alert("Select App Name Before Submitting...");
+            }else if(modelName =="-1"){
+                event.preventDefault();
+                alert("Select Model Name Before Submitting...");
+            }
+        });
+    </script>
+{% endblock %}
+
+{#{% block field_sets %}#}
+{#    {% for fieldset in adminform %}#}
+{#        {% include "admin/includes/fieldset.html" %}#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+

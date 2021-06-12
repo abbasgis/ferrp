@@ -1,0 +1,77 @@
+{% load static %}
+{% load bootstrap_ui_tags %}
+<script>
+    var token = '{{ csrf_token }}';
+</script>
+<nav class="navbar navbar-inverse sidebar" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-sidebar-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand"><a href="http://pnddch.info/dia/" id="">DIA<span style="font-size:16px;"
+                                                                                       class="pull-right hidden-xs showopacity glyphicon "></span></a>
+            </div>
+            {#                            <a class="navbar-brand" href="#"></a>#}
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+
+                    <li class="active"><a href="/dia/view_mark_location?project_id={{ project_id }}" id="marklocation">Mark
+                            Location<span style="font-size:16px;"
+                                                                                                class="pull-right hidden-xs showopacity glyphicon "></span></a>
+                </li>
+                <li class="active"><a href="/dia/view_dia_add_data?section=1&project_id={{ project_id }}" id="sectionone">Project
+                            Description <span style="font-size:16px;"
+                                              class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+                <li class="active"><a href="/dia/view_dia_add_data?section=2&project_id={{ project_id }}" id="sectiontwo">Hazrad
+                            Identification<span style="font-size:16px;"
+                                                class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+                <li class="active"><a href="/dia/view_mhvra_page?project_id={{ project_id }}"id="analysis">Mhvra Analysis<span style="font-size:16px;"
+                                                class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+                <li class="active"><a href="#" id="sectiontwo">Financial Plan<span style="font-size:16px;"
+                                                class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+                <li class="active"><a href="#" id="sectiontwo">Work Plan<span style="font-size:16px;"
+                                                class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+
+
+
+
+                        <li class="active"><a href="/dia/view_mitigation_design_plan?project_id={{ project_id }}" id="sectionfour">Mitigation
+                            Design & Plans<span style="font-size:16px;"
+                                                class="pull-right hidden-xs showopacity glyphicon "></span></a></li>
+
+
+
+
+                        <li class="active"><a href="/dia/view_section_five?project_id={{ project_id }}"
+                               id="con">Conclusion/Remarks<span style="font-size:16px;"
+                                                                class="pull-right hidden-xs showopacity glyphicon "></span></a>
+                        </li>
+
+
+
+
+                <li class="active"><a href="{% url "view_dia_project" %}" id="viewProjects">View DIA Projects<span
+                        style="font-size:16px;"
+                        class="pull-right hidden-xs showopacity glyphicon "></span></a>
+                </li>
+                <li class="active"><a href="#" id="print" onclick="pdf_generation()">Print<span style="font-size:16px;"
+                                                                                                class="pull-right hidden-xs showopacity glyphicon "></span></a>
+                </li>
+                <li class="dropdown">
+                    <div class="dropdown-toggle"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<link rel="stylesheet" href="{% static "css/style4.css" %}"/>
+<script type="text/javascript" src="{% static "ferrp/dia/js/generate_pdf.js" %}"></script>

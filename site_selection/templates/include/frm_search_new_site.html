@@ -1,0 +1,34 @@
+<form style="display: none" id="frmSearchNewSite" class="form-horizontal" enctype="multipart/form-data" method="POST"
+      action="#">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="main_cat_id">District:</label>
+        <div class="col-sm-8">
+            <select id="main_cat_id" name="main_cat_id"
+                    data-style="btn-primary"
+                    class="show-tick form-control selectpicker"
+                    data-live-search="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="main_cat_id">Tehsil:</label>
+        <div class="col-sm-8">
+            <select id="main_cat_id" name="main_cat_id"
+                    data-style="btn-primary"
+                    class="show-tick form-control selectpicker"
+                    data-live-search="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="main_cat_id">Site:</label>
+        <div class="col-sm-8">
+            <select id="main_cat_id" name="main_cat_id"
+                    data-style="btn-primary"
+                    class="show-tick form-control selectpicker"
+                    data-live-search="true">
+            </select>
+        </div>
+    </div>
+</form>

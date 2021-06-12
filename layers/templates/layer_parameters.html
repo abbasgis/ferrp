@@ -1,0 +1,91 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>
+{% endblock %}
+{% block maincontent %}
+    <div id="fileParametersDiv"  class="container singleborder" style="display: block">
+     {% include "include/progressbar.html" %}
+        <form id="fileParametersform" method="post" action="{% url "create_view_layer" %}">
+            {% csrf_token %}
+            <input name="project_id" type="hidden" value="{{ project_id }}"/>
+            <input name="dir_id" type="hidden" value="{{ dir_id }}"/>
+            <button id="btnCreateLayer" type="submit" class="btn btn-primary btn-block btn-lg"
+                    style="font-size: 1.2em">
+                {% bootstrap_icon "upload" %}
+                Create Layer and View
+            </button>
+            {% for set in fieldsets %}
+                <fieldset{% if set.cls %} class="{{ set.cls }}"{% endif %}>
+                    <legend>{{ set.legend }}</legend>
+                    {% if set.legend == "Envelope" %}
+                        <div class="form-group row">
+                            {% for field in set %}
+                                <div class="col-md-3">
+                                    {#                                    <label for="ex1">{{ field.label }}</label>#}
+                                    {#                                    <input class="form-control" id="id_{{ field.label }}" type="text">#}
+                                    {% bootstrap_field field %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% elif set.legend == "Spatial Reference System" %}
+                        {% for field in set %}
+                            {% if forloop.counter == 1 %}
+                                <div class="col-md-8">
+                            {% else %}
+                                <div class="col-md-4">
+                            {% endif %}
+                        {% bootstrap_field field %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for field in set %}
+                            {#                        {{ field.label }} : {{ field }}#}
+                            {% bootstrap_field field layout="horizontal" %}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+            {% endfor %}
+            <fieldset class="fieldset">
+                <legend>Fields <span style="font-size: 0.8em">(Click to expand or collapse table)</span></legend>
+                <div class="content">
+                    <table id="tblFields" class="table table-striped table-condensed">
+                        <thead>
+                        <th name="name">Field Name</th>
+                        <th name="type">Type</th>
+                        <th name="size">Size</th>
+                        <th name="percision">Precision</th>
+                        </thead>
+                        <tbody>
+                        {% for item in fields %}
+                            <tr>
+                                <td>{{ item.field_name }}</td>
+                                <td>{{ item.field_type }}</td>
+                                <td>{{ item.field_width }}</td>
+                                <td>{{ item.field_precision }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <p/>
+        </form>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+{#        $('.datepicker').datepicker({#}
+{#            format: 'yyyy-mm-dd',#}
+{#            forceParse: false#}
+{#        });#}
+        var progressbarModel = new ProgressBarModel();
+        $("form#fileParametersform").submit(function (event) {
+{#            event.preventDefault()#}
+            progressbarModel.initializeProgressBarContinous();
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,384 @@
+{% extends "base_pc1.html" %}
+{% load static %}
+
+{% block extra_styles %}
+
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.base.css" %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.bootstrap.css" %}"
+          type="text/css"/>
+{% endblock %}
+
+{% block extra_scripts %}
+    {#    <script src="{% static "vendor/excel/xlsx.core.min.js" %}"></script>#}
+    {#    <script src="{% static "vendor/excel/xls.core.min.js" %}"></script>#}
+
+
+    {#    <script type="text/javascript" src="{% static "vendor/mammoth/r.js" %}"></script>#}
+    {#    <script type="text/javascript" src="{% static "vendor/mammoth/mammoth.browser.js" %}"></script>#}
+
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxcore.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxbuttons.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxscrollbar.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxlistbox.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxdropdownlist.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxdropdownbutton.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxcolorpicker.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxwindow.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxtooltip.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxcheckbox.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqxfileupload.js" %}"></script>
+
+    <script src="{% static "vendor/jspdf/jspdf.min.js" %}"></script>
+    <script src="{% static "vendor/SheetJS/xlsx.full.min.js" %}"></script>
+    <script src="{% static "js/BasicInfo/BasicInfoModel.js" %}"></script>
+    <script src="{% static "js/BasicInfoVM.js" %}"></script>
+
+    <script type="text/javascript">
+        var gs_no = {{ project_id }};
+        var detail = {{ scheme_detail|safe }};
+        var annexures_db_list = {{ scheme_annexures|safe }};
+        var annexures = [];
+        if(annexures_db_list == null){
+            annexures = [];
+        }else{
+         annexures = [annexures_db_list];
+        }
+
+
+        var token = '{{ csrf_token }}';
+        var gopLogo = "{% static "assets/img/logo.png" %}";
+
+        function getLocationMapModal() {
+            $('#locationMap').modal({
+                show: true
+            });
+        }
+
+        function loadDynamicContentModal(modal) {
+            $('#helpModal').load('../modal_image/?modal=' + modal,
+                function () {
+                    $('#helpImageModal').modal({
+                        show: true
+                    });
+                }
+            );
+        }
+    </script>
+{% endblock extra_scripts %}
+
+{% block main_content %}
+    <div id="basicInfo" style="visibility: visible">
+        <form method="post">
+            <div class="container-fluid">
+                <div class="form-group row">
+                    <label for="txtGSNo" class="col-sm-4 col-form-label">GS No: </label>
+                    <div class="col-sm-8">
+                        <input type="text" emptyText="Scheme GS number" class="form-control" id="txtGSNo"
+                               name="txtGSNo"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="txtProjectName" class="col-sm-4 col-form-label">Project Name: </label>
+                    <div class="col-sm-8">
+                        <input type="text" name="txtProjectName" class="form-control" id="txtProjectName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="btnProjectLocation" class="col-sm-4 col-form-label">Project Location: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnProjectLocation"
+                             id="btnProjectLocation" onclick="getLocationMapModal()"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Project_Location')"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="impDate" class="col-sm-4 col-form-label">Implementation Schedule: </label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" name="impStartDate" id="impStartDate">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" name="impEndDate" id="impEndDate">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="btnAuthResp" class="col-sm-4 col-form-label">Authorities Responsible: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnAuthResp"
+                             id="btnAuthResp"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Authorities_Responsible')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download" id="btnDownAuthResp"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Plan Provision:</label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnPlanProvision"
+                             id="btnPlanProvision"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Plan_Provision')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download" id="btnDownPlanProvision"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Project Objectives: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnProjectObjectives"
+                             id="btnProjectObjectives"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Project_Objectives')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownProjectObjectives"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Capital Cost Estimates: </label>
+                    <div class="col-sm-8">
+                        <div class="btn-group">
+                            <div class="btn btn-primary glyphicon glyphicon-upload" name="btnCapitalCostEstimates"
+                                 id="btnCapitalCostEstimates"></div>
+                            <div class="btn btn-primary glyphicon glyphicon-tower" name="btnCCE_PhysicalPlan"
+                                 id="btnCCE_PhysicalPlan"></div>
+                            <div class="btn btn-primary glyphicon glyphicon-stats" name="btnCCE_FinancialPlan"
+                                 id="btnCCE_FinancialPlan"></div>
+                        </div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Capital_Cost_Estimates')"></div>
+                            <button class="btn btn-warning dropdown-toggle glyphicon glyphicon-download" type="button"
+                                    data-toggle="dropdown">
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="../get_sample_file?type=physical_plan" , target="_blank">Physical Plan
+                                    Sample</a></li>
+                                <li><a href="../get_sample_file?type=financial_plan" , target="_blank">Financial Plan
+                                    Sample</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Annual Operating Cost: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnAnnualOperatingCost"
+                             id="btnAnnualOperatingCost"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Annual_Operating_Cost')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownAnnualOperatingCost"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Demand & Supply Analysis: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnDemandAndSupplyAnalysis"
+                             id="btnDemandAndSupplyAnalysis"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Demand_and_Supply_Analysis')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownDemandAndSupplyAnalysis"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Financial Plan: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnFinancialPlanText"
+                             id="btnFinancialPlanText"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Financial_Plan')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownFinancialPlanText"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Benefits of the Project Analysis: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnBenefitsOfTheProjectAnalysis"
+                             id="btnBenefitsOfTheProjectAnalysis"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Benefits_of_the_Project_and_Analysis')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownBenefitsOfTheProjectAnalysis"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Implementation Schedule: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnImplementationSchedule"
+                             id="btnImplementationSchedule"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Implementation_Schedule')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download"
+                                 id="btnDownImplementationSchedule"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Management Structure and Manpower Requirements: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnMSandMR"
+                             id="btnMSandMR"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Management_Structure_and_Manpower_Requirements')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download" id="btnDownMSandMR"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Additional Projects/Decision required: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnAPDR"
+                             id="btnAPDR"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Additional_Projects/Decision_required')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download" id="btnDownAPDR"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Certified: </label>
+                    <div class="col-sm-8">
+                        <div class="btn btn-primary glyphicon glyphicon-upload" name="btnCertified"
+                             id="btnCertified"></div>
+                        <div class="btn-group">
+                            <div class="btn btn-warning glyphicon glyphicon-question-sign"
+                                 onclick="loadDynamicContentModal('Certified')"></div>
+                            <div class="btn btn-warning glyphicon glyphicon-download" id="btnDownCertified"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-4" style="min-width: 250px;">
+                        <div class=" col-sm-6">
+                            <button id="btnSaveBasicInfo" name="btnSaveBasicInfo" class="btn btn-primary col-sm-12"
+                                    style="min-width: 100px;">
+                                Save Data <span class="glyphicon glyphicon-save"></span>
+                            </button>
+                        </div>
+                        <div class=" col-sm-6">
+                            <button id="btnGotoSpecificInfo" name="btnUploadBasicInfo" type="button"
+                                    class="btn btn-primary col-sm-12" style="min-width: 120px;">
+                                Next <span class="fa fa-arrow-right"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {#        <button style="margin-top: 5px;" name="btnSaveBasicInfo" id="btnSaveBasicInfo" class="btn-primary form-control">Save Basic Info</button>#}
+    </div>
+
+    <div id="window">
+        <div id="divWindowHeader" name="divWindowHeader">
+            Basic Information
+        </div>
+        <div style="padding: 2px; margin: 2px; height: 100%; width: 100%;">
+            <div class="jqx-window-content-body">
+                <div id="editor"></div>
+            </div>
+            <div class="jqx-window-footer">
+                <input type="button" id="btnSaveContent" name="btnSaveContent" class="btn btn-primary"
+                       value="Save Content"/>
+                <input type="button" id="cancel" class="btn btn-default" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="helpImageModal" name="helpImageModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="helpModal"></div>
+                <div class="modal-footer">
+                    {#                    <button type="button" class="btn btn-default">Upload Help Image</button>#}
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="locationMap" name="locationMap" role="dialog">
+        <div class="modal-dialog" style="width: 850px;height: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">Location Map</div>
+                <div class="modal-body">
+                    <iframe style="width: 820px; height: 470px; border: 1px solid darkgreen;"
+                            id="divProjectLocationMap" name="divProjectLocationMap"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveMap" name="btnSaveMap" class="btn btn-primary">Save Map</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadExcelModal" name="uploadExcelModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">Provide Excel Table</div>
+                <div class="modal-body">
+                    <input type="file" id="excelfile" class="btn btn-default"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="viewfile" class="btn btn-default"
+                            data-dismiss="modal">Import to HTML table
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadAnnexureModal" name="uploadAnnexureModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">Provide Excel File</div>
+                <div class="modal-body">
+                    <input type="text" id="txtAnnexureTitle" placeholder="Annexure title" class="form-control"/>
+                    <input type="file" id="annexureExcelFile" class="btn btn-default"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnImportAnnexure" class="btn btn-default"
+                            data-dismiss="modal">Import Annexure
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="jqxFileUpload"></div>
+    <div id="divExcel">
+        <table id="exceltable" hidden style="border:1px solid black;"></table>
+    </div>
+    <div id="divWord" hidden/>
+{% endblock %}

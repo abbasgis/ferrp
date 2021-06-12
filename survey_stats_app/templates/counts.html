@@ -1,0 +1,30 @@
+{% extends "base/base_pdma.html" %}
+{% load static %}
+{% block title %} Records Count{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/CountsVM.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+    </script>
+{% endblock %}
+
+{% block extra_tab %}
+
+{% endblock %}
+
+{% block maincontent %}
+
+    <div class="container">
+        <div id="recordsCountDashboard" class="row" style="height: 90%; margin-top: 20px;"></div>
+    </div>
+
+{% endblock  %}

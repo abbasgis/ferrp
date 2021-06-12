@@ -1,0 +1,133 @@
+{% load i18n %}
+<div id="navbar" class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        {% block tabs %}
+            <li id="nav_Home">
+                <a href="{% url "home_dch" %}">Home</a>
+            </li>
+            <li id="nav_layers">
+                <a href="{% url "layer_browse" %}">{% trans "Layers" %}</a>
+            </li>
+            <li id="nav_maps">
+                <a href="{% url "map_browser" %}">{% trans "Maps" %}</a>
+            </li>
+            <li id="nav_datamarts">
+                <a href="{% url "datamarts_browser" %}">{% trans "Data Marts" %}</a>
+            </li>
+            <li id="nav_documents">
+                <a href="{% url "document_browser" %}">{% trans "Documents" %}</a>
+            </li>
+            {#    <li id="nav_maps">#}
+            {#        <a href="/admin_dch/projects/projects/">{% trans "Projects" %}</a>#}
+            {#    </li>#}
+            <li id="nav_projects">
+                <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">
+                    {#                                <div class="dropdown-toggle a-div" role=button data-toggle="dropdown">#}
+                    Projects<span class="caret"></span>
+                    {#                            </div>#}
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="nav_view_projects">
+                        <a href="{% url "proj_view_projects_data" %}?app=flood_analysis">View Project Data</a>
+                    </li>
+                    <li id="nav_upload_projects">
+                        <a href="/admin_dch/projects/projects/">{% trans "Upload Projects Data" %}</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="nav_application">
+                <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">
+                    {#                                <div class="dropdown-toggle a-div" role=button data-toggle="dropdown">#}
+                    Applications<span class="caret"></span>
+                    {#                            </div>#}
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="menu-item" role="menuitem">
+                        <a href="{% url "adp_anaylsis" %}">Annual Development Program</a>
+                    </li>
+                    <li>
+                        <a href="{% url "view_cc_page" %}">Climate Change</a>
+                    </li>
+                    <li class="menu-item" role="menuitem">
+                        <a href="{% url "irrigation_home" %}">Irrigation</a>
+                    </li>
+                    <li id="nav_flood_sector">
+                        <a href="{% url "app_integration" %}?app=flood_analysis">Flood Analysis</a>
+                    </li>
+                    <li id="nav_road_sector">
+                        <a href="{% url "app_integration" %}?app=road_score">Road Scoring</a>
+                    </li>
+                    <li id="nav_road_sector">
+                        <a href="http://pcupiupnd.info/rsc/?scheme=9356">Road Scorecard</a>
+                    </li>
+                    <li id="nav_site_selection">
+                        <a href="/ssa/">Site Selection</a>
+                    </li>
+                    <li id="nav_socio_economic_data">
+                        <a href="{% url "socio_economic_home" %}">Socio-Economic Data</a>
+                    </li>
+                    <li>
+                        <a href="http://pcupiupnd.info/ppms/" target="_blank">PPMIS</a>
+                    </li>
+					<li id="nav_socio_economic_data">
+                        <a href="{% url "view_dia_project" %}">Disaster Impact Assessment (DIA)</a>
+                    </li>
+                    {#                                <li id="nav_socio_economic_data">#}
+                    {#                                    <a href="{% url "pc1" %}">PC1 Automation</a>#}
+                    {#                                </li>#}
+                </ul>
+            </li>
+
+            <li id="nav_mm">
+                <a href="{% url "mm" %}">{% trans "Meetings" %}</a>
+            </li>
+
+        {% endblock %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {% block extra_rightTab %}
+        {% endblock %}
+
+        {% if not user.is_authenticated and REGISTRATION_OPEN %}
+            <li><a href="{% url "account_signup" %}">Register</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <li class="navbar-brand" id="dropdown"></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-expanded="false">{{ user.username }}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url "logout" %}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
+                    </li>
+                    <li><a href="/accounts/google/login/?process=connect"><i
+                            class="fa fa-google-plus-square"></i>Associate Google Account</a>
+                    </li>
+                    <li><a href="{% url 'admin:index' %}"><i
+                            class="fa fa-btn fa-sign-out"></i>Manage</a>
+                    </li>
+                    <li><a href="/admin_meetings"><i
+                            class="fa fa-btn fa-sign-out"></i>Meeting Admin</a>
+                    </li>
+                    <li><a href="/admin_boundaries"><i
+                            class="fa fa-btn fa-sign-out"></i>Manage Boundaries</a>
+                    </li>
+                </ul>
+            </li>
+
+            {#                        <li>#}
+            {#                            <a href="#" data-toggle="modal" data-target="#UserModal" role="button"#}
+            {#                               aria-expanded="false">#}
+            {#                                {{ user.username }}#}
+            {#                            </a>#}
+            {#                        </li>#}
+        {% else %}
+            <li>
+                <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">
+                    Sign in
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div><!--/.nav-collapse -->

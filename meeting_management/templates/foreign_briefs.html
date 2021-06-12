@@ -1,0 +1,54 @@
+{% extends "base_mm.html" %}
+{% load static %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.base.css" %}"/>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container-fluid ">
+        <div class="row well">
+            <div class="form-group">
+                <div class="row">
+                    <h1 class="headline4">{{ title }}</h1>
+                </div>
+                <div class="col-sm-6">
+                    <label for="cmbDonorAgency" class="control-label">Donor Agency:</label>
+                    <div class="form-group">
+                        <select id="cmbDonorAgency" name="cmbDonorAgency" class="form-control">
+                            <option value="-1">Select Agency</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="cmbScheme" class="control-label">Scheme:</label>
+                    <div class="form-group">
+                        <select id="cmbScheme" name="cmbScheme" class="form-control">
+                            <option value="-1">Select Scheme</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row well">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div id="content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        var briefs_data = "{{data}}"
+        var type = "{{ type }}"
+    </script>
+    <script src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqx-all.js" %}"></script>
+    <script src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script src="{% static "ferrp/js/jqxGridModel.js" %}"></script>
+
+{% endblock %}
+

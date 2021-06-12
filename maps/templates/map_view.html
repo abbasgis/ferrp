@@ -1,0 +1,153 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block title %} Map View{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet"
+          href="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.min.css" %}"/>
+
+    <style>
+        .jqx-layout-group-auto-hide-content-vertical {
+            width: 300px;
+        }
+
+        .jqx-popup.jqx-listbox {
+            z-index: 999999 !important;
+        }
+
+        .jqx-widget-content {
+            overflow: hidden;
+        }
+
+        #map {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            height: 94% !important;
+        }
+
+        #maincontent {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            padding-bottom: 15px !important;
+            padding-top: 12px !important
+        }
+
+        .panelContents {
+            height: 100%;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .panelContentsspan {
+        {#            font-size: xx-large;#} line-height: 100px;
+            color: lightgrey;
+        }
+    </style>
+
+    {#    <script type="text/javascript" src="http://viglino.github.io/ol-ext/dist/ol-ext.js"></script>#}
+{% endblock %}
+{% block Ext_VeiwPort %}
+    <div id="viewport" class="row">
+
+        <div id="jqxLayout" style="background: lightgrey">
+            <div data-container="TOCPanel">
+                <div class="external layerSwitcher" id="layerSwitcher" style="width: 100%; height: 100%"></div>
+            </div>
+            <div id="navigation_panel_id" data-container="NavigationPanel">
+                <div id="Navigation" style="width: 96%; height:100%; overflow: auto"></div>
+            </div>
+            <!--documentGroup-->
+            <div data-container="MapPanel">
+                {% include "include/jqxToolbar.html" %}
+                {#                {% include "include/ol_properties_popup.html" %}#}
+                {% include "include/map2d.html" %}
+            </div>
+            <!--bottom tabbedGroup-->
+            <div data-container="outputPanel" style="overflow: hidden">
+                <div class="panelContents" id="output">
+                    <span class="glyphicon glyphicon-sort-by-attributes fa-5x panelContentsspan"></span>
+                </div>
+            </div>
+            {#            <div data-container="chartPanel" style="overflow: hidden">#}
+            {#                <div class="panelContents" id="chart">#}
+            {#                    <span class="glyphicon glyphicon-stats fa-5x panelContentsspan"></span>#}
+            {#                </div>#}
+            {#            </div>#}
+
+            <div id="CataloguePanel" data-container="CataloguePanel">
+                <div id="Catalogue" style="width: 96%; height:100%; overflow: auto"></div>
+            </div>
+            <div data-container="OrientationSettingPanel">
+                {% include "include/camera_3d.html" %}
+            </div>
+            <div data-container="StatisticalPanel">
+                {% include "include/statistics.html" %}
+            </div>
+        </div>
+
+        <div id='jqxLayerConetextMenu' style="visibility: hidden">
+            <ul>
+                <li>
+                    <button id="cmenuZoom2Layer" class="btn btn-default btn-block">Zoom To Layer</button>
+                </li>
+                <li>
+                    <button id="cmenuOpenAttributeTable" class="btn btn-default btn-block">Open Attribute Table</button>
+                </li>
+                <li>
+                    <button id="cmenuLayerLegend" class="btn btn-default btn-block">Layer Legend</button>
+                </li>
+                <li>
+                    <button id="cmenuCreateSubLayer" class="btn btn-default btn-block">Create Sub Layer</button>
+                </li>
+                <li>
+                    <button id="cmenuChangeStyle" class="btn btn-default btn-block">Change Layer Style</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% include "include/waiting_dialog.html" %}
+    {% url "set_map_permission" as lp_url %}
+    {% include "include/permission_form.html" with permission_url=lp_url option_type="save" item_name=map_name %}
+    {% include "include/jqx_grid_and_chart.html" %}
+    {% url "set_layer_style_view" as ls_url %}
+    {% include "include/styling_form.html" with layer_style_url=ls_url %}
+{% endblock %}
+
+{% block extra_script %}
+
+    <script src="https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.6.0/jsts.min.js"></script>
+    <script type="text/javascript" src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script type="text/javascript"
+            src="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.js" %}"></script>
+
+    <script>
+        var mapInfo = {}
+        mapInfo.groupLayers = []
+        mapInfo.extent = {{ info.extent }};
+        var groupLayers = {{ info.group_layers|safe }};
+        if (groupLayers && groupLayers != '') {
+            mapInfo.groupLayers = groupLayers;
+        }
+        mapInfo.mapName = '{{ map_name }}';
+        {#        var layertype = '{{ info.layer_type }}';#}
+        mapInfo.url_wms_map = '{% url "wms_get_map" %}';
+        mapInfo.url_add_layer_data = "{% url 'add_layer_data' %}";
+        mapInfo.url_get_admin_tree = "{% url 'get_admin_tree' %}";
+        mapInfo.url_get_attribute_data = "{% url 'get_attribute_data' %}";
+        mapInfo.url_save_map = "{% url 'save_map' %}";
+        mapInfo.csrfToken = '{{ csrf_token }}';
+        mapInfo.project_id = '{{ project_id }}';
+        mapInfo.page = '{{ page }}';
+        mapInfo.user_ppms = '{{ user_ppms }}';
+    </script>
+
+    <script src="{% static "ferrp/js/JqxToolbarModel.js" %}"></script>
+    <script src="{% static "ferrp/maps/js/Add_Layer_ContextMenu_Model.js" %}"></script>
+    <script src="{% static "ferrp/maps/js/Add_Navigation_ContextMenu_Model.js" %}"></script>
+    <script src="{% static "ferrp/maps/js/Map_Jqx_VM.js" %}"></script>
+
+    <script>
+        var cameraSettingVM = new CameraSettingVM();
+        var mapJqxVM = new MapJqxVM('viewport', cameraSettingVM);
+    </script>
+{% endblock %}

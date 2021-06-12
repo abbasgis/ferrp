@@ -1,0 +1,58 @@
+{% load static %}
+<div id="grid" style="height: 100%; width: 100%;"></div>
+<style>
+    .bootstrap-dialog .modal-header.bootstrap-dialog-draggable {
+        cursor: move;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static "vendor/jq-querybuilder/dist/css/query-builder.dark.css" %}"/>
+<script type="text/javascript"
+        src="{% static "vendor/jq-querybuilder/dist/js/query-builder.standalone.min.js" %}"></script>
+
+<script type="text/javascript" src="{% static "ferrp/js/jqxGridModel.js" %}"></script>
+
+
+<script>
+    /********************************************
+     *
+     * @constructor
+     * usage:  var gridVM = new GridVM();
+     gridVM.initializeLayerGridParames(me.layerInfo.layerName,viewModel);
+     */
+    var GridVM = function () {
+        var me = this;
+        me.gridModel = null;
+        me.initializeLayerGridParames = function (layerName, viewModel,width) {
+            if(!width) width = 300
+            var url = "{% url 'get_attribute_data' %}" + "?layer_name=" + layerName + "&width=" + width
+            var params = {
+                url: url,
+                type: "GET",
+                // data: data,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: false
+                // headers: {'X-CSRFToken': token},
+            }
+            var data = callSJAX(params);
+            data = JSON.parse(data)
+            me.gridModel = new GridModel(viewModel);
+            me.gridModel.createGrid(layerName, data.data_fields, data.columns, data.data);
+            {#            callAJAX(params, function (data) {#}
+            {#                me.gridModel = new GridModel(viewModel);#}
+            {#                // gridModel.createDataAdapter(data.fields,data.data)#}
+            {#                // gridModel.createGrid()#}
+            {#                me.gridModel.createGrid(layerName, data.data_fields, data.columns, data.data);#}
+            {#                // gridModel.toggleGroupable();#}
+            {#            })#}
+        }
+
+        me.getGridModel = function () {
+            return me.gridModel;
+        }
+    }
+
+
+</script>

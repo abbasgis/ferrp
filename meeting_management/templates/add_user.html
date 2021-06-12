@@ -1,0 +1,31 @@
+{% extends "base_mm.html" %}
+{% load static %}
+
+{% block title_text %} {{ title }} {% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.base.css" %}"/>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container-fluid ">
+
+        <div class="row well" style="margin-bottom:0px !important; padding-bottom: 0px !important;">
+            <form class="form" action="{% url 'add_user' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" class="form-control" value="Add User"/>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+
+    </script>
+    <script src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqx-all.js" %}"></script>
+    <script src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+
+{% endblock %}
+

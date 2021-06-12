@@ -1,0 +1,45 @@
+{% extends "base/base_db_conn.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block extra_style %}
+    {#    <link rel="stylesheet" href="{% static "ferrp/layers/css/upload.css" %}"/>#}
+{% endblock %}
+{% block maincontent %}
+    <br/>
+    <div id=" row">
+        <div id="uploadFileFormDiv" class="container singleborder">
+            <div id="row">
+                <form id="uploadFileForm"  >
+                    {% csrf_token %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Tables List</div>
+                        <div class="panel-body" style="height: 400px; overflow: scroll;">
+                            {% bootstrap_form form %}
+                        </div>
+
+                    </div>
+                    <button id="btnSubmit" name="btnSubmit" value="Submit" class="btn btn-primary btn-block btn-lg"
+                            style="font-size: 1.2em">
+                        {% bootstrap_icon "cloud-upload" %}
+                        Upload
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock maincontent %}
+
+{% block extra_script %}
+    <script src="{% static "js/TablesListVM.js" %}" type="text/javascript"></script>
+    <script>
+
+        $('#id_Select_Tables_0').on('click', function (e) {
+            if(this.checked == true){
+                $('input[type=checkbox]').prop('checked', true)
+            }else {
+                $('input[type=checkbox]').prop('checked', false)
+            }
+
+        })
+    </script>
+{% endblock %}

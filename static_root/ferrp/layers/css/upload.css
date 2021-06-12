@@ -1,0 +1,8 @@
+.fieldset {
+    border: 2px solid #c1c1c1;
+    padding: .35em .625em .75em;
+}
+
+legend {
+    color: #4645bc !important;
+}

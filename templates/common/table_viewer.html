@@ -1,0 +1,33 @@
+{% extends "base/base_dch.html" %}
+{% load static %}
+
+{% block title %}TV{% endblock %}
+{% block maincontent %}
+    <div class="container singleborder">
+        <div id="pnlTableView" class="panel panel-primary">
+            <div class="panel panel-heading">Table Viewer</div>
+            <div id="pnlTableViewBody" class="panel panel-body" style="overflow: visible;padding: 0px; margin:0px">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script src="{% static "ferrp/js/jqxGridnQuerynToplogyModel.js" %}"></script>
+    <script>
+        var s = '{{ data|safe }}';
+        s = correctString2JSON(s);
+        data = JSON.parse(s);
+        $(document).ready(function () {
+
+            var remHeight = getRemainingBodyHeight(true, true, 80, 200);
+            var pnlBodyHeight = getPanelBodyHeight('pnlTableView', remHeight);
+            $('#pnlTableViewBody').height(pnlBodyHeight);
+            var gridModel = new GridModel(null, 'pnlTableViewBody');
+
+            gridModel.createGrid(null, data.data_fields, data.columns, data.data, null, true);
+        });
+
+    </script>
+
+{% endblock %}

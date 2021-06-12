@@ -1,0 +1,65 @@
+{% extends "base/site_base_dch.html" %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap_ui_tags %}
+{% block title %} {% trans "Disaster Impact Assessment" %}{% endblock %}
+
+{% block maincontent %}
+
+    <div class="row" >
+        <div style="display: none">{% column md="2" %} <div id="sideNav"  >
+            {% panelbody %}
+               {% include "includes/side_nav.html" %}
+            {% endpanelbody %}</div>
+        {% endcolumn %}</div>
+        {% column md="12" %}
+
+             <div id="main_content" class="panel panel-primary cc-panel">
+                <div class="panel-heading" style="background-color: #4e5944"><h4 class="text-center" style="color: #FFFFff">Disaster Impact
+                     Assessment of Projects</h4></div>
+                   <div id="project_list_grid"></div>
+
+             </div>
+
+        {% endcolumn %}
+
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+    <script type="text/javascript" src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "ferrp/dia/js/dia.js" %}"></script>
+{#    <script type="text/javascript" script="{%  %}"></script>#}
+    <script type="text/javascript" src="{% static "js/includes/sideNavManager.js" %}"></script>
+    <link rel="stylesheet" href="{% static "css/style4.css" %}"/>
+        <script>
+          $(document).ready(function () {
+            $("#sideNav").css('height', $("#main_content").height());
+            var section = '{{ section }}';
+            var sideNavManager = new SideNavManager();
+            sideNavManager.manageSections(section);
+{#            var projectListGrid = new ProjectListGrid();#}
+            var user = null;
+            {% if user.is_authenticated %}
+                user = '{{ user.username }}';
+            {% endif %}
+              if(user != null)
+              {
+                ProjectListGrid(user);
+                console.log("index page",user);
+              }
+              else
+              {
+                  ProjectListGrid();
+
+              }
+
+
+
+
+
+          });
+        </script>
+{% endblock %}

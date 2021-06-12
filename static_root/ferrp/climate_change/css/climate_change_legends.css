@@ -1,0 +1,88 @@
+#map, #pivotTable {
+    height: 100%;
+    width: 100%;
+}
+
+.panel-body {
+    padding: 5px !important;
+}
+
+.legend-control-color-scale {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 10px;
+    background: #FFF;
+    color: #777;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .5);
+    border-radius: 5px;
+    padding: 0;
+    height: 26px
+}
+
+.legend-control-color-scale-line {
+    margin: 15px 5px 5px;
+    position: inherit;
+    height: 5px;
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777
+}
+
+.scale-value {
+    position: absolute;
+    display: inline;
+    bottom: 0;
+    height: 16px;
+    vertical-align: top
+}
+
+.scale-value span {
+    line-height: 100%;
+    vertical-align: top
+}
+
+.scale-value:not(:last-of-type) {
+    border-left: 1px solid #777
+}
+
+.scale-value:last-of-type {
+    border-right: 1px solid #777
+}
+
+.scale-min-value {
+    left: 0
+}
+
+.scale-max-value {
+    right: 0
+}
+
+.legend-bottom {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none
+}
+
+.legend-right {
+    right: 0
+}
+
+.legend-rightdiv {
+
+}
+
+.legend-control-color-scale {
+    font-family: Source Sans Pro, sans-serif;
+    font-size: 10px;
+    background: #fff;
+    color: #777;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .5);
+    border-radius: 5px;
+    padding: 0;
+    height: 26px
+}
+
+.legend-control {
+    position: relative;
+    z-index: 7;
+    pointer-events: auto;
+    margin-right: 70px;
+}

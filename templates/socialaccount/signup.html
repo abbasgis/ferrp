@@ -1,0 +1,38 @@
+{% extends "base/site_base_dch.html" %}
+{% load i18n %}
+{% block title %}{% trans "Signup" %}{% endblock %}
+
+{% block maincontent %}
+    <div class="container" style="background-color: #fffbdf">
+        <h1 style="margin-top: 20px; text-align: center">{% trans "Sign Up" %}</h1>
+        <p class="form-group">{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are
+            about to use your
+            {{ provider_name }} account to login to
+            {{ site_name }}. As a final step, please complete the following form:{% endblocktrans %}</p>
+
+        <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+            {% csrf_token %}
+            <div class="center-block" style="align-items: center">
+                {{ form.as_p }}
+            </div>
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button class=" btn btn-warning center-block" type="submit">{% trans "Sign Up" %} &raquo;</button>
+        </form>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $(document).ready(function () {
+{#            var id_email = document.getElementById("id_email");#}
+{#            id_email.classList.add("form-group");#}
+{#            id_email.classList.add("center-block");#}
+{#            var id_username = document.getElementById("id_username");#}
+{#            id_username.classList.add("form-group");#}
+{#            id_username.classList.add("center-block");#}
+
+        });
+
+    </script>
+{% endblock %}

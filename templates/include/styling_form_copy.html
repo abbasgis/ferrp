@@ -1,0 +1,126 @@
+{% load static %}
+<div id="LayerStylingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            {#            <div class="modal-header">#}
+            {#                <button type="button" class="close" data-dismiss="modal">&times;</button>#}
+            {#                <h4 class="modal-title">Set Layer Style</h4>#}
+            {#            </div>#}
+            <div class="modal-body">
+                <div class="panel-group" id="accordion">
+                    <!-- Upload SLD -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#uploadSLD">
+                                    Upload SLD</a>
+                            </h4>
+                        </div>
+                        <div id="uploadSLD" class="panel-collapse collapse"> <!--in-->
+                            <div class="panel-body">
+                                <input id="file" type="file" accept=".sld"/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Default Color--->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#assignColor">
+                                    Single Color</a>
+                            </h4>
+                        </div>
+                        <div id="assignColor" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <fieldset>
+{#                                    <legend>Column Name & Value</legend>#}
+                                    <select id="selectColumnNameId" class="selectpicker" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                    <select id="selectColumnValueId" class="selectpicker" data-width="100%"
+                                            data-live-search="true">
+                                    </select>
+                                </fieldset>
+                                <br/>
+                                <button id="btnAddStyle" class="btn btn-primary btn-block">Add Style</button>
+                                </button>
+                                <table id="styleTable" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Style</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="styletbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                {#                <button id="btnChoroplethMapping" class="btn btn-primary">Set Choropleth Mapping</button>#}
+                <button id="btnUploadSLD" class="btn btn-primary">Upload Style</button>
+                <button type="button" class="btn btn-primary" id="btnSetLayerStyle">Set Layer Style</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="setStyleModal" class="modal model-sm" role="dialog">
+    {#    style="position: absolute; left: 200px"#}
+    <div class="modal-dialog" style="width: 300px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adjust Layer Style</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <legend>Fill</legend>
+                    <label class="control-label">Color</label>
+                    <input id="fillcolor" class="jscolor form-control" value="ab2567">
+                    <div class="form-group">
+                        <label class="control-label">Opacity</label>
+                        <input id="opacitycounter" class="form-control numbercounter" type="number" value="100" min="0"
+                               max="100" step="5"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Stroke</legend>
+                    <label class="control-label">Color</label>
+                    <input id="strokecolor" class="jscolor form-control" value="000000">
+                    <div class="form-group">
+                        <label class="control-label">Width</label>
+                        <input id="strokewidthcounter" class="form-control numbercounter" type="number" value="1"
+                               min="1" max="10"/>
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="btnSetStyle" class="btn btn-primary">Set Style</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="{% static "vendor/jscolor-2.0.5/jscolor.js" %}"></script>
+<script type="text/javascript" src="{% static "ferrp/js/stylingFormModel.js" %}"></script>
+{#<script>#}
+{#    $(function(){#}
+{#        stylingFromModel = newStyleFormModel(olMapModel);    #}
+{#    })#}
+{#    #}
+{##}
+{#</script>#}

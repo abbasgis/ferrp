@@ -1,0 +1,107 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% block title %} 3d Map {% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.6.0/styles/jqx.base.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.6.0/styles/jqx.fresh.css" %}"/>
+    <style>
+        @import url({% static "vendor/Cesium-1.48/Build/Cesium/Widgets/widgets.css" %});
+
+        .jqx-layout-group-auto-hide-content-vertical {
+            width: 300px;
+        }
+
+        .jqx-popup.jqx-listbox {
+            z-index: 999999 !important;
+        }
+
+        .jqx-widget-content {
+            overflow: hidden;
+        }
+
+        #cesiumContainer {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            width: 100%;
+            /* Firefox */
+            height: -moz-calc(100% - 35px);
+            /* WebKit */
+            height: -webkit-calc(100% - 35px);
+        {#            /* Opera */#}{#            height: -o-calc(100% - 35px);#}
+            /* Standard */
+            height: calc(100% - 35px);
+        }
+
+        #maincontent {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+            padding-bottom: 12px !important;
+            padding-top: 12px !important
+        }
+
+        .panelContents {
+            height: 100%;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: center;
+            float: left;
+        }
+
+
+    </style>
+{% endblock %}
+{% block Ext_VeiwPort %}
+    <div id="viewport" class="row">
+        <div id="jqxLayout" style="background: lightgrey">
+            <!--documentGroup-->
+            <div data-container="MapPanel">
+                {% include "jqxToolbar_3d.html" %}
+                <div id="cesiumContainer"></div>
+            </div>
+            <!--Left tabbedGroup-->
+            <div id="CataloguePanel" data-container="CataloguePanel">
+                <div id="Catalogue" style="width: 96%; height:100%; overflow: auto"></div>
+            </div>
+            <div data-container="CameraSettingPanel">
+                <div class="panelContents">
+                    <span style="font-style: italic;">Heading</span>
+                    <div id='headingLevel'></div>
+                    <span style="font-style: italic;">Pitch</span>
+                    <div id='pitchLevel'></div>
+                    <span style="font-style: italic;">Roll</span>
+                    <div id='rollLevel'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "include/waiting_dialog.html" %}
+{% endblock %}
+{% block extra_script %}
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqxribbon.js" %}"></script>#}
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqxdocking.js" %}"></script>#}
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqxwindow.js" %}"></script>#}
+    {#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqxlayout.js" %}"></script>#}
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>
+    <script src="{% static "vendor/Cesium-1.48/Build/Cesium/Cesium.js" %}"></script>
+    <script src="{% static "ferrp/maps/js/Add_Layer_ContextMenu_Model.js" %}"></script>
+    <script src="{% static "ferrp/map_3d/js/map_3d_jqx_VM.js" %}"></script>
+
+    <script>
+        var mapInfo = {}
+        mapInfo.extent = {{ extent }};
+        mapInfo.url_wms_map = '{% url "wms_get_map" %}';
+        mapInfo.url_add_layer_data = "{% url 'add_layer_data' %}";
+        mapInfo.csrfToken = '{{ csrf_token }}';
+
+        map3d = new Map3DJQXModel(mapInfo);
+        map3d = map3d.setLayout();
+
+        $(window).resize(function () {
+            if (map3d != null) {
+                map3d.setViewportLayoutHeight();
+            }
+        });
+    </script>
+
+
+{% endblock %}

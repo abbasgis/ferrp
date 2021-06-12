@@ -1,0 +1,23 @@
+#header {
+    width: auto;
+    height: 40px;
+    padding: 10px 40px;
+    background: #000000;
+    line-height: 40px;
+    color: #ffc;
+    overflow: hidden;
+}
+div.breadcrumbs {
+    background: #4e5944;
+    padding: 10px 40px;
+    border: none;
+    font-size: 14px;
+    color: #c4dce8;
+    text-align: left;
+}
+.module caption, .inline-group h2 {
+    font-size: 12px;
+    background-color: #4e5944;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}

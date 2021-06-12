@@ -1,0 +1,126 @@
+{% load static %}
+{% load i18n %}
+{% block navbar %}
+    <nav id="base_nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    {#                        <i class="fa fa-bars fa-2x"></i>#}
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {#                <a class="navbar-brand" href="{% url "home" %}">GeoNode</a>#}
+                <div class="logo">
+                    <a href="index_old.html"><img src="{% static "ferrp/img/gop_logo.png" %}" alt="logo"
+                                                  height="50"></a>
+                </div>
+            </div>
+
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    {% block tabs %}
+                        <li id="nav_Home">
+                            <a href="{% url "home" %}">Home</a>
+                        </li>
+
+                        {% block extra_tab %}
+                        {% endblock %}
+                        <li id="nav_application">
+                            <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">
+                                {#                                <div class="dropdown-toggle a-div" role=button data-toggle="dropdown">#}
+                                Applications<span class="caret"></span>
+                                {#                            </div>#}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="nav_adp" class="menu-item dropdown dropdown-submenu">
+                                    <a class="dropdown-toggle a-div" role=button data-toggle="dropdown">
+                                        Annual Development Plan<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="menu-item ">
+                                            <a href="#">ADP Report</a>
+                                        </li>
+                                        <li class="menu-item" role="presentation">
+                                            <a href="#">ADP MPR</a>
+                                        </li>
+                                        <li class="menu-item" role="menuitem">
+                                            <a href="#">ADP Year Analysis</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="nav_irrigation_inventory">
+                                    <a href="/irrigation">Irrigation Inventory</a>
+                                </li>
+                                <li id="nav_road_sector">
+                                    <a href="#">Road Scoring</a>
+                                </li>
+                                <li id="nav_flood_sector">
+                                    <a href="#">Flood Analysis</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endblock %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% block extra_rightTab %}
+                    {% endblock %}
+
+                    {% if not user.is_authenticated and REGISTRATION_OPEN %}
+                        <li><a href="{% url "account_signup" %}">Register</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#UserModal" role="button"
+                               aria-expanded="false">
+                                {{ user.username }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">
+                                Sign in
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <!-- Modal must stay outside the navbar -->
+    {% if not user.is_authenticated %}
+        <div class="modal fade" id="SigninModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Sign in" %}</h4>
+                    </div>
+                    {% include "login_form.html" %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Menu" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% include "menu_list.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        {% include "logout_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

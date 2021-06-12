@@ -1,0 +1,127 @@
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px !important;
+    border: 1px solid transparent;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #e7e7e7;
+    background-color: #e3e3e3;
+}
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+    margin-left: 0px !important;
+}
+
+.navbar-nav > li {
+    float: left;
+    margin-right: 10px !important;
+}
+/*tr.x-grid-row.x-grid-row-over  td{*/
+    /*background-color: #ddf2db !important;*/
+    /*color: #ff11ae !important;*/
+/*}*/
+/*tr.x-grid-row.x-grid-row-selected td{*/
+    /*background-color: #98ff87 !important;*/
+    /*color:blue !important;*/
+/*}*/
+.verified{
+    background-color: #98ff87 !important;
+    color: #18ab06 !important;
+}
+.notVerified{
+    background-color: #18ab06 !important;
+    color: #e80b16 !important;
+}
+.isRentAmount{
+    background-color: #01faff !important;
+    color: #18ab06 !important;
+}
+.notRentAmount{
+    background-color: #e8e21d !important;
+    color: #1720ab !important;
+}
+.noValue{
+    background-color: #05d0f5 !important;
+    color: #150a01 !important;
+}
+/*dashboard css*/
+.topTile{
+    padding-left: 0px !important;
+}
+.extPanel {
+    color: #0097ED;
+    font-size: 20px;
+    font-weight: normal !important;
+    font-family: Roboto;
+    line-height: 20px;
+    /* padding: 0 2px 1px; */
+    text-transform: none;
+}
+#grid_asset .x-column-header-inner .x-column-header-text {
+    /*white-space: normal;*/
+}
+
+#grid_asset .x-column-header-inner {
+    line-height: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    /*background-color: red;*/
+}
+#grid_asset .x-column-header
+{
+    height: 30px;
+}
+#grid_asset .x-grid-cell-inner {
+    white-space: normal;
+    font-size: 12px !important;
+}
+#grid_asset .x-grid-cell {
+    background-color: #FFFFff;
+    color: black;
+    height: 25px;
+    font-weight: normal;
+}
+#grid_asset tr.grid-row1 td{
+    background-color: #ffffff;
+    color: #008000;
+}
+#grid_asset tr.grid-row2 td{
+    background-color: #eeeeef;
+    color: #000000 !important;
+}
+.my-background-class {
+    background-color: #8cd7ff;
+    background-image: none;
+}
+.my-backgroundLitigation-class {
+    background-color: #ff9d7b;
+    background-image: none;
+}
+.winHeaderClass .x-window-header{
+    /*//background-color: #575152 !important;*/
+    /*height: 75px;*/
+    text-align:center;
+
+}
+#over
+{
+    position:absolute;
+    width:100%;
+    height:100%;
+    text-align: center; /*handles the horizontal centering*/
+}
+/*handles the vertical centering*/
+.Centerer
+{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.Centered
+{
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -1,0 +1,59 @@
+{% load bootstrap_ui_tags %}
+{% for item in list %}
+    {% row %}
+        {% column md="10" md_offset="1" %}
+            {% panel %}
+                {% panelheading %}<h2>{{ item.title }}</h2>{% endpanelheading %}
+                {% panelbody %}
+                    {% row %}
+                        {% column md="4" %}
+                            <div class="imgdiv center-block" align="center"
+                                 style="height:120px; padding:5px">
+                                {% if item.icon == None %}
+                                    <i id="alternateIcon" class="glyphicon glyphicon-file"></i>
+                                {% else %}
+                                    <img class="img-responsive center-block" width="200" height="120"
+                                         src="{{ item.icon }}"/>
+                                {% endif %}
+                            </div>
+                        {% endcolumn %}
+                        {% column md="8" %}
+                            <table class="table table-striped table-condensed"
+                                   style="table-layout:fixed">
+                                {% for key,value in item.items %}
+                                    <tr>
+                                        <th>{{ key }}</th>
+                                        <td style="word-wrap:break-word">{{ value }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endcolumn %}
+                    {% endrow %}
+                {% endpanelbody %}
+                <div class="panel-footer" align="center">
+                    {#                                {% panelfooter add_css_classes="align:'center'" %}#}
+                    {% if item.is_owner %}
+                        {% row %}
+                            {% column sm="6" %}
+                                <a href="{{ view_url }}?item_name={{ item.name }}"
+                                   id="btnViewLayer"
+                                   class="btn btn-primary btn-block">View {{ type }}</a>
+                            {% endcolumn %}
+                            {% column sm="6" %}
+                                <a href="{{ delete_url }}?item_name={{ item.name }}"
+                                   id="btnViewLayer"
+                                   class="btn btn-primary btn-block">Delete {{ type }}</a>
+                            {% endcolumn %}
+                        {% endrow %}
+                    {% else %}
+                        <a href="{{ view_url }}?item_name={{ item.name }}"
+                           id="btnViewLayer"
+                           class="btn btn-primary btn-block">View {{ type }}</a>
+                        {#                                {% endpanelfooter %}#}
+                    {% endif %}
+                </div>
+            {% endpanel %}
+        {% endcolumn %}
+    {% endrow %}
+
+{% endfor %}

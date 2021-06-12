@@ -1,0 +1,183 @@
+{% load static %}
+
+
+<div id="LayerStylingModal" class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Set Layer Style</h4>
+
+            </div>
+            <div class="modal-body">
+                <!--<span>Attribute</span>-->
+
+                <input id="file" type="file" accept=".sld"/>
+                <!--<select id="viewAttributes" class="selectpicker" data-width="100%" data-live-search="true">-->
+                {#                </select>#}
+                <button id="btnUploadSLD" class="btn btn-primary btn-block">Upload Style</button>
+                <button id="btnAddStyle" class="btn btn-primary btn-block">Add Style</button>
+                <table id="styleTable" class="table">
+                    <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Style</th>
+                    </tr>
+                    </thead>
+                    <tbody id="styletbody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSetLayerStyle">Set Layer Style</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="setStyleModal" class="modal model-sm" role="dialog">
+    {#    style="position: absolute; left: 200px"#}
+    <div class="modal-dialog" style="width: 300px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adjust Layer Style</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <legend>Fill</legend>
+                    <label class="control-label">Color</label>
+                    <input id="fillcolor" class="jscolor form-control" value="ab2567">
+                    <div class="form-group">
+                        <label class="control-label">Opacity</label>
+                        <input id="opacitycounter" class="form-control numbercounter" type="number" value="100" min="0"
+                               max="100" step="5"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Stroke</legend>
+                    <label class="control-label">Color</label>
+                    <input id="strokecolor" class="jscolor form-control" value="000000">
+                    <div class="form-group">
+                        <label class="control-label">Width</label>
+                        <input id="strokewidthcounter" class="form-control numbercounter" type="number" value="1"
+                               min="1" max="10"/>
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="btnSetStyle" class="btn btn-primary">Set Style</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function () {
+        $('.numbercounter').bootstrapNumber();
+        var url = "/get_attribute_list/?layername=" + layername;
+        var columnNamehtml = "<option value='default' selected>Default</option>";
+        callAJAX({url: url, dataType: "json"}, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                columnNamehtml += "<option value='" + data[i]['column_name'] + "'>" + data[i]['column_name'] + "</option>";
+            }
+            $("select#viewAttributes").html(columnNamehtml).selectpicker('refresh');
+
+        });
+        $('#btnSetLayerStyle').click(function () {
+            trs = $("#styleTable").find("tbody>tr");
+            data = {layer_name: layername}
+            rows = []
+            for (var i = 0; i < trs.length; i++) {
+                row = {}
+                row['filter'] = trs[i].cells[0].innerText;
+                rect = trs[i].cells[1].lastChild.lastChild;
+                row['stroke_color'] = rect.style.stroke;
+                row['stroke_width'] = rect.style.strokeWidth;
+                row['fill_color'] = rect.style.fill;
+                row['fill_opacity'] = rect.style.fillOpacity;
+                rows.push(row);
+            }
+            data['styles'] = rows;
+            formdata = new FormData();
+            formdata.append('data', JSON.stringify(data));
+            params = {
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                type: "POST",
+                url: '/layers/set_layer_style/',
+                data: formdata,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: false,
+            }
+            callAJAX(params, function (data) {
+                $('#LayerStylingModal').modal('hide');
+                olMapModel.refreshLayer(layername)
+            });
+        });
+        var callingElem
+        $('#btnAddStyle').click(function () {
+            tbody = $("#styletbody");
+            tr = $('<tr></tr>');
+            value = "default"; //$("select#viewAttributes").text()
+            svg = $('<svg width="150" height="40"></svg>');
+            svg.html('<rect width="150" height="40"style="stroke-width:5;stroke:rgb(0,0,0);fill:rgb(0,0,255);fill-opacity:0.5" />');
+            svg.click(function () {
+                callingElem = this;
+                $('#setStyleModal').modal('show');
+            })
+            tdValue = $("<td>" + value + "</td>");
+            tdStyle = $("<td></td>");
+            tdStyle.append(svg);
+            tr.append(tdValue);
+            tr.append(tdStyle);
+
+            tbody.append(tr);
+        })
+        $('#btnSetStyle').click(function () {
+            fillcolor = $('#fillcolor').val();
+            strokecolor = $('#strokecolor').val();
+            strokewidthcounter = $('#strokewidthcounter').val();
+            fillopacity = $('#opacitycounter').val()
+            rect = callingElem.children[0]
+            rect.style.fill = fillcolor;
+            rect.style.stroke = strokecolor;
+            rect.style.strokeWidth = strokewidthcounter;
+            rect.style.fillOpacity = parseInt(fillopacity) / 100;
+
+            $('#setStyleModal').modal('hide');
+        })
+        $('#btnUploadSLD').click(function () {
+            var url = "{% url "upload_sld" %}?layer_name=" + layername
+
+{#            alert(url);#}
+            formdata = new FormData();
+            formdata.append('file', $('#file')[0].files[0]);
+            params = {
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                type: "POST",
+                url: url,
+                data: formdata,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: false,
+            }
+            callAJAX(params, function (data) {
+                alert(data)
+            });
+        })
+
+    })
+</script>

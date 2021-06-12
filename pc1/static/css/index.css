@@ -1,0 +1,121 @@
+form {
+    margin: 0 auto;
+    /*background: rgba(130, 130, 130, .3);*/
+    padding: 20px 22px;
+    border: 1px solid;
+    border-top-color: rgba(255, 255, 255, .4);
+    border-left-color: rgba(255, 255, 255, .4);
+    border-bottom-color: rgba(60, 60, 60, .4);
+    border-right-color: rgba(60, 60, 60, .4);
+}
+
+.form-group.required .control-label:after {
+    color: #d00;
+    content: "*";
+    position: absolute;
+    margin-left: 8px;
+    top: 7px;
+}
+
+.rButton {
+    height: 22px;
+    width: 35px;
+
+}
+
+.dropdown-menu > li > a {
+    white-space: normal !important;
+}
+
+#loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 70%;
+    border-top: 16px solid #0816ff;
+    border-right: 16px solid #0f700a;
+    border-bottom: 16px solid #3bc112;
+    border-left: 16px solid #c4caff;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+    to {
+        bottom: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+
+#myDiv {
+    display: none;
+    text-align: center;
+}
+
+.panel-default > .panel-heading {
+    color: #333;
+    background-color: #337ab7;
+    border-color: #ddd;
+}
+
+.panel-body {
+    background-color: #c9e0ee;
+    color: #000000;
+    font-size: 12px;
+}
+
+.panel-footer {
+    border: 1px solid #95B8E7;
+    overflow: hidden;
+    color: white;
+    background: #337ab7;
+}

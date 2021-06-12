@@ -1,0 +1,126 @@
+{% extends "base/site_base_dch.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% block title %} Add 2 Existing{% endblock %}
+{% block extra_style %}
+    <style type="text/css">
+        th.headerValue {
+            display: table-cell;
+            vertical-align: inherit;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        td.cellValue {
+            font-size: 16px;
+        }
+
+        fieldset {
+            display: block;
+            margin-left: 2px;
+            margin-right: 2px;
+            padding-top: 0.35em;
+            padding-bottom: 0.625em;
+            padding-left: 0.75em;
+            padding-right: 0.75em;
+            border: 2px groove #ffff
+        }
+
+        legend {
+            display: block;
+            width: 100%;
+            padding: 0px;
+            margin-bottom: 5px;
+        {#            margin-left: 15px;#} font-size: 18px;
+            line-height: inherit;
+            color: #333;
+            border: 0;
+        {#            border-bottom: 1px groove #e5e5e5;#}
+        }
+    </style>
+{% endblock %}
+{% block maincontent %}
+    <div id="fileParametersDiv" class="container singleborder" style="display: block">
+        {% include "include/progressbar.html" %}
+        <form id="fileParametersform" method="post" action=".">
+            {#            {% csrf_token %}#}
+            <fieldset>
+                <legend>App List:</legend>
+                {% column md="12" %}
+                    <select id="selApp" class="form-control">
+                        <option value="-1">Select App</option>
+                        {% for key in apps %}
+                            <option value="{{ key }}">{{ key }}</option>
+                        {% endfor %}
+                    </select>
+                {% endcolumn %}
+            </fieldset>
+            <fieldset>
+                <legend>Model List</legend>
+                {% column md="12" %}
+                    <select id="selModel" class="form-control">
+                        <option value="-1">Select Model</option>
+                    </select>
+                {% endcolumn %}
+            </fieldset>
+            <fieldset>
+                <legend>Spatial Reference System</legend>
+                {% column md="8" %}<input id="txtSrs" class="form-control" type="text"/>{% endcolumn %}
+                {% column md="4" %}<input id="txtSrid" class="form-control" type="text"/>{% endcolumn %}
+            </fieldset>
+            <fieldset>
+                <legend>Envelop</legend>
+                {% column md="3" %}<input id="txtMinX" class="form-control" type="text"/>{% endcolumn %}
+                {% column md="3" %}<input id="txtMinY" class="form-control" type="text"/>{% endcolumn %}
+                {% column md="3" %}<input id="txtMaxX" class="form-control" type="text"/>{% endcolumn %}
+                {% column md="3" %}<input id="txtMaxY" class="form-control" type="text"/>{% endcolumn %}
+            </fieldset>
+            <fieldset>
+                <legend>Field Mapping</legend>
+                {% column md="12" %}
+                    <table id="tblFiledMapping" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="2" class="headerValue">Fields Mapping</th>
+                        </tr>
+                        <tr>
+                            <th class="headerValue">Model Fields</th>
+                            <th class="headerValue">Vector Fields</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                {% endcolumn %}
+            </fieldset>
+            <br/>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <br/>
+        </form>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        var appList = "{{ apps|safe }}".replace(/'/g, '"');
+        var lyrFieldList = '{{ lyrFieldList|safe}}';
+        var srid = {{ srs.srid }};
+        var srs = '{{ srs.wkt|safe }}';
+        var envelop = {{ envelop }};
+        var csrfToken = '{{ csrf_token }}';
+        var fileName = '{{ fileName }}';
+        var urlViewLayer ='{% url "view_layer" %}';
+        var urlMapping = '{% url "shp_add2existing" %}';
+{#        alert(urlMapping);#}
+        $('#txtSrid').val(srid)
+        $('#txtSrs').val(srs);
+        $('#txtMinX').val(envelop[0]);
+        $('#txtMinY').val(envelop[1]);
+        $('#txtMaxX').val(envelop[2]);
+        $('#txtMaxY').val(envelop[3]);
+        appList = JSON.parse(appList)
+        lyrFieldList = JSON.parse(lyrFieldList)
+    </script>
+    <script type="text/javascript" src='{% static "ferrp/layers/js/add2ExistingModel.js" %}'></script>
+{% endblock %}

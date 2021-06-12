@@ -1,0 +1,367 @@
+{% extends "base_mm.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% block title_text %} {{ title }} {% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/styles/jqx.base.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/PhotoSwipe-master/dist/photoswipe.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/PhotoSwipe-master/dist/default-skin/default-skin.css" %}"/>
+    <style>
+        {
+            box-sizing: border-box
+        ;
+        }
+        /* Style the search field */
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 60%;
+            background: #f1f1f1;
+        }
+
+        /* Style the submit button */
+        form.example button {
+            float: left;
+            width: 50px;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none; /* Prevent double borders */
+            cursor: pointer;
+        }
+
+        form.example button:hover {
+            background: #0b7dda;
+        }
+
+        /* Clear floats */
+        form.example::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+    </style>
+{% endblock %}
+
+{% block main_content %}
+
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <!-- Background of PhotoSwipe.
+             It's a separate element as animating opacity is faster than rgba(). -->
+        <div class="pswp__bg"></div>
+
+        <!-- Slides wrapper with overflow:hidden. -->
+        <div class="pswp__scroll-wrap">
+
+            <!-- Container that holds slides.
+                PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                Don't modify these 3 pswp__item elements, data is added later on. -->
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+
+                <div class="pswp__top-bar">
+
+                    <!--  Controls are self-explanatory. Order can be changed. -->
+
+                    <div class="pswp__counter"></div>
+
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                    <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                    <!-- element will get class pswp__preloader--active when preloader is running -->
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                </button>
+
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                </button>
+
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid ">
+    <div class="row" id="main">
+        <h1 class="headline4">{{ title }}</h1>
+    </div>
+    <div class="row well"
+         style="margin-bottom:0px !important; padding-bottom: 0px !important; margin-top: -5px !important;">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                {% if  type == 'calender' %}
+                    <iframe src="https://calendar.google.com/calendar/embed?src=idreesgis%40gmail.com&ctz=Asia%2FKarachi"
+                            style="border: 0" width="100%" height="550" frameborder="0" scrolling="no"></iframe>
+
+
+
+                    {#                            <form method="get" action="sync_to">#}
+                    {#                                {% bootstrap_form sync_form %}#}
+                    {#                                <div class="row">#}
+                    {#                                    <div class="text-center">#}
+                    {#                                        <button type="submit" id="btnSync" name="btnSync"#}
+                    {#                                                class="btn btn-success myButton">Sync#}
+                    {#                                        </button>#}
+                    {#                                        <button id="btnStopSync" name="btnStopSync" class="btn btn-danger myButton"#}
+                    {#                                                disabled>Stop Syncing#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </form>#}
+                {% elif type == 'meeting_initiatives_search' %}
+                    <div class="form-group ">
+                        <select class="form-control" id="cmbMeetings">
+                            <option>----- Select Meeting ----</option>
+                        </select>
+                    </div>
+                    <div id="content">
+                {% else %}
+                    <div class="alert alert-info" id="alertClass" name="alertClass">
+                        {#                        <a href="#" data-bind="click: removeAlert" class="close" aria-label="close">x</a>#}
+                        {#                        <form class="example" >#}
+                        {#                            <select>#}
+                        {#                                <option>--------</option>#}
+                        {#                            </select>#}
+                        {#                            <input type="text" placeholder="Search.." name="search">#}
+                        {#                            <button><i class="fa fa-search"></i></button>#}
+                        {#                        </form>#}
+
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                    <select class="form-control" id="cmbFieldName">
+                                        <option selected>---- Select column ----</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="txtFieldValue"
+                                           placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-success" id="btnSearchGrid"><i
+                                            class="fa fa-search"></i></button>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="content">
+
+                {% endif %}
+
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        var title = "{{title}}";
+        var type = "{{ type }}";
+        var grid_data = null;
+        var meetingName = null;
+        var meetings_list = null;
+        var meetings_data = null;
+        if (type == 'calender') {
+
+        } else if (type == 'meeting_initiatives_search') {
+            meetingName = "{{ meeting }}"
+            meetings_data = "{{ meetings_list }}"
+            grid_data = "{{grid_data}}";
+        }
+        else {
+            grid_data = "{{grid_data}}";
+        }
+
+        var uploaded_path = "/media/mm/user_pictures";
+        var meeting_pics_path = "/media/mm/pics";
+        var meeting_docs_path = "/media/mm/docs";
+
+        $(document).ready(function () {
+            if (type == 'calender') {
+                $("#calenderSync").addClass('w3-red');
+            } else {
+                if (type == 'quick') {
+                    $("#quickTasks").addClass('w3-red');
+                }
+                else if (type == 'important') {
+                    $("#importantInitiatives").addClass('w3-red');
+                }
+                else if (type == 'meetings') {
+                    $("#meetings").addClass('w3-red');
+                } else if (type == 'meeting_initiatives_search') {
+                    $("#meetings_initiatives").addClass('w3-red');
+                    meetings_list = eval('(' + JXG.decompress(meetings_data) + ')');
+                    $('#cmbMeetings').on('change', function () {
+                        var hostName = 'http://' + window.location.hostname + ':' + window.location.port;
+                        var href = hostName + '/mm/?type=meeting_initiatives_search&meeting=' + this.value;
+                        window.location.href = href;
+                    });
+                }
+                else if (type == 'short') {
+                    $("#shortTermInitiatives").addClass('w3-red');
+                }
+                else if (type == 'long') {
+                    $("#longTermInitiatives").addClass('w3-red');
+                }
+                else if (type == 'all') {
+                    $("#allInitiatives").addClass('w3-red');
+                }
+                else if (type == 'completed') {
+                    $("#completedInitiatives").addClass('w3-red');
+                }
+                else if (type == 'calender') {
+                    $("#calenderSync").addClass('w3-red');
+                }
+                else if (type == 'local') {
+                    $('#submenu-1').collapse();
+                    $('#submenu-2').collapse(false);
+                    $("#localBriefs").addClass('w3-red');
+                }
+                else if (type == 'foreign') {
+                    $('#submenu-1').collapse();
+                    $('#submenu-2').collapse(false);
+                    $("#foreignBriefs").addClass('w3-red');
+                }
+                else if (type == 'contacts') {
+                    $('#submenu-1').collapse();
+                    $('#submenu-2').collapse();
+                    $('#submenu-3').collapse(false);
+                    $("#socialCallList").addClass('w3-red');
+                }else if (type == 'non_pnd') {
+                    $('#submenu-1').collapse();
+                    $('#submenu-2').collapse();
+                    $('#submenu-3').collapse(false);
+                    $("#nonPnDCallList").addClass('w3-red');
+                }else if (type == 'foreigners') {
+                    $('#submenu-1').collapse();
+                    $('#submenu-2').collapse();
+                    $('#submenu-3').collapse(false);
+                    $("#foreignCallList").addClass('w3-red');
+                }
+                $("#txtEmailBody").jqxEditor({
+                        width: '100%',
+                        height: 200,
+                    }
+                );
+
+                grid_data = eval('(' + JXG.decompress(grid_data) + ')');
+                var gridModel = new GridModel('content');
+                gridModel.createGrid(grid_data.columns, grid_data.data_fields, grid_data.data);
+
+                jQuery.validator.setDefaults({
+                    debug: true,
+                    success: "valid"
+                });
+                $("#btnSendSMS").click(function () {
+                    var form = $("#frmSendSMS");
+                    form.validate();
+                    if (form.valid() == true) {
+                        var contact = $("#txtSMSContactNo").val();
+                        var msgBody = $("#txtSMSBody").val();
+                        msgBody = msgBody.replace('&', ' and ');
+                        var url = encodeURI("sms_email_data?type=sms&id=" + contact + "&body=" + msgBody);
+                        getAjaxResponse(url);
+                    }
+                });
+
+                $("#btnSendEMail").click(function () {
+                    var form = $("#frmSendEmail");
+                    form.validate();
+                    if (form.valid() == true) {
+                        var email = $("#txtEmailAddress").val();
+                        var msgBody = $("#txtEmailBody").jqxEditor().val();
+                        msgBody = msgBody.replace('&', ' and ');
+                        var url = encodeURI("sms_email_data?type=email&id=" + email + "&body=" + msgBody);
+                        getAjaxResponse(url);
+                    }
+                });
+
+            }
+
+
+
+            function getAjaxResponse(url) {
+                $("#myPleaseWait").modal("show");
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function (data) {
+                        $("#myPleaseWait").modal("hide");
+                        {#                        $("#txtSMSBody").val(data);#}
+                        alert(data);
+                        $("#emailModal").modal("hide");
+                        $("#smsModal").modal("hide");
+                    },
+                    error: function (thrownError) {
+                        $("#myPleaseWait").modal("hide");
+                        alert(thrownError);
+                    },
+                });
+            }
+
+
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+    <script src="{% static "vendor/jqwidgets-ver5.1.0/jqwidgets/jqx-all.js" %}"></script>
+
+    <script src="{% static "vendor/flexmonster/Pivot Table for JSON/client/flexmonster/flexmonster.js" %}"></script>
+
+    <script src="{% static "vendor/PhotoSwipe-master/dist/photoswipe.min.js" %}"></script>
+    <script src="{% static "vendor/PhotoSwipe-master/dist/photoswipe-ui-default.min.js" %}"></script>
+
+    <script src="{% static "vendor/jsxcompressor/jsxcompressor.min.js" %}"></script>
+
+    <script src="{% static "ferrp/js/jqxGridModel.js" %}"></script>
+    <script src="{% static "js/MeetingsVM.js" %}"></script>
+{% endblock %}
+

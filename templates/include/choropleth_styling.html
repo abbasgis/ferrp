@@ -1,0 +1,94 @@
+{% load static %}
+<script type="text/javascript" src="{% static "vendor/tinygradient/tinycolor.js" %}"></script>
+<script type="text/javascript" src="{% static "vendor/tinygradient/tinygradient.js" %}"></script>
+<script type="text/javascript" src="{% static "ferrp/js/choropleth_map.js" %}"></script>
+<div class="modal fade" id="chloropethmap" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div id="smModalhead" class="modal-header" style="background-color: palegoldenrod;border-radius: 10px">
+                {#          <button type="button" class="close" data-dismiss="modal">&times;</button>#}
+                <h3 class="modal-title">Choropleth Map</h3>
+            </div>
+            <div class="modal-body" id="smModalbody" style="height: 500px;">
+
+                <fieldset>
+                    {#                    <label for="column_name" class="form-label col-sm-6 col-lg-6 col-md-6">Select Column for#}
+                    {#                        Choropleth:</label>#}
+                    <select id="column_name" class="form-control col-sm-6 col-lg-4 col-md-4">
+                        <option>Select Columns</option>
+                    </select>
+                </fieldset>
+                <br/>
+                <br/>
+
+                <fieldset id="set_cloro_prop" disabled="disabled">
+                    <legend>Set Map Properties:</legend>
+
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">Maximum Value</span>
+                        <input id="max" value="" type="text" class="form-control" name="msg"
+                               placeholder=".....">
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">Minimum Value</span>
+                        <input id="min" value="" type="text" class="form-control" name="msg"
+                               placeholder=".......">
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">For High Values</span>
+                        <input id="high" value="#000000" type="text" class="form-control jscolor" name="msg"
+                               placeholder="Additional Info">
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">For Mid Values</span>
+                        <input id="mid" value="#000000" type="text" class="form-control jscolor" name="msg"
+                               placeholder="Additional Info">
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">For Low Values</span>
+                        <input id="low" value="#000000" type="text" class="form-control jscolor" name="msg"
+                               placeholder="Additional Info">
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group col-lg-6 col-md-6">
+                        <span class="input-group-addon">Select Classes</span>
+                        <input class="form-control" name="msg" id="colorful" type="number" value="2" min="2"
+                               max="10" placeholder="Additional Info">
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer" id="smModalfoot">
+                <button type="button" class="btn btn-success" id="chloro_submit" disabled="disabled">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var url =
+        {{ attribute_list_url }}
+        var params = {
+            url: url,
+            type: "GET",
+            data: {'layername': layertype},
+            dataType: 'json',
+            headers: {'X-CSRFToken': token}
+        };
+    })
+</script>

@@ -1,0 +1,62 @@
+{% extends "base/base_pdma.html" %}
+{% load static %}
+{% block title %} MHVRA Stats{% endblock title %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href=" {% static "vendor/ext-6.2.0/build/classic/theme-gray/resources/theme-gray-all.css" %}"/>
+    <link rel="stylesheet" href=" {% static "vendor/openlayer/ol.css" %}"/>
+{% endblock %}
+
+{% block extra_script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static "vendor/ext-6.2.0/build/ext-all.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/openlayer/ol.js" %}"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script type="text/javascript" src="{% static "js/StatsVM.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/StatsModels/StatsModel.js" %}"></script>
+    <script>
+        var csrf_token = '{{ csrf_token }}';
+        var res_data = '{{ res_data|safe }}';
+        var res_data_json = JSON.parse(res_data);
+        var imgPath = "{% static "ferrp/img/irrigation/" %}";
+    </script>
+{% endblock %}
+
+{% block extra_tab %}
+
+{% endblock %}
+
+{% block maincontent %}
+
+    <div class="container-fluid">
+        <div id="statsDashboard" class="row" style="height: 90%; margin-top: 20px;"></div>
+        <div id="popup"></div>
+    </div>
+
+    <div class="modal fade" id="uploadPolygonModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload Polygon</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="filePolygon">Supported file types(.shp, .kml)</label>
+                                <input type="file" class="form-control" id="filePolygon" name="filePolygon" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <button id="btnUploadPolygon" name="btnUploadPolygon" class="btn btn-primary form-control">Get Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock  %}

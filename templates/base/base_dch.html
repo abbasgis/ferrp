@@ -1,0 +1,143 @@
+{#{% extends "bootstrap_ui/bootstrap-skeleton.html" %}#}
+{% load bootstrap3 %}
+{% load bootstrap_ui_tags %}
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
+    {#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+    {#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+    <title>DCH - {% block title %}{% endblock %}</title>
+    {#{{ SITE_NAME }}#}
+    <link rel="shortcut icon" href="{% static "ferrp/img/favicon.png" %}">
+    {% bootstrap_css %}
+    {#    <link rel="stylesheet" href={% static "vendor/font-awesome-4.7.0/css/font-awesome.min.css" %}/>#}
+    <link rel="stylesheet" href="{% static "ferrp/css/bootstrap-submenu.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "vendor/bootstrap/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "ferrp/css/dch.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "vendor/bootstrap/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.min.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "vendor/bootstrap/bootstrap3-dialog-master/dist/css/bootstrap-dialog.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/geostats/geostats.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver6.2.0/styles/jqx.base.css" %}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{% static "vendor/jqwidgets-ver6.2.0/styles/jqx.fresh.css" %}"
+          type="text/css"/>
+    {% block extra_style %}
+
+    {% endblock extra_style %}
+
+    <!--[if IE]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      {% block extra_IEstyle %}
+      {% endblock %}
+      <style>
+        #ieflag{
+            display: block !important;
+            height: 150px;
+            text-align: center;
+        }
+      </style>
+    <![endif]-->
+
+    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+    <!-- Modal must stay outside the navbar -->
+    {% bootstrap_javascript %}
+    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver6.2.0/jqx-all.js" %}"></script>
+{#    <script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqxdropdownlist.js" %}"></script>#}
+    <script type="text/javascript"
+            src="{% static "vendor/bootstrap/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js" %}"></script>
+    <script type="text/javascript"
+            src="{% static "vendor/bootstrap/bootstrap-filestyle-1.2.3/src/bootstrap-filestyle.min.js" %}"></script>
+    <script type="text/javascript"
+            src="{% static "vendor/bootstrap/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js" %}"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/f9971b8b80.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/f9971b8b80.js"></script>
+    <script type="text/javascript"
+            src="{% static "vendor/bootstrap/bootstrap3-dialog-master/dist/js/bootstrap-dialog.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/geostats/geostats.js" %}"></script>
+    <script type="text/javascript" src="{% static "vendor/underscore/underscore-min.js" %}"></script>
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+{% block view_fullpage %}
+    {% block navbar %}
+        <nav id="base_nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                        {#                        <i class="fa fa-bars fa-2x"></i>#}
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    {#                <a class="navbar-brand" href="{% url "home" %}">GeoNode</a>#}
+                    <div class="logo">
+                        <a href="#"><img src="{% static "ferrp/img/gop_logo.png" %}" alt="logo"
+                                         height="50"></a>
+                    </div>
+                </div>
+                {% include "include/main_navbar.html" %}
+
+            </div>
+        </nav>
+        <!-- Modal must stay outside the navbar -->
+        {% if not user.is_authenticated %}
+            <div class="modal fade" id="SigninModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{% trans "Sign in" %}</h4>
+                        </div>
+                        {% include "login/login_form.html" %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">{% trans "Menu" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% include "menu_list.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            {% include "login/logout_form.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    {% endblock %}
+    <div id="maincontent" class="container-fluid">
+    {% block Ext_VeiwPort %}
+        {% include "base/base_header.html" %}
+        {% block maincontent %}
+        {% endblock maincontent %}
+    {% endblock Ext_VeiwPort %}
+    {% include "base/base_footer.html" %}
+{% endblock view_fullpage %}
+
+</div>
+</body>
+<script src="{% static "ferrp/js/dch.js" %}"></script>
+
+{% block extra_script %}{% endblock extra_script %}
+{% block included_html_script %}{% endblock included_html_script %}
+</html>
